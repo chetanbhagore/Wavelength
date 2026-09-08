@@ -3,12 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import seedEchoes from '../data/seedEchoes.json';
 import { ambientDrone } from '../utils/ambientAudio';
 
-// Pre-defined spatial orbital slots around the screen so whispers never collide with the center dial
+// Pre-defined spatial orbital slots: reduced to 2 positions so the dial hero breathes
 const WHISPER_SLOTS = [
-  { id: 'slot-tl', top: '14%', left: '8%', depth: 'mid' },
-  { id: 'slot-tr', top: '18%', right: '9%', depth: 'near' },
-  { id: 'slot-bl', bottom: '22%', left: '10%', depth: 'far' },
-  { id: 'slot-br', bottom: '26%', right: '8%', depth: 'mid' },
+  { id: 'slot-tr', top: '16%', right: '8%', depth: 'near' },
+  { id: 'slot-bl', bottom: '22%', left: '8%', depth: 'mid' },
 ];
 
 /**
@@ -27,7 +25,7 @@ export default function FloatingWhispers({ frequency, onTuneIn }) {
       { id: 'fallback_3', text: 'waiting for the storm to clear.' },
     ];
 
-    // Pick up to 4 items and assign to orbital slots
+    // Pick 2 items and assign to orbital slots
     return WHISPER_SLOTS.map((slot, index) => {
       const echo = pool[index % pool.length];
       return {
@@ -61,31 +59,31 @@ export default function FloatingWhispers({ frequency, onTuneIn }) {
           {activeWhispers.map((item) => {
             const isHovered = hoveredId === item.echoId;
 
-            // Visual depth styling
+            // Visual depth styling - softened for restraint
             const depthStyles = {
               near: {
-                fontSize: '13px',
-                baseOpacity: 0.55,
+                fontSize: '12.5px',
+                baseOpacity: 0.38,
                 blur: '0px',
-                driftY: [0, -14, 0],
-                driftX: [0, 8, 0],
-                duration: 7,
+                driftY: [0, -12, 0],
+                driftX: [0, 6, 0],
+                duration: 9,
               },
               mid: {
-                fontSize: '12px',
-                baseOpacity: 0.4,
-                blur: '0.5px',
-                driftY: [0, -10, 0],
-                driftX: [0, -6, 0],
-                duration: 9,
+                fontSize: '11.5px',
+                baseOpacity: 0.28,
+                blur: '0.6px',
+                driftY: [0, -8, 0],
+                driftX: [0, -5, 0],
+                duration: 11,
               },
               far: {
                 fontSize: '11px',
-                baseOpacity: 0.28,
+                baseOpacity: 0.2,
                 blur: '1.2px',
-                driftY: [0, 12, 0],
-                driftX: [0, 10, 0],
-                duration: 11,
+                driftY: [0, 10, 0],
+                driftX: [0, 8, 0],
+                duration: 13,
               },
             }[item.depth];
 

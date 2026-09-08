@@ -105,6 +105,18 @@ Following the **36-point Version 3 Judge Audit**, Wavelength achieved its final,
 
 ---
 
+## 💎 Version 4: Restraint, Inevitable Hierarchy & The Sacred Climax
+
+Following the **Version 4 Strict Audit**, the product was purified from over-decoration into clear, intentional hierarchy:
+
+1. **Intentional Quiet First 3 Seconds**: Secondary chrome (constellation radar, ambient audio toggle, spectrum ribbon) is gracefully delayed on load by ~2.5s to 2.8s. The Dial, Frequency Identity, and "Tune In" CTA command 100% of the initial visual hierarchy.
+2. **Whisper Restraint**: Reduced orbital floating whispers from 4 to 2 slots and softened baseline opacities, keeping the ether atmospheric without visual clutter.
+3. **Streamlined Metric Telemetry**: Suppressed competing secondary numbers from the Tuner screen; elevated the primary MHz broadcast frequency, emotional essence, and live presence indicator.
+4. **Intensified Broadcast Dissolution**: The final 30 seconds feature progressive 85% desaturation, analog CRT scanline jitter, phosphor flicker, and physical Web Audio lowpass filter decay down to 120Hz as the broadcast evaporates.
+5. **Visceral Environmental Resonance Bloom**: Collective resonance now triggers an ambient environmental warmth shift and subtle light bloom across the entire container.
+
+---
+
 ## 🧭 3-Minute Odyssey Judge Walkthrough Script
 
 Follow these exact steps to evaluate every sensory and architectural layer of Wavelength:

@@ -247,6 +247,18 @@ class AmbientDroneSynth {
     }, 650);
   }
 
+  setDissolution(progress) {
+    if (!this.isPlaying || !this.ctx || !this.filterNode) return;
+    const now = this.ctx.currentTime;
+    // Lower lowpass filter from 450Hz down to 140Hz as broadcast fades
+    const targetCutoff = Math.max(120, 450 - (progress || 0) * 310);
+    try {
+      this.filterNode.frequency.setTargetAtTime(targetCutoff, now, 0.25);
+    } catch {
+      // Safe fallback
+    }
+  }
+
   toggle(mood) {
     if (this.isPlaying) {
       this.stop();

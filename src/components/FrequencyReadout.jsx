@@ -175,17 +175,6 @@ export default function FrequencyReadout({ frequency, visitInfo }) {
               </motion.span>
             </div>
 
-            {/* Ambient collective tuning activity (Sprint 1 Issue #5) */}
-            <span style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '11px',
-              color: 'var(--color-text-secondary)',
-              opacity: 0.55,
-              letterSpacing: '0.02em',
-            }}>
-              tuned {(frequency.tunedTonight || 1840).toLocaleString()} times into the ether tonight
-            </span>
-
             {/* Anonymous return continuity memory (Issue #4) */}
             {visitInfo && visitInfo.count > 0 && (
               <motion.span

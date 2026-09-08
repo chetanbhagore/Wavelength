@@ -10,6 +10,7 @@ import MessageComposer from '../components/MessageComposer';
 import DepartureModal from '../components/DepartureModal';
 import { useRoomSimulation } from '../hooks/useRoomSimulation';
 import { useCountdown } from '../hooks/useCountdown';
+import { ambientDrone } from '../utils/ambientAudio';
 
 /**
  * Room Screen — the core synchronous interaction:
@@ -46,6 +47,14 @@ export default function RoomScreen({ frequency, onRoomEnd, demoMode = true }) {
   // Dissolution progress (0 at 30s, 1 at 0s)
   const dissolutionProgress = timeRemaining <= 30 ? (30 - Math.max(0, timeRemaining)) / 30 : 0;
 
+  // Broadcast dissolution Web Audio filter decay (V4 Climax)
+  useEffect(() => {
+    ambientDrone.setDissolution(dissolutionProgress);
+    return () => {
+      ambientDrone.setDissolution(0);
+    };
+  }, [dissolutionProgress]);
+
   // Intercept user resonance to show immersion philosophy moment on first use (Sprint 3 Issue #2)
   const handleResonate = (messageId) => {
     addResonance(messageId);
@@ -60,7 +69,7 @@ export default function RoomScreen({ frequency, onRoomEnd, demoMode = true }) {
   useEffect(() => {
     if (surgeTrigger > 0) {
       const startTimer = setTimeout(() => setResonanceFlash(true), 0);
-      const endTimer = setTimeout(() => setResonanceFlash(false), 1100);
+      const endTimer = setTimeout(() => setResonanceFlash(false), 1200);
       return () => {
         clearTimeout(startTimer);
         clearTimeout(endTimer);
@@ -100,15 +109,15 @@ export default function RoomScreen({ frequency, onRoomEnd, demoMode = true }) {
         zIndex: 1,
         overflow: 'hidden',
         filter: dissolutionProgress > 0
-          ? `grayscale(${dissolutionProgress * 0.7}) brightness(${1 - dissolutionProgress * 0.15})`
+          ? `grayscale(${dissolutionProgress * 0.85}) brightness(${1 - dissolutionProgress * 0.18}) contrast(${1 + dissolutionProgress * 0.12})`
           : 'none',
-        transition: 'filter 0.8s ease',
+        transition: 'filter 0.6s ease',
       }}
     >
       {/* Continuing ambient waveform backdrop with frequency mood physics */}
       <AmbientWaveformBackground colorAccent={frequency.colorAccent} mood={frequency.mood} opacity={0.32} />
 
-      {/* Analog CRT Scanlines & Signal Degradation in Final 30s (Sprint 3 Issue #20) */}
+      {/* Analog CRT Scanlines & Phosphor Jitter in Final 30s (Sprint 3 Issue #20 / V4) */}
       {dissolutionProgress > 0 && (
         <div
           aria-hidden="true"
@@ -116,26 +125,28 @@ export default function RoomScreen({ frequency, onRoomEnd, demoMode = true }) {
             position: 'absolute',
             inset: 0,
             pointerEvents: 'none',
-            background: 'repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0px, rgba(0,0,0,0.18) 1px, transparent 1px, transparent 3px)',
-            opacity: dissolutionProgress * 0.45,
+            background: 'repeating-linear-gradient(0deg, rgba(0,0,0,0.22) 0px, rgba(0,0,0,0.22) 1px, transparent 1px, transparent 3px)',
+            opacity: dissolutionProgress * 0.65,
             zIndex: 4,
+            animation: dissolutionProgress > 0.25 ? 'crt-jitter 0.12s infinite, crt-flicker 0.09s infinite' : 'none',
           }}
         />
       )}
 
-      {/* Collective Room-Wide Resonance Flash Shockwave (Sprint 3 Issue #16) */}
+      {/* Collective Room-Wide Resonance Environmental Bloom (Sprint 3 Issue #16 / V4) */}
       <AnimatePresence>
         {resonanceFlash && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: [0, 0.55, 0], scale: 1.8 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 0.5, 0] }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 1.1, ease: 'easeOut' }}
+            transition={{ duration: 1.2, ease: 'easeInOut' }}
             style={{
               position: 'absolute',
               inset: 0,
               pointerEvents: 'none',
-              background: `radial-gradient(circle at 50% 50%, ${frequency.colorAccent}77 0%, ${frequency.colorAccent}22 45%, transparent 70%)`,
+              background: `radial-gradient(ellipse at 50% 45%, ${frequency.colorAccent}45 0%, ${frequency.colorAccent}18 55%, transparent 85%)`,
+              boxShadow: `inset 0 0 100px ${frequency.colorAccent}35`,
               zIndex: 3,
             }}
           />

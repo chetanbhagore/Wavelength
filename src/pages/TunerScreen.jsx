@@ -109,11 +109,16 @@ export default function TunerScreen({
           not who you follow. who you're in sync with, right now.
         </motion.p>
 
-        {/* Ambient Audio Toggle & Live Constellation Radar */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        {/* Ambient Audio Toggle & Live Constellation Radar - Delayed entry for quiet first 3 seconds */}
+        <motion.div
+          initial={{ opacity: 0, y: -4 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.0, delay: 2.8 }}
+          style={{ display: 'flex', alignItems: 'center', gap: '10px' }}
+        >
           <AmbientAudioToggle frequency={currentFrequency} />
           <ConstellationRadar activeFrequency={currentFrequency} />
-        </div>
+        </motion.div>
       </div>
 
       {/* 3. Main Circular Dial with Auto-Seek */}
@@ -145,7 +150,7 @@ export default function TunerScreen({
             initial={{ opacity: 0, y: 6, scale: 0.96 }}
             animate={{ opacity: 0.85, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, filter: 'blur(6px)', scale: 0.96 }}
-            transition={{ duration: 0.35 }}
+            transition={{ duration: 0.5, delay: 3.2 }}
             style={{
               zIndex: 2,
               display: 'inline-flex',
@@ -186,7 +191,12 @@ export default function TunerScreen({
       </AnimatePresence>
 
       {/* 4. Interactive Frequency Spectrum Ribbon */}
-      <div style={{ zIndex: 2 }}>
+      <motion.div
+        initial={{ opacity: 0, y: 4 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 2.2 }}
+        style={{ zIndex: 2 }}
+      >
         <FrequencySpectrumRibbon
           currentIndex={currentIndex}
           onSelectIndex={(idx) => {
@@ -194,7 +204,7 @@ export default function TunerScreen({
             goTo(idx);
           }}
         />
-      </div>
+      </motion.div>
 
       {/* 5. Frequency Readout & Stochastic Fluctuation */}
       <div style={{ zIndex: 2 }}>

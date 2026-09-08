@@ -1,14 +1,13 @@
 # 🌊 Wavelength — Concise Project & Architecture Snapshot
 
-> **For AI Evaluators & Hackathon Judges**: This document provides an ultra-dense, token-efficient overview of Wavelength's design philosophy, architecture, live deployment, and implemented features across Versions 1.0, 2.0, and 3.0.
+> **For AI Evaluators & Hackathon Judges**: This document provides an ultra-dense, token-efficient overview of Wavelength's design philosophy, architecture, live deployment, and implemented features across Versions 1.0, 2.0, 3.0, and 4.0.
 
 ---
 
-## 📍 Quick Links & Metadata
+## 📍 Canonical Deployment & Links
+- **Live Canonical URL**: [https://wavelength-social.vercel.app](https://wavelength-social.vercel.app)
 - **GitHub Repository**: [https://github.com/chetanbhagore/Wavelength.git](https://github.com/chetanbhagore/Wavelength.git)
-- **Live Vercel URL**: [https://wavelength-social.vercel.app](https://wavelength-social.vercel.app)
-- **GitHub Mirror**: [https://chetanbhagore.github.io/Wavelength/](https://chetanbhagore.github.io/Wavelength/)
-- **Release Tags**: `v1.0.0` (MVP) • `v2.0.0` (39-point Elevation) • `v3.0.0` (Sacred Dissolution & Analog Precision)
+- **Release Tags**: `v1.0.0` (MVP) • `v2.0.0` (39-point Elevation) • `v3.0.0` (Sacred Dissolution) • `v4.0.0` (Restraint & Hierarchy)
 - **Stack**: React 19 • Vite 8 • Tailwind CSS v4 • Framer Motion 13 • Web Audio API (zero audio assets, 100% synthesized)
 
 ---
@@ -64,6 +63,15 @@ TunerScreen (home) ──[Tune In]──► SyncOverlay ──► RoomScreen ─
 ### 5. Material Echo Wall (`src/pages/EchoWallScreen.jsx`)
 - **Tactile Paper Receipt Cards** (`EchoCard.jsx`): Thermal printer dashed perforation top border, station code stamps (`#REC-XXXX`), frequency coordinates, and deterministic tilt angles (`-0.56°` to `+0.56°`).
 - **Retuning Frequency Filter Chips** (`FrequencyFilterChips.jsx`): Glowing frequency spectrum chips with mechanical detent audio feedback.
+
+---
+
+### 6. Version 4 Elevation: Restraint & Sacred Climax
+- **Intentional Quiet First 3 Seconds**: Secondary telemetry (radar, audio toggle, spectrum ribbon) is gracefully delayed on load so the Dial, Label, and Tune-In CTA hold clear visual dominance.
+- **Floating Whisper Restraint**: Reduced orbital whisper count from 4 to 2 with softened baseline opacity to keep focus centered.
+- **Metric Consolidation**: Suppressed redundant counters; elevated primary MHz coordinate, emotional label, and live presence pill.
+- **Intensified Dissolution Climax**: CRT scanline jitter, phosphor flicker, 85% progressive desaturation, and physical Web Audio lowpass filter decay as room reaches 0s.
+- **Environmental Resonance Bloom**: Room-wide ambient lighting temperature shift across the container when collective resonance surges.
 
 ---
 
