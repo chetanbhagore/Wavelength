@@ -1,11 +1,19 @@
 import frequencies from '../data/frequencies.json';
+import { ambientDrone } from '../utils/ambientAudio';
 
 /**
- * Horizontal scrollable filter chips for the Echo Wall:
+ * Horizontal scrollable filter chips for the Echo Wall (Sprint 3 Issue #30):
  * - Active chips dynamically inherit the glowing accent color,
- *   mood aura, and indicator dot of that frequency (Issue #26).
+ *   mood aura, and indicator dot of that frequency
+ * - Audio mechanical detent feedback when switching frequency filters
+ * - Displays exact broadcast MHz band
  */
 export default function FrequencyFilterChips({ selectedId, onSelect }) {
+  const handleSelect = (id) => {
+    ambientDrone.playDetentClick();
+    onSelect(id);
+  };
+
   return (
     <div style={{
       display: 'flex',
@@ -17,7 +25,7 @@ export default function FrequencyFilterChips({ selectedId, onSelect }) {
     }}>
       <style>{`.freq-chips::-webkit-scrollbar { display: none; }`}</style>
       <button
-        onClick={() => onSelect(null)}
+        onClick={() => handleSelect(null)}
         style={{
           padding: '8px 16px',
           borderRadius: 'var(--radius-pill)',
@@ -35,6 +43,7 @@ export default function FrequencyFilterChips({ selectedId, onSelect }) {
           display: 'flex',
           alignItems: 'center',
           gap: '6px',
+          outline: 'none',
         }}
       >
         <span>All frequencies</span>
@@ -45,9 +54,9 @@ export default function FrequencyFilterChips({ selectedId, onSelect }) {
         return (
           <button
             key={freq.id}
-            onClick={() => onSelect(freq.id)}
+            onClick={() => handleSelect(freq.id)}
             style={{
-              padding: '8px 16px',
+              padding: '8px 14px',
               borderRadius: 'var(--radius-pill)',
               border: `1px solid ${isSelected ? freq.colorAccent : 'var(--color-border)'}`,
               background: isSelected ? `${freq.colorAccent}25` : 'rgba(255, 255, 255, 0.02)',
@@ -65,6 +74,7 @@ export default function FrequencyFilterChips({ selectedId, onSelect }) {
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
+              outline: 'none',
             }}
           >
             <span style={{
@@ -76,10 +86,17 @@ export default function FrequencyFilterChips({ selectedId, onSelect }) {
               opacity: isSelected ? 1 : 0.6,
             }} />
             <span>{freq.label}</span>
+            <span style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '10px',
+              opacity: 0.6,
+              marginLeft: '2px',
+            }}>
+              {freq.mhz?.replace(' MHz', '')}
+            </span>
           </button>
         );
       })}
     </div>
   );
 }
-

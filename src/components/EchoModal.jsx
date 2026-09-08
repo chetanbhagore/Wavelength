@@ -1,12 +1,13 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useCallback } from 'react';
 import { Sparkles } from 'lucide-react';
+import { ambientDrone } from '../utils/ambientAudio';
 
 /**
  * Echo Modal — ritual closure at end of room:
  * - Single-line poetic input, ~80 chars.
  * - 3D physical "drop into the ether" animation with perspective tilt,
- *   scale compression, and trailing dissolution particles (Issue #19).
+ *   scale compression, and trailing dissolution particles (Issues #4 & #17).
  */
 export default function EchoModal({ frequency, onSubmit, onSkip }) {
   const [text, setText] = useState('');
@@ -16,6 +17,7 @@ export default function EchoModal({ frequency, onSubmit, onSkip }) {
     const trimmed = text.trim();
     if (!trimmed) return;
     setIsDropping(true);
+    ambientDrone.playLockChime(285); // Resonant physical drop thud
     setTimeout(() => {
       onSubmit(trimmed);
     }, 850);
@@ -74,7 +76,7 @@ export default function EchoModal({ frequency, onSubmit, onSkip }) {
             marginBottom: '10px',
           }}>
             <Sparkles size={12} />
-            <span>frequency {frequency.mhz} MHz</span>
+            <span>frequency {frequency.mhz || '88.5 MHz'}</span>
           </div>
 
           <h2 style={{

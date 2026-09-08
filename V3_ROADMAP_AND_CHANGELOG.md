@@ -29,10 +29,10 @@ The "match by emotional state / frequency / vibe" landscape contains notable pre
 ### Group A: Concept & Philosophical Clarity
 | # | Issue / Gap | Severity | Sprint | Proposed Resolution | Status |
 |---|-------------|----------|--------|---------------------|:------:|
-| 1 | Product reads closer to "pretty chat" than "new social unit" | Critical | Sprint 3 | Sacred 12-minute dissolution climax: signal degradation, desaturation, and parting transition in final 30s | ⏳ Planned |
-| 2 | "Why no likes" rule is under-communicated | High | Sprint 3 | Ambient, non-intrusive philosophy moment upon first resonance event | ⏳ Planned |
+| 1 | Product reads closer to "pretty chat" than "new social unit" | Critical | Sprint 3 | Sacred 12-minute dissolution climax: signal degradation, desaturation, and parting transition in final 30s | ✅ Completed |
+| 2 | "Why no likes" rule is under-communicated | High | Sprint 3 | Ambient, non-intrusive philosophy moment upon first resonance event | ✅ Completed |
 | 3 | Needs deeper radio + constellation metaphor | High | Sprint 1 | Visible MHz frequency dial markers, dBm signal strength readings, physical tuning sound | ✅ Completed |
-| 4 | Echo feels secondary to the room | High | Sprint 3 | Ritual gravity drop animation into the void with lingering ambient residue | ⏳ Planned |
+| 4 | Echo feels secondary to the room | High | Sprint 3 | Ritual gravity drop animation into the void with lingering ambient residue | ✅ Completed |
 | 5 | No sense of collective history beyond Echo Wall | Medium | Sprint 1 | Subtle "Tuned X times into the ether tonight" ambient signal on frequency readout | ✅ Completed |
 
 ### Group B: Graphics & Visual Language
@@ -42,7 +42,7 @@ The "match by emotional state / frequency / vibe" landscape contains notable pre
 | 7 | Dial lacks true analog radio weight | High | Sprint 1 | Dial MHz frequency ticks, CRT static texture, and haptic physical snap feedback | ✅ Completed |
 | 8 | Room feels flatter than Tuner screen | High | Sprint 2 | Seamlessly carry atmospheric waveform canvas into RoomScreen at gentle background intensity | ✅ Completed |
 | 9 | Avatar presence markers too uniform | Medium | Sprint 2 | Unique stranger signatures: varying pulse cycles, organic aura glows, subtle tint offsets | ✅ Completed |
-| 10 | Echo Wall cards lack materiality | Medium | Sprint 3 | Physical analog receipt / paper card styling with frequency stamp and subtle signal traces | ⏳ Planned |
+| 10 | Echo Wall cards lack materiality | Medium | Sprint 3 | Physical analog receipt / paper card styling with frequency stamp and subtle signal traces | ✅ Completed |
 | 11 | Live count presentation static | Medium | Sprint 1 | Signal strength meter (-72 dBm) with periodic micro-glitch fluctuation | ✅ Completed |
 | 12 | Color system needs distinct atmospheric temperature | Medium | Sprint 1 | Per-frequency motion speeds, particle densities, and color temperatures | ✅ Completed |
 | 13 | Typography hierarchy soft | Low-Med | Sprint 4 | Sharpen contrast, font weight tokens, and display tracking across all views | ⏳ Planned |
@@ -52,11 +52,11 @@ The "match by emotional state / frequency / vibe" landscape contains notable pre
 | # | Issue / Gap | Severity | Sprint | Proposed Resolution | Status |
 |---|-------------|----------|--------|---------------------|:------:|
 | 15 | Tune-In sequence not unforgettable | Critical | Sprint 2 | Staged sequence: dial lock -> analog needle sweep -> radio frequency lock -> staggered arrival | ✅ Completed |
-| 16 | Resonance does not feel collective enough | High | Sprint 3 | Full-screen collective illumination ripple affecting all room participants for 1.2s | ⏳ Planned |
-| 17 | Echo drop lacks physical finality | High | Sprint 3 | Irreversible gravity drop into the dark ether with dispersion particles | ⏳ Planned |
+| 16 | Resonance does not feel collective enough | High | Sprint 3 | Full-screen collective illumination ripple affecting all room participants for 1.2s | ✅ Completed |
+| 17 | Echo drop lacks physical finality | High | Sprint 3 | Irreversible gravity drop into the dark ether with dispersion particles | ✅ Completed |
 | 18 | Dial spring feels slightly digital | Medium | Sprint 1 | Mechanical spring detent with haptic scale pulse and click sound on snap | ✅ Completed |
 | 19 | Avatar entry not organic enough | Medium | Sprint 2 | Staggered arrivals with slight spring overshoot and blur-to-focus emergence | ✅ Completed |
-| 20 | Countdown color transition predictable | Medium | Sprint 3 | Final 30s signal weakening: progressive desaturation and CRT interference | ⏳ Planned |
+| 20 | Countdown color transition predictable | Medium | Sprint 3 | Final 30s signal weakening: progressive desaturation and CRT interference | ✅ Completed |
 | 21 | Page transitions lack spatial continuity | Medium | Sprint 4 | Smooth frequency-accented wave wipe transition between routes | ⏳ Planned |
 | 22 | Reduced-motion needs verified proof | Medium | Sprint 4 | Automated test verification and documented reduced-motion snapshot | ⏳ Planned |
 | 23 | No micro-sound design | Low | Sprint 1 | Synthesized analog rotary tick click & frequency lock chime using Web Audio | ✅ Completed |
@@ -74,8 +74,8 @@ The "match by emotional state / frequency / vibe" landscape contains notable pre
 |---|-------------|----------|--------|---------------------|:------:|
 | 28 | First-time user needs clear ambient guidance | Medium | Sprint 4 | Disappearing atmospheric onboarding tooltips that vanish after first interaction | ⏳ Planned |
 | 29 | Early departure modal feels abrupt | Medium | Sprint 4 | Weighty, poetic exit confirmation reinforcing the sacredness of the remaining time | ⏳ Planned |
-| 30 | Echo Wall filter chips feel secondary | Medium | Sprint 3 | Glowing frequency spectrum chips that feel like retuning the receiver | ⏳ Planned |
-| 31 | No soft return path celebrating the residual | Medium | Sprint 3 | Graceful transition back to Tuner highlighting recently deposited echo | ⏳ Planned |
+| 30 | Echo Wall filter chips feel secondary | Medium | Sprint 3 | Glowing frequency spectrum chips that feel like retuning the receiver | ✅ Completed |
+| 31 | No soft return path celebrating the residual | Medium | Sprint 3 | Graceful transition back to Tuner highlighting recently deposited echo | ✅ Completed |
 
 ### Group F: Technical & Presentation Hygiene
 | # | Issue / Gap | Severity | Sprint | Proposed Resolution | Status |

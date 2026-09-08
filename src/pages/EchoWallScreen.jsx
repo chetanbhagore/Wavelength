@@ -147,7 +147,7 @@ export default function EchoWallScreen({ initialFrequencyId, onBack }) {
               opacity: 0.9,
             }}>
               {selectedFreq
-                ? `The silence on ${selectedFreq.mhz} MHz (${selectedFreq.label}) is waiting for your words.`
+                ? `The silence on ${selectedFreq.mhz} (${selectedFreq.label}) is waiting for your words.`
                 : 'The ether is completely quiet right now.'}
             </p>
             <span style={{

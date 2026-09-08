@@ -22,6 +22,8 @@ export default function RoomScreen({ frequency, onRoomEnd, demoMode = true }) {
   const [showArrivalBanner, setShowArrivalBanner] = useState(true);
   const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
   const [resonanceFlash, setResonanceFlash] = useState(false);
+  const [showPhilosophyToast, setShowPhilosophyToast] = useState(false);
+  const hasSeenPhilosophyRef = useRef(false);
 
   const {
     participants,
@@ -40,18 +42,30 @@ export default function RoomScreen({ frequency, onRoomEnd, demoMode = true }) {
     totalDuration,
   } = useCountdown(true, demoMode, onRoomEnd);
 
-  // Trigger room-wide backdrop illumination wave when resonance surges
+  // Dissolution progress (0 at 30s, 1 at 0s)
+  const dissolutionProgress = timeRemaining <= 30 ? (30 - Math.max(0, timeRemaining)) / 30 : 0;
+
+  // Intercept user resonance to show immersion philosophy moment on first use (Sprint 3 Issue #2)
+  const handleResonate = (messageId) => {
+    addResonance(messageId);
+    if (!hasSeenPhilosophyRef.current) {
+      hasSeenPhilosophyRef.current = true;
+      setShowPhilosophyToast(true);
+      setTimeout(() => setShowPhilosophyToast(false), 3600);
+    }
+  };
+
+  // Trigger room-wide backdrop illumination wave when resonance surges (Sprint 3 Issue #16)
   useEffect(() => {
     if (surgeTrigger > 0) {
       const startTimer = setTimeout(() => setResonanceFlash(true), 0);
-      const endTimer = setTimeout(() => setResonanceFlash(false), 700);
+      const endTimer = setTimeout(() => setResonanceFlash(false), 1100);
       return () => {
         clearTimeout(startTimer);
         clearTimeout(endTimer);
       };
     }
   }, [surgeTrigger]);
-
 
   // Gracefully auto-dismiss arrival banner after 3.2 seconds
   useEffect(() => {
@@ -84,24 +98,43 @@ export default function RoomScreen({ frequency, onRoomEnd, demoMode = true }) {
         position: 'relative',
         zIndex: 1,
         overflow: 'hidden',
+        filter: dissolutionProgress > 0
+          ? `grayscale(${dissolutionProgress * 0.7}) brightness(${1 - dissolutionProgress * 0.15})`
+          : 'none',
+        transition: 'filter 0.8s ease',
       }}
     >
       {/* Continuing ambient waveform backdrop with frequency mood physics */}
       <AmbientWaveformBackground colorAccent={frequency.colorAccent} mood={frequency.mood} opacity={0.32} />
 
-      {/* Collective Room-Wide Resonance Flash Wave (Issues #2 & #18) */}
+      {/* Analog CRT Scanlines & Signal Degradation in Final 30s (Sprint 3 Issue #20) */}
+      {dissolutionProgress > 0 && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            pointerEvents: 'none',
+            background: 'repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0px, rgba(0,0,0,0.18) 1px, transparent 1px, transparent 3px)',
+            opacity: dissolutionProgress * 0.45,
+            zIndex: 4,
+          }}
+        />
+      )}
+
+      {/* Collective Room-Wide Resonance Flash Shockwave (Sprint 3 Issue #16) */}
       <AnimatePresence>
         {resonanceFlash && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.7 }}
-            animate={{ opacity: 0.4, scale: 1.3 }}
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: [0, 0.55, 0], scale: 1.8 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.68, ease: 'easeOut' }}
+            transition={{ duration: 1.1, ease: 'easeOut' }}
             style={{
               position: 'absolute',
               inset: 0,
               pointerEvents: 'none',
-              background: `radial-gradient(ellipse at 50% 40%, ${frequency.colorAccent}77 0%, transparent 68%)`,
+              background: `radial-gradient(circle at 50% 50%, ${frequency.colorAccent}77 0%, ${frequency.colorAccent}22 45%, transparent 70%)`,
               zIndex: 3,
             }}
           />
@@ -184,10 +217,57 @@ export default function RoomScreen({ frequency, onRoomEnd, demoMode = true }) {
 
       <MessageStream
         messages={messages}
-        onResonate={addResonance}
+        onResonate={handleResonate}
         colorAccent={frequency.colorAccent}
         typingParticipant={typingParticipant}
       />
+
+      {/* Non-intrusive Anti-Metric Philosophy Toast on first resonance (Sprint 3 Issue #2) */}
+      <AnimatePresence>
+        {showPhilosophyToast && (
+          <motion.div
+            initial={{ opacity: 0, y: 15, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+            transition={{ duration: 0.25 }}
+            style={{
+              position: 'absolute',
+              bottom: '76px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              zIndex: 25,
+              padding: '8px 18px',
+              borderRadius: 'var(--radius-pill)',
+              background: 'rgba(23, 27, 39, 0.95)',
+              border: `1px solid ${frequency.colorAccent}77`,
+              boxShadow: `0 8px 30px rgba(0,0,0,0.6), 0 0 20px ${frequency.colorAccent}33`,
+              backdropFilter: 'blur(16px)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              pointerEvents: 'none',
+              maxWidth: '90vw',
+              textAlign: 'center',
+            }}
+          >
+            <span style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              backgroundColor: frequency.colorAccent,
+              boxShadow: `0 0 8px ${frequency.colorAccent}`,
+            }} />
+            <span style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '11px',
+              color: '#FFFFFF',
+              letterSpacing: '0.02em',
+            }}>
+              Resonance: shared vibration without counters or likes.
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <MessageComposer
         onSend={addUserMessage}
