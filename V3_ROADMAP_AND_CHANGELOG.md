@@ -123,7 +123,9 @@ graph LR
 | `v2.0.0` | 1 to 5 | 39-point V2 elevation: analog sweep, typing indicators, residue halo, demo mode, living ether whispers, canvas weather | OxLint 0 err / Build 1.47s | ✅ Released |
 | `v3.0.0-wip` | Sprint 1 | Radio MHz markings, physical detent click sound, signal strength dBm, reactive drag velocity | OxLint 0 err / Build 1.42s | ✅ Completed |
 | `v3.0.0-wip` | Sprint 2 | Atmospheric canvas in Room, unique stranger signatures, early burst, join/leave events, enriched pools | OxLint 0 err / Build 5.44s | ✅ Completed |
+| `v3.0.0-wip` | Sprint 3 | Sacred dissolution climax, room resonance shockwave, gravity echo drop, material paper cards, retuning chips | OxLint 0 err / Build 12.9s | ✅ Completed |
 
 ---
 
 *This document is the source of truth for Version 3 development.*
+
