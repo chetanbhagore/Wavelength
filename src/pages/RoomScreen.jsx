@@ -86,8 +86,8 @@ export default function RoomScreen({ frequency, onRoomEnd, demoMode = true }) {
         overflow: 'hidden',
       }}
     >
-      {/* Continuing ambient waveform backdrop */}
-      <AmbientWaveformBackground colorAccent={frequency.colorAccent} opacity={0.35} />
+      {/* Continuing ambient waveform backdrop with frequency mood physics */}
+      <AmbientWaveformBackground colorAccent={frequency.colorAccent} mood={frequency.mood} opacity={0.32} />
 
       {/* Collective Room-Wide Resonance Flash Wave (Issues #2 & #18) */}
       <AnimatePresence>
@@ -173,6 +173,7 @@ export default function RoomScreen({ frequency, onRoomEnd, demoMode = true }) {
       <RoomAvatarStack
         participants={participants}
         colorAccent={frequency.colorAccent}
+        typingParticipant={typingParticipant}
       />
 
       <ResonanceMeter

@@ -48,12 +48,31 @@ export default function MessageStream({ messages, onResonate, colorAccent, typin
       )}
 
       {messages.map((msg) => (
-        <MessageBubble
-          key={msg.id}
-          message={msg}
-          onResonate={onResonate}
-          colorAccent={colorAccent}
-        />
+        msg.isSystem ? (
+          <motion.div
+            key={msg.id}
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 0.65, y: 0 }}
+            style={{
+              textAlign: 'center',
+              padding: '6px 0',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '11px',
+              color: 'var(--color-text-secondary)',
+              letterSpacing: '0.04em',
+              fontStyle: 'italic',
+            }}
+          >
+            • {msg.text} •
+          </motion.div>
+        ) : (
+          <MessageBubble
+            key={msg.id}
+            message={msg}
+            onResonate={onResonate}
+            colorAccent={colorAccent}
+          />
+        )
       ))}
 
       {/* Dynamic typing indicator */}

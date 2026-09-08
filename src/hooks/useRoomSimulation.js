@@ -150,13 +150,49 @@ export function useRoomSimulation(frequencyId, isActive) {
       const shuffled = [...pool].sort(() => Math.random() - 0.5);
       messagePoolRef.current = shuffled;
 
-      // First message starts typing after a gentle room settlement delay (1.2s - 2.2s)
+      // First message starts typing immediately after arrival (Sprint 2 Issue #26)
       turnTimer = setTimeout(() => {
         if (shuffled.length > 0) {
           scheduleNextMessageRef.current?.();
         }
-      }, 1400 + Math.random() * 800);
+      }, 800 + Math.random() * 500);
       timersRef.current.push(turnTimer);
+
+      // Mid-session rare ambient arrival/departure event (Sprint 2 Issue #27)
+      const ambientEventTimer = setTimeout(() => {
+        if (Math.random() < 0.6) {
+          // New presence arrives
+          const newStranger = {
+            id: `p_new_${Date.now()}`,
+            displayName: `stranger_${Math.floor(Math.random() * 70) + 30}`,
+            avatarColor: '#33E6C9',
+          };
+          setParticipants((prev) => [...prev, newStranger]);
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: `sys_join_${Date.now()}`,
+              isSystem: true,
+              text: `${newStranger.displayName} tuned into this frequency`,
+            },
+          ]);
+        } else {
+          // A presence softly departs
+          const leaving = participantsRef.current[participantsRef.current.length - 1];
+          if (leaving && participantsRef.current.length > 3) {
+            setParticipants((prev) => prev.filter((p) => p.id !== leaving.id));
+            setMessages((prev) => [
+              ...prev,
+              {
+                id: `sys_leave_${Date.now()}`,
+                isSystem: true,
+                text: `${leaving.displayName} drifted back into the void`,
+              },
+            ]);
+          }
+        }
+      }, 26000 + Math.random() * 10000);
+      timersRef.current.push(ambientEventTimer);
     }, 0);
 
     timersRef.current.push(initTimer);

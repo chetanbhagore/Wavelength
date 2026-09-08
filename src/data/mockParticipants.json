@@ -1,17 +1,17 @@
 {
   "participants": [
-    { "id": "p1", "displayName": "stranger_04", "typingSpeedMs": 1400 },
-    { "id": "p2", "displayName": "stranger_11", "typingSpeedMs": 2100 },
-    { "id": "p3", "displayName": "stranger_07", "typingSpeedMs": 1800 },
-    { "id": "p4", "displayName": "stranger_22", "typingSpeedMs": 2500 },
-    { "id": "p5", "displayName": "stranger_15", "typingSpeedMs": 1600 },
-    { "id": "p6", "displayName": "stranger_31", "typingSpeedMs": 2200 },
-    { "id": "p7", "displayName": "stranger_09", "typingSpeedMs": 1900 },
-    { "id": "p8", "displayName": "stranger_18", "typingSpeedMs": 2400 },
-    { "id": "p9", "displayName": "stranger_02", "typingSpeedMs": 1500 },
-    { "id": "p10", "displayName": "stranger_26", "typingSpeedMs": 2000 },
-    { "id": "p11", "displayName": "stranger_13", "typingSpeedMs": 1700 },
-    { "id": "p12", "displayName": "stranger_30", "typingSpeedMs": 2300 }
+    { "id": "p1", "displayName": "stranger_04", "typingSpeedMs": 1400, "avatarColor": "#7C5CFF" },
+    { "id": "p2", "displayName": "stranger_11", "typingSpeedMs": 2100, "avatarColor": "#33E6C9" },
+    { "id": "p3", "displayName": "stranger_07", "typingSpeedMs": 1800, "avatarColor": "#FFB020" },
+    { "id": "p4", "displayName": "stranger_22", "typingSpeedMs": 2500, "avatarColor": "#FF4FA3" },
+    { "id": "p5", "displayName": "stranger_15", "typingSpeedMs": 1600, "avatarColor": "#FF5470" },
+    { "id": "p6", "displayName": "stranger_31", "typingSpeedMs": 2200, "avatarColor": "#FFD166" },
+    { "id": "p7", "displayName": "stranger_09", "typingSpeedMs": 1900, "avatarColor": "#A78BFA" },
+    { "id": "p8", "displayName": "stranger_18", "typingSpeedMs": 2400, "avatarColor": "#34D399" },
+    { "id": "p9", "displayName": "stranger_02", "typingSpeedMs": 1500, "avatarColor": "#00F0FF" },
+    { "id": "p10", "displayName": "stranger_26", "typingSpeedMs": 2000, "avatarColor": "#F472B6" },
+    { "id": "p11", "displayName": "stranger_13", "typingSpeedMs": 1700, "avatarColor": "#FBBF24" },
+    { "id": "p12", "displayName": "stranger_30", "typingSpeedMs": 2300, "avatarColor": "#6EE7B7" }
   ],
   "messagesByFrequency": {
     "freq_racing_mind": [
@@ -29,7 +29,10 @@
       "it's the quiet that gets me",
       "told myself i'd sleep early tonight. narrator: she did not",
       "breathing exercises work until they don't",
-      "at least we're all awake together"
+      "counted sheep, counted regrets instead",
+      "funny how the darkest hour is when everyone feels alone together",
+      "morning always comes anyway. we just have to outlast the thoughts",
+      "at least we're all awake together on this wavelength"
     ],
     "freq_new_city": [
       "anyone know where to find actual good coffee here",
@@ -41,7 +44,11 @@
       "my old city didn't appreciate me. this one doesn't know me yet",
       "the map app is my best friend right now",
       "i miss knowing which streets to avoid",
-      "started going to the same bar just so someone recognizes me"
+      "started going to the same bakery just so someone recognizes me",
+      "unpacked my books today. made the floor feel a little more like home",
+      "the sirens sound different here. still getting used to the noise",
+      "walked 40 blocks today just to see what was out there",
+      "it takes months to build a life. reminding myself not to rush day twelve"
     ],
     "freq_excited_noone": [
       "I LITERALLY CANNOT CONTAIN THIS",
@@ -53,6 +60,10 @@
       "i want to scream it from a rooftop",
       "keeping secrets is exhausting when they're GOOD secrets",
       "tomorrow everyone will know. tonight it's just us",
+      "screamed into a pillow earlier in the absolute best way",
+      "told my dog first. she gave full unconditional support",
+      "carrying good news by yourself is its own weird kind of heavy",
+      "this is gonna change everything and nobody has a clue yet",
       "this is the best kind of restless"
     ],
     "freq_post_breakup": [
@@ -64,6 +75,10 @@
       "listening to my own music again. forgot i had taste",
       "the hardest part isn't missing them. it's not missing them",
       "everyone asks if i'm okay. i am. that's the confusing part",
+      "deleted the old photos today. kept the lessons",
+      "the playlist sounds completely different now",
+      "i don't miss who they were. i miss who i thought we were",
+      "clarity hits different when you finally stop making excuses",
       "freedom tastes different than i expected"
     ],
     "freq_sunday_scaries": [
@@ -75,6 +90,9 @@
       "i preemptively set three alarms and it's still sunday",
       "the golden hour on sunday is actually a warning light",
       "already rehearsing conversations i'll probably never have",
+      "made a to-do list to feel in control. did not feel in control",
+      "the dread is almost always ten times worse than the actual Monday",
+      "shutting my laptop and refusing to think about 9am until 8:59am",
       "vibes were immaculate until i remembered what day it is"
     ],
     "freq_quiet_proud": [
@@ -86,7 +104,10 @@
       "past me would be so confused and so proud",
       "it's weird how the biggest changes feel quiet",
       "i made a hard choice today and it was the right one",
-      "went for a run. voluntarily. who am i"
+      "went for a run. voluntarily. who am i",
+      "nobody clapped today. didn't need them to",
+      "did the task i've been putting off for three weeks. five minutes of work",
+      "small victory. immense peace of mind"
     ],
     "freq_missing_someone": [
       "the worst part is they'd understand exactly how i feel right now",
@@ -97,6 +118,9 @@
       "the space they left is so specific",
       "missing someone you chose to let go of is its own thing",
       "they'd laugh at this. i almost sent it",
+      "drafted the text, reread it three times, deleted it into the void",
+      "some people are only meant to exist in your memories",
+      "grief is just love with nowhere left to land",
       "grief isn't always about death. sometimes people just leave"
     ],
     "freq_fresh_start": [
@@ -107,6 +131,9 @@
       "clean slate energy is real",
       "wrote down three goals. already did one",
       "the old version of me served a purpose. new version starts now",
+      "burned the old map. building a whole new one from scratch",
+      "day one, attempt number who-knows. this time feels different",
+      "the blank page used to terrify me. now it looks like freedom",
       "it's scary and exciting and i can't tell the difference",
       "everything is uncertain and somehow that feels right"
     ]

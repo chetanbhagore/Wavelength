@@ -1,30 +1,33 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { Radio, Sparkles } from 'lucide-react';
+import { ambientDrone } from '../utils/ambientAudio';
 
 /**
  * Full-screen transitional state between Tuner and Room.
  * Analog radio frequency needle sweep + vibe phase lock + staggered participant dots.
- * Auto-advances after 2.0–2.4s.
+ * Auto-advances after 2.4s.
  */
 export default function SyncOverlay({ frequency, onComplete }) {
   const [syncedCount, setSyncedCount] = useState(0);
   const [isLocked, setIsLocked] = useState(false);
   const [targetCount] = useState(() => Math.floor(Math.random() * 3) + 4); // 4-6
-  const [mhz] = useState(() => (88 + Math.random() * 19).toFixed(1));
+  const mhz = frequency.mhz ? frequency.mhz.replace(' MHz', '') : '94.8';
 
   useEffect(() => {
-    // Phase 1: Needle sweep & lock at 1s
+    // Phase 1: Needle sweep & lock at 1s + Lock Chime
     const lockTimer = setTimeout(() => {
       setIsLocked(true);
+      ambientDrone.playLockChime(528);
     }, 1100);
 
-    // Phase 2: Stagger "found" stranger dots
+    // Phase 2: Stagger "found" stranger dots with micro-click
     const timers = [];
     for (let i = 0; i < targetCount; i++) {
       timers.push(
         setTimeout(() => {
           setSyncedCount(i + 1);
+          ambientDrone.playDetentClick();
         }, 800 + i * 260)
       );
     }
@@ -32,7 +35,7 @@ export default function SyncOverlay({ frequency, onComplete }) {
     // Phase 3: Auto-advance
     const advanceTimer = setTimeout(() => {
       onComplete?.();
-    }, 2400);
+    }, 2450);
 
     return () => {
       timers.forEach(clearTimeout);

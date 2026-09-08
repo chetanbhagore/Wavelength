@@ -40,8 +40,8 @@ The "match by emotional state / frequency / vibe" landscape contains notable pre
 |---|-------------|----------|--------|---------------------|:------:|
 | 6 | Waveform & particles decorative, not reactive | High | Sprint 1 | Canvas wave amplitude and speed react in real-time to dial drag velocity & room resonance | ✅ Completed |
 | 7 | Dial lacks true analog radio weight | High | Sprint 1 | Dial MHz frequency ticks, CRT static texture, and haptic physical snap feedback | ✅ Completed |
-| 8 | Room feels flatter than Tuner screen | High | Sprint 2 | Seamlessly carry atmospheric waveform canvas into RoomScreen at gentle background intensity | ⏳ Planned |
-| 9 | Avatar presence markers too uniform | Medium | Sprint 2 | Unique stranger signatures: varying pulse cycles, organic aura glows, subtle tint offsets | ⏳ Planned |
+| 8 | Room feels flatter than Tuner screen | High | Sprint 2 | Seamlessly carry atmospheric waveform canvas into RoomScreen at gentle background intensity | ✅ Completed |
+| 9 | Avatar presence markers too uniform | Medium | Sprint 2 | Unique stranger signatures: varying pulse cycles, organic aura glows, subtle tint offsets | ✅ Completed |
 | 10 | Echo Wall cards lack materiality | Medium | Sprint 3 | Physical analog receipt / paper card styling with frequency stamp and subtle signal traces | ⏳ Planned |
 | 11 | Live count presentation static | Medium | Sprint 1 | Signal strength meter (-72 dBm) with periodic micro-glitch fluctuation | ✅ Completed |
 | 12 | Color system needs distinct atmospheric temperature | Medium | Sprint 1 | Per-frequency motion speeds, particle densities, and color temperatures | ✅ Completed |
@@ -51,11 +51,11 @@ The "match by emotional state / frequency / vibe" landscape contains notable pre
 ### Group C: Motion & Signature Interactions
 | # | Issue / Gap | Severity | Sprint | Proposed Resolution | Status |
 |---|-------------|----------|--------|---------------------|:------:|
-| 15 | Tune-In sequence not unforgettable | Critical | Sprint 2 | Staged sequence: dial lock -> analog needle sweep -> radio frequency lock -> staggered arrival | ⏳ Planned |
+| 15 | Tune-In sequence not unforgettable | Critical | Sprint 2 | Staged sequence: dial lock -> analog needle sweep -> radio frequency lock -> staggered arrival | ✅ Completed |
 | 16 | Resonance does not feel collective enough | High | Sprint 3 | Full-screen collective illumination ripple affecting all room participants for 1.2s | ⏳ Planned |
 | 17 | Echo drop lacks physical finality | High | Sprint 3 | Irreversible gravity drop into the dark ether with dispersion particles | ⏳ Planned |
 | 18 | Dial spring feels slightly digital | Medium | Sprint 1 | Mechanical spring detent with haptic scale pulse and click sound on snap | ✅ Completed |
-| 19 | Avatar entry not organic enough | Medium | Sprint 2 | Staggered arrivals with slight spring overshoot and blur-to-focus emergence | ⏳ Planned |
+| 19 | Avatar entry not organic enough | Medium | Sprint 2 | Staggered arrivals with slight spring overshoot and blur-to-focus emergence | ✅ Completed |
 | 20 | Countdown color transition predictable | Medium | Sprint 3 | Final 30s signal weakening: progressive desaturation and CRT interference | ⏳ Planned |
 | 21 | Page transitions lack spatial continuity | Medium | Sprint 4 | Smooth frequency-accented wave wipe transition between routes | ⏳ Planned |
 | 22 | Reduced-motion needs verified proof | Medium | Sprint 4 | Automated test verification and documented reduced-motion snapshot | ⏳ Planned |
@@ -64,10 +64,10 @@ The "match by emotional state / frequency / vibe" landscape contains notable pre
 ### Group D: Simulation & "Living Room" Realism
 | # | Issue / Gap | Severity | Sprint | Proposed Resolution | Status |
 |---|-------------|----------|--------|---------------------|:------:|
-| 24 | Message content quality varies in pools | High | Sprint 2 | Expand & curate deeply authentic human message pools across all 8 frequencies | ⏳ Planned |
-| 25 | Participant presence fluctuation weak | High | Sprint 2 | Strangers organically fade/brighten as attention shifts between reading & typing | ⏳ Planned |
-| 26 | Room feels empty in first 10-15 seconds | Medium | Sprint 2 | Guaranteed initial conversation spark right after arrival | ⏳ Planned |
-| 27 | No mid-session join/leave events | Medium | Sprint 2 | Rare ambient micro-toasts: "stranger_14 drifted away" / "stranger_31 joined frequency" | ⏳ Planned |
+| 24 | Message content quality varies in pools | High | Sprint 2 | Expand & curate deeply authentic human message pools across all 8 frequencies | ✅ Completed |
+| 25 | Participant presence fluctuation weak | High | Sprint 2 | Strangers organically fade/brighten as attention shifts between reading & typing | ✅ Completed |
+| 26 | Room feels empty in first 10-15 seconds | Medium | Sprint 2 | Guaranteed initial conversation spark right after arrival | ✅ Completed |
+| 27 | No mid-session join/leave events | Medium | Sprint 2 | Rare ambient micro-toasts: "stranger_14 drifted away" / "stranger_31 joined frequency" | ✅ Completed |
 
 ### Group E: UX & Flow Polish
 | # | Issue / Gap | Severity | Sprint | Proposed Resolution | Status |
@@ -122,6 +122,7 @@ graph LR
 | `v1.0.0` | Initial | Scaffolding, circular dial, room simulation, echo modal & wall | Build clean | ✅ Released |
 | `v2.0.0` | 1 to 5 | 39-point V2 elevation: analog sweep, typing indicators, residue halo, demo mode, living ether whispers, canvas weather | OxLint 0 err / Build 1.47s | ✅ Released |
 | `v3.0.0-wip` | Sprint 1 | Radio MHz markings, physical detent click sound, signal strength dBm, reactive drag velocity | OxLint 0 err / Build 1.42s | ✅ Completed |
+| `v3.0.0-wip` | Sprint 2 | Atmospheric canvas in Room, unique stranger signatures, early burst, join/leave events, enriched pools | OxLint 0 err / Build 5.44s | ✅ Completed |
 
 ---
 
