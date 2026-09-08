@@ -1,0 +1,43 @@
+[
+  { "id": "echo_001", "frequencyId": "freq_racing_mind", "text": "you're not the only one awake." },
+  { "id": "echo_002", "frequencyId": "freq_racing_mind", "text": "counted sheep, counted regrets instead." },
+  { "id": "echo_003", "frequencyId": "freq_racing_mind", "text": "3am knows all my secrets." },
+  { "id": "echo_004", "frequencyId": "freq_racing_mind", "text": "the ceiling has heard a lot from me this week." },
+  { "id": "echo_005", "frequencyId": "freq_racing_mind", "text": "morning always comes anyway." },
+
+  { "id": "echo_006", "frequencyId": "freq_new_city", "text": "the second month is harder than the first. it gets easier after." },
+  { "id": "echo_007", "frequencyId": "freq_new_city", "text": "my favorite coffee shop doesn't know my order yet." },
+  { "id": "echo_008", "frequencyId": "freq_new_city", "text": "walked 40 blocks today just to feel something familiar." },
+  { "id": "echo_009", "frequencyId": "freq_new_city", "text": "home is a thing you build, not a place you find." },
+  { "id": "echo_010", "frequencyId": "freq_new_city", "text": "the grocery store felt like an adventure today. small wins." },
+
+  { "id": "echo_011", "frequencyId": "freq_excited_noone", "text": "screamed into a pillow. in the best way." },
+  { "id": "echo_012", "frequencyId": "freq_excited_noone", "text": "carrying good news is its own kind of heavy." },
+  { "id": "echo_013", "frequencyId": "freq_excited_noone", "text": "told my dog. she was supportive." },
+  { "id": "echo_014", "frequencyId": "freq_excited_noone", "text": "this is gonna change everything and nobody knows yet." },
+
+  { "id": "echo_015", "frequencyId": "freq_post_breakup", "text": "i don't miss them. i miss who i was with them." },
+  { "id": "echo_016", "frequencyId": "freq_post_breakup", "text": "the playlist sounds different now." },
+  { "id": "echo_017", "frequencyId": "freq_post_breakup", "text": "deleted the photos. kept the lessons." },
+  { "id": "echo_018", "frequencyId": "freq_post_breakup", "text": "clarity hits different at 1am." },
+
+  { "id": "echo_019", "frequencyId": "freq_sunday_scaries", "text": "monday hasn't even started and i'm already tired." },
+  { "id": "echo_020", "frequencyId": "freq_sunday_scaries", "text": "sunday evenings are emotional speed bumps." },
+  { "id": "echo_021", "frequencyId": "freq_sunday_scaries", "text": "made a to-do list to feel in control. did not feel in control." },
+  { "id": "echo_022", "frequencyId": "freq_sunday_scaries", "text": "the dread is always worse than the thing." },
+
+  { "id": "echo_023", "frequencyId": "freq_quiet_proud", "text": "nobody clapped. didn't need them to." },
+  { "id": "echo_024", "frequencyId": "freq_quiet_proud", "text": "did the thing i've been avoiding for three weeks." },
+  { "id": "echo_025", "frequencyId": "freq_quiet_proud", "text": "small victory. huge feeling." },
+  { "id": "echo_026", "frequencyId": "freq_quiet_proud", "text": "past me would be impressed." },
+
+  { "id": "echo_027", "frequencyId": "freq_missing_someone", "text": "drafted the text. deleted it. again." },
+  { "id": "echo_028", "frequencyId": "freq_missing_someone", "text": "some people are only yours in memories." },
+  { "id": "echo_029", "frequencyId": "freq_missing_someone", "text": "saw their favorite song on a playlist. skipped it. played it again." },
+  { "id": "echo_030", "frequencyId": "freq_missing_someone", "text": "grief is just love with nowhere to go." },
+
+  { "id": "echo_031", "frequencyId": "freq_fresh_start", "text": "burned the map. building a new one." },
+  { "id": "echo_032", "frequencyId": "freq_fresh_start", "text": "nervous and excited are the same feeling." },
+  { "id": "echo_033", "frequencyId": "freq_fresh_start", "text": "day one, attempt number who-knows. this time feels different." },
+  { "id": "echo_034", "frequencyId": "freq_fresh_start", "text": "the blank page is terrifying and beautiful." }
+]

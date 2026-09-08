@@ -1,0 +1,66 @@
+[
+  {
+    "id": "freq_racing_mind",
+    "label": "Can't sleep, mind's racing",
+    "mood": "restless",
+    "colorAccent": "#7C5CFF",
+    "liveCount": 2847,
+    "description": "For the 2am spirals that won't quiet down."
+  },
+  {
+    "id": "freq_new_city",
+    "label": "New city, no friends yet",
+    "mood": "hopeful-lonely",
+    "colorAccent": "#33E6C9",
+    "liveCount": 412,
+    "description": "You just moved. The apartment's unpacked. The people aren't found yet."
+  },
+  {
+    "id": "freq_excited_noone",
+    "label": "Excited and can't tell anyone",
+    "mood": "electric",
+    "colorAccent": "#FFB020",
+    "liveCount": 1203,
+    "description": "Good news with nowhere to land yet."
+  },
+  {
+    "id": "freq_post_breakup",
+    "label": "Post-breakup clarity",
+    "mood": "bittersweet",
+    "colorAccent": "#FF4FA3",
+    "liveCount": 890,
+    "description": "The sadness faded. Something sharper is left."
+  },
+  {
+    "id": "freq_sunday_scaries",
+    "label": "Sunday scaries hitting early",
+    "mood": "anxious",
+    "colorAccent": "#FF5470",
+    "liveCount": 1567,
+    "description": "Tomorrow is already pressing on tonight."
+  },
+  {
+    "id": "freq_quiet_proud",
+    "label": "Quietly proud of myself today",
+    "mood": "warm",
+    "colorAccent": "#FFD166",
+    "liveCount": 634,
+    "description": "No one noticed but you know what you did."
+  },
+  {
+    "id": "freq_missing_someone",
+    "label": "Missing someone I can't text",
+    "mood": "aching",
+    "colorAccent": "#A78BFA",
+    "liveCount": 1891,
+    "description": "The contact exists. The permission doesn't."
+  },
+  {
+    "id": "freq_fresh_start",
+    "label": "Ready for a fresh start",
+    "mood": "determined",
+    "colorAccent": "#34D399",
+    "liveCount": 723,
+    "description": "Something ended. Something is about to begin."
+  }
+]

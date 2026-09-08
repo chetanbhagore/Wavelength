@@ -1,0 +1,114 @@
+{
+  "participants": [
+    { "id": "p1", "displayName": "stranger_04", "typingSpeedMs": 1400 },
+    { "id": "p2", "displayName": "stranger_11", "typingSpeedMs": 2100 },
+    { "id": "p3", "displayName": "stranger_07", "typingSpeedMs": 1800 },
+    { "id": "p4", "displayName": "stranger_22", "typingSpeedMs": 2500 },
+    { "id": "p5", "displayName": "stranger_15", "typingSpeedMs": 1600 },
+    { "id": "p6", "displayName": "stranger_31", "typingSpeedMs": 2200 },
+    { "id": "p7", "displayName": "stranger_09", "typingSpeedMs": 1900 },
+    { "id": "p8", "displayName": "stranger_18", "typingSpeedMs": 2400 },
+    { "id": "p9", "displayName": "stranger_02", "typingSpeedMs": 1500 },
+    { "id": "p10", "displayName": "stranger_26", "typingSpeedMs": 2000 },
+    { "id": "p11", "displayName": "stranger_13", "typingSpeedMs": 1700 },
+    { "id": "p12", "displayName": "stranger_30", "typingSpeedMs": 2300 }
+  ],
+  "messagesByFrequency": {
+    "freq_racing_mind": [
+      "anyone else just staring at the ceiling",
+      "literally. 2am thoughts hit different",
+      "my brain picks NOW to replay every awkward thing from 2019",
+      "why does the anxiety always wait until bedtime",
+      "i've been trying to sleep for two hours",
+      "just made a mental to-do list for tomorrow at 3am. super productive",
+      "the silence is so loud tonight",
+      "does anyone else's brain just... not have an off switch",
+      "scrolling isn't helping but here i am",
+      "tomorrow me is going to be so mad at tonight me",
+      "i keep thinking about that conversation from lunch",
+      "it's the quiet that gets me",
+      "told myself i'd sleep early tonight. narrator: she did not",
+      "breathing exercises work until they don't",
+      "at least we're all awake together"
+    ],
+    "freq_new_city": [
+      "anyone know where to find actual good coffee here",
+      "the hardest part is eating dinner alone every night",
+      "i know three people and one of them is my landlord",
+      "moved here for the opportunity. stayed in bed all weekend",
+      "does it get easier? genuinely asking",
+      "made eye contact with someone at the store. closest thing to a friend this week",
+      "my old city didn't appreciate me. this one doesn't know me yet",
+      "the map app is my best friend right now",
+      "i miss knowing which streets to avoid",
+      "started going to the same bar just so someone recognizes me"
+    ],
+    "freq_excited_noone": [
+      "I LITERALLY CANNOT CONTAIN THIS",
+      "ok so something happened today and i need to tell someone",
+      "i know i'm being vague but TRUST ME this is big",
+      "the urge to post is strong but the surprise must be maintained",
+      "my face hurts from smiling and hiding it",
+      "anyone else holding onto news that's about to change everything",
+      "i want to scream it from a rooftop",
+      "keeping secrets is exhausting when they're GOOD secrets",
+      "tomorrow everyone will know. tonight it's just us",
+      "this is the best kind of restless"
+    ],
+    "freq_post_breakup": [
+      "the weird part is i feel... lighter?",
+      "rearranged my whole room today. symbolic or whatever",
+      "unlearning someone is such a strange process",
+      "it's the small habits that catch you off guard",
+      "i reached for my phone to text them. old muscle memory",
+      "listening to my own music again. forgot i had taste",
+      "the hardest part isn't missing them. it's not missing them",
+      "everyone asks if i'm okay. i am. that's the confusing part",
+      "freedom tastes different than i expected"
+    ],
+    "freq_sunday_scaries": [
+      "it's not even 6pm and i'm already dreading tomorrow",
+      "the sunday scaries are a medical condition at this point",
+      "trying to enjoy today but tomorrow keeps interrupting",
+      "anyone else meal-prepping anxiety rn",
+      "the inbox will still be there in the morning",
+      "i preemptively set three alarms and it's still sunday",
+      "the golden hour on sunday is actually a warning light",
+      "already rehearsing conversations i'll probably never have",
+      "vibes were immaculate until i remembered what day it is"
+    ],
+    "freq_quiet_proud": [
+      "finally said the thing i've been holding back for weeks",
+      "it's small but i finished something today",
+      "nobody noticed but that's okay",
+      "did something today that scared me. didn't die",
+      "i'm learning to celebrate the invisible wins",
+      "past me would be so confused and so proud",
+      "it's weird how the biggest changes feel quiet",
+      "i made a hard choice today and it was the right one",
+      "went for a run. voluntarily. who am i"
+    ],
+    "freq_missing_someone": [
+      "the worst part is they'd understand exactly how i feel right now",
+      "saw something today that reminded me of them",
+      "you'd think it gets easier. it does. then it doesn't",
+      "i keep almost calling",
+      "some people leave and take a whole season with them",
+      "the space they left is so specific",
+      "missing someone you chose to let go of is its own thing",
+      "they'd laugh at this. i almost sent it",
+      "grief isn't always about death. sometimes people just leave"
+    ],
+    "freq_fresh_start": [
+      "today feels different. in a good way",
+      "deleted half my apps this morning. breathing room",
+      "i don't know where this goes but i know where it doesn't go anymore",
+      "anyone else feel that nervous-excited butterfly thing",
+      "clean slate energy is real",
+      "wrote down three goals. already did one",
+      "the old version of me served a purpose. new version starts now",
+      "it's scary and exciting and i can't tell the difference",
+      "everything is uncertain and somehow that feels right"
+    ]
+  }
+}
