@@ -30,10 +30,50 @@ export default function AmbientWaveformBackground({
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }, []);
 
+  const mouseRef = useRef({ x: -1000, y: -1000, targetX: -1000, targetY: -1000, active: false });
+  const trailParticlesRef = useRef([]);
+
   // Surge energy on frequency or mood shift (Sprint 1 Issue #6)
   useEffect(() => {
     energyRef.current = 2.0; // Temporary swell on tuning
   }, [mood, colorAccent]);
+
+  // Pointer movement listener for magnetic ether interaction
+  useEffect(() => {
+    const handlePointerMove = (e) => {
+      mouseRef.current.targetX = e.clientX;
+      mouseRef.current.targetY = e.clientY;
+      mouseRef.current.active = true;
+
+      // Emit 1-2 ether wake particles on cursor movement
+      if (Math.random() < 0.6) {
+        trailParticlesRef.current.push({
+          x: e.clientX + (Math.random() - 0.5) * 12,
+          y: e.clientY + (Math.random() - 0.5) * 12,
+          vx: (Math.random() - 0.5) * 1.2,
+          vy: -0.4 - Math.random() * 0.8,
+          life: 1.0,
+          maxLife: 1.0,
+          size: 1.0 + Math.random() * 2.2,
+        });
+        if (trailParticlesRef.current.length > 45) {
+          trailParticlesRef.current.shift();
+        }
+      }
+    };
+
+    const handlePointerLeave = () => {
+      mouseRef.current.active = false;
+    };
+
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
+    window.addEventListener('pointerleave', handlePointerLeave);
+
+    return () => {
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerleave', handlePointerLeave);
+    };
+  }, []);
 
   // Initialize or re-seed particles when mood changes
   useEffect(() => {
@@ -84,6 +124,11 @@ export default function AmbientWaveformBackground({
       if (!startTimeRef.current) startTimeRef.current = timestamp;
       const elapsed = (timestamp - startTimeRef.current) / 1000;
 
+      // Smooth mouse easing
+      const mouse = mouseRef.current;
+      mouse.x += (mouse.targetX - mouse.x) * 0.14;
+      mouse.y += (mouse.targetY - mouse.y) * 0.14;
+
       // Smooth decay of tuning surge toward baseline 1.0
       energyRef.current += (1.0 - energyRef.current) * 0.035;
       const currentEnergy = energyRef.current;
@@ -93,17 +138,48 @@ export default function AmbientWaveformBackground({
 
       ctx.clearRect(0, 0, w, h);
 
-      // 1. Draw mood-tuned layered waveforms reacting to tuning energy
+      const { r, g, b } = parseHexColor(colorAccent);
+
+      // 0. Magnetic Bioluminescent Cursor Glow
+      if (mouse.active && mouse.x > 0 && mouse.y > 0) {
+        const glowRadius = 180;
+        const radialGrad = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, glowRadius);
+        radialGrad.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0.14)`);
+        radialGrad.addColorStop(0.5, `rgba(${r}, ${g}, ${b}, 0.04)`);
+        radialGrad.addColorStop(1, 'transparent');
+        ctx.fillStyle = radialGrad;
+        ctx.fillRect(mouse.x - glowRadius, mouse.y - glowRadius, glowRadius * 2, glowRadius * 2);
+      }
+
+      // 1. Draw mood-tuned layered waveforms reacting to tuning energy & mouse
       const baseWaveSpeed = mood === 'electric' ? 1.2 : mood === 'aching' ? 0.45 : 0.75;
       const waveSpeed = baseWaveSpeed * (0.8 + currentEnergy * 0.2);
       const ampBoost = 0.75 + currentEnergy * 0.25;
 
-      drawWave(ctx, w, h, elapsed * waveSpeed, 0.32, 0.11 * ampBoost, colorAccent, 0.20);
-      drawWave(ctx, w, h, elapsed * waveSpeed, 0.52, 0.08 * ampBoost, colorAccent, 0.14);
-      drawWave(ctx, w, h, elapsed * waveSpeed, 0.74, 0.05 * ampBoost, colorAccent, 0.09);
+      drawWave(ctx, w, h, elapsed * waveSpeed, 0.32, 0.11 * ampBoost, colorAccent, 0.20, mouse);
+      drawWave(ctx, w, h, elapsed * waveSpeed, 0.52, 0.08 * ampBoost, colorAccent, 0.14, mouse);
+      drawWave(ctx, w, h, elapsed * waveSpeed, 0.74, 0.05 * ampBoost, colorAccent, 0.09, mouse);
 
-      // 2. Draw mood-specific atmospheric weather & physics
-      const { r, g, b } = parseHexColor(colorAccent);
+      // 2. Draw cursor trail wake particles
+      const trail = trailParticlesRef.current;
+      for (let i = trail.length - 1; i >= 0; i--) {
+        const tp = trail[i];
+        tp.x += tp.vx;
+        tp.y += tp.vy;
+        tp.life -= 0.024;
+        if (tp.life <= 0) {
+          trail.splice(i, 1);
+          continue;
+        }
+        const alpha = (tp.life / tp.maxLife) * 0.55;
+        ctx.beginPath();
+        ctx.arc(tp.x, tp.y, tp.size * (tp.life / tp.maxLife), 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        ctx.shadowColor = colorAccent;
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
       const particles = particlesRef.current;
 
       for (let i = 0; i < particles.length; i++) {
@@ -256,7 +332,7 @@ function parseHexColor(hex) {
   };
 }
 
-function drawWave(ctx, w, h, time, yOffset, amplitude, color, alpha) {
+function drawWave(ctx, w, h, time, yOffset, amplitude, color, alpha, mouse = null) {
   ctx.beginPath();
   ctx.moveTo(0, h);
 
@@ -266,10 +342,20 @@ function drawWave(ctx, w, h, time, yOffset, amplitude, color, alpha) {
   const speed = 0.75;
 
   for (let x = 0; x <= w; x += 3) {
+    let mouseOffset = 0;
+    if (mouse && mouse.active && mouse.x > 0) {
+      const dist = Math.abs(x - mouse.x);
+      if (dist < 180) {
+        const influence = Math.cos((dist / 180) * (Math.PI / 2));
+        mouseOffset = Math.sin(dist * 0.04 - time * 3.5) * (amp * 0.45) * influence;
+      }
+    }
+
     const y = baseY +
       Math.sin(x * frequency + time * speed) * amp +
       Math.sin(x * frequency * 1.6 + time * speed * 0.7) * amp * 0.45 +
-      Math.sin(x * frequency * 0.6 + time * speed * 1.2) * amp * 0.25;
+      Math.sin(x * frequency * 0.6 + time * speed * 1.2) * amp * 0.25 +
+      mouseOffset;
     ctx.lineTo(x, y);
   }
 

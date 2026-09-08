@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import seedEchoes from '../data/seedEchoes.json';
+import { ambientDrone } from '../utils/ambientAudio';
 
 // Pre-defined spatial orbital slots around the screen so whispers never collide with the center dial
 const WHISPER_SLOTS = [
@@ -12,9 +13,9 @@ const WHISPER_SLOTS = [
 
 /**
  * FloatingWhispers — Ethereal fragments of anonymous thoughts drifting across the screen.
- * Filtered by the active frequency, giving a glimpse into the emotional atmosphere.
+ * Interactive: Clicking any whisper directly tunes the user into that frequency!
  */
-export default function FloatingWhispers({ frequency }) {
+export default function FloatingWhispers({ frequency, onTuneIn }) {
   const [hoveredId, setHoveredId] = useState(null);
 
   // Get matching whispers for the active frequency
@@ -93,14 +94,15 @@ export default function FloatingWhispers({ frequency }) {
                 key={item.echoId}
                 initial={{ opacity: 0, scale: 0.9, y: 15 }}
                 animate={{
-                  opacity: isHovered ? 0.95 : depthStyles.baseOpacity,
-                  scale: isHovered ? 1.05 : 1,
+                  opacity: isHovered ? 0.98 : depthStyles.baseOpacity,
+                  scale: isHovered ? 1.06 : 1,
                   y: isHovered ? 0 : depthStyles.driftY,
                   x: isHovered ? 0 : depthStyles.driftX,
                 }}
+                whileTap={{ scale: 0.96 }}
                 transition={{
-                  opacity: { duration: 0.3 },
-                  scale: { duration: 0.3 },
+                  opacity: { duration: 0.25 },
+                  scale: { duration: 0.25 },
                   y: {
                     duration: depthStyles.duration,
                     repeat: isHovered ? 0 : Infinity,
@@ -114,25 +116,30 @@ export default function FloatingWhispers({ frequency }) {
                 }}
                 onMouseEnter={() => setHoveredId(item.echoId)}
                 onMouseLeave={() => setHoveredId(null)}
+                onClick={() => {
+                  ambientDrone.playLockChime(528);
+                  onTuneIn?.(frequency);
+                }}
+                title="Click to tune into this stranger frequency"
                 style={{
                   position: 'absolute',
                   top: item.top,
                   bottom: item.bottom,
                   left: item.left,
                   right: item.right,
-                  maxWidth: '220px',
-                  padding: '8px 14px',
+                  maxWidth: '230px',
+                  padding: '10px 15px',
                   borderRadius: '16px',
                   background: isHovered
-                    ? 'rgba(23, 27, 39, 0.85)'
+                    ? 'rgba(23, 27, 42, 0.92)'
                     : 'rgba(23, 27, 39, 0.35)',
                   border: isHovered
-                    ? `1px solid ${frequency.colorAccent}77`
-                    : '1px solid rgba(255, 255, 255, 0.05)',
+                    ? `1px solid ${frequency.colorAccent}`
+                    : '1px solid rgba(255, 255, 255, 0.06)',
                   boxShadow: isHovered
-                    ? `0 8px 30px rgba(0,0,0,0.5), 0 0 20px ${frequency.colorAccent}33`
+                    ? `0 12px 35px rgba(0,0,0,0.65), 0 0 24px ${frequency.colorAccent}44`
                     : 'none',
-                  backdropFilter: isHovered ? 'blur(12px)' : 'blur(4px)',
+                  backdropFilter: isHovered ? 'blur(16px)' : 'blur(4px)',
                   filter: isHovered ? 'none' : `blur(${depthStyles.blur})`,
                   color: isHovered ? '#FFFFFF' : 'var(--color-text-secondary)',
                   fontFamily: 'var(--font-display)',
@@ -140,35 +147,51 @@ export default function FloatingWhispers({ frequency }) {
                   fontStyle: 'italic',
                   letterSpacing: '0.02em',
                   lineHeight: 1.45,
-                  cursor: 'default',
+                  cursor: 'pointer',
                   pointerEvents: 'auto',
                   userSelect: 'none',
-                  transition: 'background 0.3s, border 0.3s, box-shadow 0.3s, filter 0.3s',
+                  transition: 'background 0.25s, border 0.25s, box-shadow 0.25s, filter 0.25s, color 0.25s',
                 }}
               >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '3px' }}>
-                  <span
-                    style={{
-                      width: '4px',
-                      height: '4px',
-                      borderRadius: '50%',
-                      background: frequency.colorAccent,
-                      opacity: isHovered ? 1 : 0.6,
-                      boxShadow: `0 0 6px ${frequency.colorAccent}`,
-                    }}
-                  />
-                  <span
-                    style={{
-                      fontFamily: 'var(--font-mono)',
-                      fontSize: '9px',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.08em',
-                      opacity: 0.65,
-                      fontStyle: 'normal',
-                    }}
-                  >
-                    whisper in ether
-                  </span>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '6px', marginBottom: '4px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    <span
+                      style={{
+                        width: '4px',
+                        height: '4px',
+                        borderRadius: '50%',
+                        background: frequency.colorAccent,
+                        opacity: isHovered ? 1 : 0.6,
+                        boxShadow: `0 0 6px ${frequency.colorAccent}`,
+                      }}
+                    />
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '9px',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.08em',
+                        opacity: 0.75,
+                        fontStyle: 'normal',
+                      }}
+                    >
+                      whisper in ether
+                    </span>
+                  </div>
+
+                  {isHovered && (
+                    <span
+                      style={{
+                        fontFamily: 'var(--font-mono)',
+                        fontSize: '8.5px',
+                        color: frequency.colorAccent,
+                        fontStyle: 'normal',
+                        letterSpacing: '0.04em',
+                      }}
+                    >
+                      tune in →
+                    </span>
+                  )}
                 </div>
                 "{item.text}"
               </motion.div>

@@ -114,6 +114,41 @@ export default function FrequencyDial({
           pointerEvents: 'none',
         }} />
 
+        {/* Dynamic Radio Equalizer Orbit Ring */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            inset: '-10px',
+            borderRadius: '50%',
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        >
+          {Array.from({ length: 24 }).map((_, idx) => {
+            const angle = (idx * 360) / 24;
+            return (
+              <div
+                key={idx}
+                style={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  width: '2px',
+                  height: `${5 + ((idx * 5) % 8)}px`,
+                  background: currentFrequency.colorAccent,
+                  opacity: 0.35 + ((idx % 3) * 0.15),
+                  transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-54%)`,
+                  transformOrigin: 'center center',
+                  borderRadius: '1px',
+                  boxShadow: `0 0 6px ${currentFrequency.colorAccent}66`,
+                  animation: `dial-eq-pulse ${0.9 + ((idx % 4) * 0.25)}s ease-in-out infinite alternate ${idx * 0.05}s`,
+                }}
+              />
+            );
+          })}
+        </div>
+
         {/* Outer glow ring */}
         <motion.div
           animate={{ rotate: rotation }}

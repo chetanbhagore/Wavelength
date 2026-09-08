@@ -7,6 +7,7 @@ import FrequencySpectrumRibbon from '../components/FrequencySpectrumRibbon';
 import FrequencyReadout from '../components/FrequencyReadout';
 import TuneInButton from '../components/TuneInButton';
 import AmbientAudioToggle from '../components/AmbientAudioToggle';
+import ConstellationRadar from '../components/ConstellationRadar';
 import { useDial } from '../hooks/useDial';
 
 /**
@@ -80,9 +81,9 @@ export default function TunerScreen({
       />
 
       {/* 2. Floating Ethereal Whispers drifting across the ether */}
-      <FloatingWhispers frequency={currentFrequency} />
+      <FloatingWhispers frequency={currentFrequency} onTuneIn={onTuneIn} />
 
-      {/* Header Bar: Manifesto Subtitle & Ambient Audio Drone Toggle */}
+      {/* Header Bar: Manifesto Subtitle & Controls */}
       <div style={{
         display: 'flex',
         flexDirection: 'column',
@@ -108,7 +109,11 @@ export default function TunerScreen({
           not who you follow. who you're in sync with, right now.
         </motion.p>
 
-        <AmbientAudioToggle frequency={currentFrequency} />
+        {/* Ambient Audio Toggle & Live Constellation Radar */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <AmbientAudioToggle frequency={currentFrequency} />
+          <ConstellationRadar activeFrequency={currentFrequency} />
+        </div>
       </div>
 
       {/* 3. Main Circular Dial with Auto-Seek */}
