@@ -22,6 +22,8 @@ export default function App() {
 
   const [demoMode, setDemoMode] = useState(true);
   const [selectedFrequency, setSelectedFrequency] = useState(null);
+  const [lastVisitedFrequencyId, setLastVisitedFrequencyId] = useLocalStorage('wavelength_last_visited_id', null);
+  const [frequencyHistory, setFrequencyHistory] = useLocalStorage('wavelength_frequency_history', {});
   const [, setMyEchoes] = useLocalStorage('myEchoHistory', []);
 
   const handleToggleDemoMode = useCallback(() => {
@@ -36,8 +38,16 @@ export default function App() {
   // ─── Tuner → Sync ───
   const handleTuneIn = useCallback((frequency) => {
     setSelectedFrequency(frequency);
+    setLastVisitedFrequencyId(frequency.id);
+    setFrequencyHistory((prev) => ({
+      ...prev,
+      [frequency.id]: {
+        count: (prev[frequency.id]?.count || 0) + 1,
+        lastVisited: Date.now(),
+      },
+    }));
     setAppState('syncing');
-  }, []);
+  }, [setFrequencyHistory, setLastVisitedFrequencyId]);
 
   // ─── Sync → Room ───
   const handleSyncComplete = useCallback(() => {
@@ -88,7 +98,11 @@ export default function App() {
 
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         {appState === 'tuner' && (
-          <TunerScreen onTuneIn={handleTuneIn} />
+          <TunerScreen
+            onTuneIn={handleTuneIn}
+            lastVisitedFrequencyId={lastVisitedFrequencyId}
+            frequencyHistory={frequencyHistory}
+          />
         )}
 
         {appState === 'room' && selectedFrequency && (
@@ -106,6 +120,7 @@ export default function App() {
           />
         )}
       </main>
+
 
       {/* Overlays */}
       <AnimatePresence>

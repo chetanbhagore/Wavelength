@@ -1,21 +1,29 @@
 import { motion } from 'framer-motion';
 import { useCallback, useRef } from 'react';
+import frequencies from '../data/frequencies.json';
 
 /**
- * Circular frequency dial control.
- * Drag/swipe/arrow-key operable with spring physics.
- * Implements role="slider" with aria-valuetext.
+ * Circular frequency dial control with analog tuning aesthetics:
+ * - 5px active tick marks with rounded caps and luminous glow trails
+ * - 12 o'clock tuning needle and center-orb tactile snap feedback
+ * - Presence residue ghost halo on recently vacated frequency (Issue #3)
+ * - Role="slider" with aria-valuetext and touch/drag controls
  */
 export default function FrequencyDial({
   currentIndex,
   totalFrequencies,
   currentFrequency,
+  lastVisitedFrequencyId,
   onNext,
   onPrev,
   onKeyDown,
 }) {
   const dialRef = useRef(null);
   const rotation = -(currentIndex * (360 / totalFrequencies));
+
+  const lastVisitedIndex = lastVisitedFrequencyId
+    ? frequencies.findIndex((f) => f.id === lastVisitedFrequencyId)
+    : -1;
 
   const handleDragEnd = useCallback((event, info) => {
     if (info.offset.x > 50 || info.offset.y < -50) {
@@ -47,7 +55,7 @@ export default function FrequencyDial({
         onWheel={handleWheel}
         drag
         dragConstraints={{ top: 0, bottom: 0, left: 0, right: 0 }}
-        dragElastic={0.1}
+        dragElastic={0.2}
         onDragEnd={handleDragEnd}
         style={{
           width: 'clamp(220px, 55vw, 320px)',
@@ -93,6 +101,7 @@ export default function FrequencyDial({
           {Array.from({ length: totalFrequencies }).map((_, i) => {
             const angle = (i * 360) / totalFrequencies - 90;
             const isActive = i === currentIndex;
+            const isResidue = i === lastVisitedIndex && !isActive;
             const outerR = 48;
 
             return (
@@ -102,21 +111,29 @@ export default function FrequencyDial({
                   position: 'absolute',
                   left: '50%',
                   top: '50%',
-                  width: isActive ? '5px' : '3px',
-                  height: isActive ? '18px' : '9px',
+                  width: isActive ? '5px' : isResidue ? '4px' : '3px',
+                  height: isActive ? '18px' : isResidue ? '14px' : '9px',
                   borderRadius: '3px',
-                  background: isActive ? currentFrequency.colorAccent : 'var(--color-text-secondary)',
-                  opacity: isActive ? 1 : 0.45,
+                  background: isActive
+                    ? currentFrequency.colorAccent
+                    : isResidue
+                      ? 'var(--color-gradient-start)'
+                      : 'var(--color-text-secondary)',
+                  opacity: isActive ? 1 : isResidue ? 0.9 : 0.45,
                   transform: `translate(-50%, -50%) rotate(${angle + 90}deg) translateY(-${outerR}%)`,
                   transformOrigin: 'center center',
                   transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
                   boxShadow: isActive
                     ? `0 0 16px ${currentFrequency.colorAccent}, 0 0 6px #fff`
-                    : 'none',
+                    : isResidue
+                      ? '0 0 12px rgba(124, 92, 255, 0.9), 0 0 4px #00F0FF'
+                      : 'none',
                 }}
+                title={isResidue ? 'Presence residue: you were recently tuned here' : undefined}
               />
             );
           })}
+
 
           {/* Center indicator & Haptic Light Flash */}
           <div style={{

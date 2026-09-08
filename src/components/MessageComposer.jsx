@@ -1,11 +1,16 @@
 import { useState, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Send } from 'lucide-react';
 
 /**
- * Message input composer pinned to bottom with safe-area awareness.
+ * Message input composer pinned to bottom with safe-area awareness:
+ * - Unobtrusive character countdown that fades in only when within 30 chars of limit (Issue #28).
  */
 export default function MessageComposer({ onSend, disabled }) {
   const [text, setText] = useState('');
+  const MAX_CHARS = 200;
+  const charsLeft = MAX_CHARS - text.length;
+  const showCounter = text.length >= 170;
 
   const handleSubmit = useCallback((e) => {
     e.preventDefault();
@@ -25,36 +30,66 @@ export default function MessageComposer({ onSend, disabled }) {
         padding: '12px 16px',
         paddingBottom: 'max(12px, env(safe-area-inset-bottom, 12px))',
         borderTop: '1px solid var(--color-border)',
-        background: 'var(--color-surface)',
+        background: 'rgba(10, 8, 18, 0.9)',
+        backdropFilter: 'blur(16px)',
+        position: 'relative',
+        zIndex: 10,
       }}
     >
-      <input
-        type="text"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="type into the frequency..."
-        disabled={disabled}
-        maxLength={200}
-        aria-label="Type a message"
-        style={{
-          flex: 1,
-          padding: '10px 16px',
-          borderRadius: 'var(--radius-pill)',
-          border: '1px solid var(--color-border)',
-          background: 'var(--color-surface-2)',
-          color: 'var(--color-text-primary)',
-          fontFamily: 'var(--font-body)',
-          fontSize: '15px',
-          outline: 'none',
-          transition: 'border-color 0.2s ease',
-        }}
-        onFocus={(e) => {
-          e.target.style.borderColor = 'var(--color-gradient-start)';
-        }}
-        onBlur={(e) => {
-          e.target.style.borderColor = 'var(--color-border)';
-        }}
-      />
+      <div style={{ position: 'relative', flex: 1, display: 'flex', alignItems: 'center' }}>
+        <input
+          type="text"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="type into the frequency..."
+          disabled={disabled}
+          maxLength={MAX_CHARS}
+          aria-label="Type a message"
+          style={{
+            width: '100%',
+            padding: '10px 16px',
+            paddingRight: showCounter ? '68px' : '16px',
+            borderRadius: 'var(--radius-pill)',
+            border: '1px solid var(--color-border)',
+            background: 'var(--color-surface-2)',
+            color: 'var(--color-text-primary)',
+            fontFamily: 'var(--font-body)',
+            fontSize: '15px',
+            outline: 'none',
+            transition: 'border-color 0.2s ease, padding-right 0.2s ease',
+          }}
+          onFocus={(e) => {
+            e.target.style.borderColor = 'var(--color-gradient-start)';
+          }}
+          onBlur={(e) => {
+            e.target.style.borderColor = 'var(--color-border)';
+          }}
+        />
+
+        {/* Minimal countdown cue (Issue #28) */}
+        <AnimatePresence>
+          {showCounter && (
+            <motion.span
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.85 }}
+              transition={{ duration: 0.2 }}
+              style={{
+                position: 'absolute',
+                right: '12px',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
+                fontWeight: 600,
+                color: charsLeft <= 10 ? '#FF5470' : '#FFB020',
+                pointerEvents: 'none',
+                userSelect: 'none',
+              }}
+            >
+              {charsLeft}
+            </motion.span>
+          )}
+        </AnimatePresence>
+      </div>
 
       <button
         type="submit"
@@ -83,3 +118,4 @@ export default function MessageComposer({ onSend, disabled }) {
     </form>
   );
 }
+

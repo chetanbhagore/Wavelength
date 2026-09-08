@@ -7,9 +7,13 @@ import { useDial } from '../hooks/useDial';
 
 /**
  * Tuner Screen — the entry point and only persistent "home."
- * No login, no profile. Just a dial.
+ * No login, no profile. Just an analog dial with presence residue.
  */
-export default function TunerScreen({ onTuneIn }) {
+export default function TunerScreen({
+  onTuneIn,
+  lastVisitedFrequencyId,
+  frequencyHistory = {},
+}) {
   const {
     currentIndex,
     currentFrequency,
@@ -18,6 +22,8 @@ export default function TunerScreen({ onTuneIn }) {
     goPrev,
     handleKeyDown,
   } = useDial();
+
+  const currentVisitInfo = frequencyHistory[currentFrequency.id] || null;
 
   return (
     <div style={{
@@ -58,14 +64,19 @@ export default function TunerScreen({ onTuneIn }) {
         currentIndex={currentIndex}
         totalFrequencies={totalFrequencies}
         currentFrequency={currentFrequency}
+        lastVisitedFrequencyId={lastVisitedFrequencyId}
         onNext={goNext}
         onPrev={goPrev}
         onKeyDown={handleKeyDown}
       />
 
-      <FrequencyReadout frequency={currentFrequency} />
+      <FrequencyReadout
+        frequency={currentFrequency}
+        visitInfo={currentVisitInfo}
+      />
 
       <TuneInButton onClick={() => onTuneIn(currentFrequency)} />
     </div>
   );
 }
+
