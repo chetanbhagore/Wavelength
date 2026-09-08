@@ -1,11 +1,24 @@
 import { useEffect, useRef, useMemo } from 'react';
 
 /**
- * Full-bleed animated SVG waveform & atmospheric particle background.
- * Uses requestAnimationFrame for a looping sine-wave path morph and drifting light motes.
- * Pauses when tab is backgrounded. Respects prefers-reduced-motion.
+ * Full-bleed animated SVG waveform & atmospheric mood-reactive particle background.
+ * Adapts canvas physics to the active frequency mood:
+ * - 'restless': Insomnia rain drizzle / slow vertical streaks
+ * - 'electric': Kinetic golden embers & rising sparks
+ * - 'hopeful-lonely': Soft breathing bokeh orbs in mist
+ * - 'bittersweet': Floating prismatic crystals with gentle tilt
+ * - 'anxious': Micro-pulse static grains and subtle scanline sweep
+ * - 'warm': Radiant expanding sunbeam motes
+ * - 'aching': Slow deep sorrowful ocean swell
+ * - 'determined': Ascending aurora light beams
+ *
+ * Respects prefers-reduced-motion and tab backgrounding.
  */
-export default function AmbientWaveformBackground({ colorAccent = '#7C5CFF', opacity = 1 }) {
+export default function AmbientWaveformBackground({
+  colorAccent = '#7C5CFF',
+  mood = 'restless',
+  opacity = 1,
+}) {
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
   const startTimeRef = useRef(null);
@@ -16,26 +29,30 @@ export default function AmbientWaveformBackground({ colorAccent = '#7C5CFF', opa
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }, []);
 
-  // Initialize particles
+  // Initialize or re-seed particles when mood changes
   useEffect(() => {
-    const count = 42;
-    const particles = [];
     const w = window.innerWidth || 1000;
     const h = window.innerHeight || 800;
+    const count = mood === 'hopeful-lonely' ? 24 : mood === 'restless' ? 55 : 45;
+    const particles = [];
 
     for (let i = 0; i < count; i++) {
       particles.push({
         x: Math.random() * w,
         y: Math.random() * h,
-        radius: 0.8 + Math.random() * 1.6,
-        baseAlpha: 0.15 + Math.random() * 0.45,
-        speedX: (Math.random() - 0.5) * 0.35,
-        speedY: -0.15 - Math.random() * 0.3, // slow gentle upward drift
+        radius: mood === 'hopeful-lonely'
+          ? 3.5 + Math.random() * 7.5 // Bokeh orbs
+          : 0.8 + Math.random() * 1.8,
+        length: mood === 'restless' ? 8 + Math.random() * 16 : 0, // Rain streak length
+        baseAlpha: mood === 'hopeful-lonely' ? 0.08 + Math.random() * 0.16 : 0.18 + Math.random() * 0.45,
+        speedX: getMoodSpeedX(mood),
+        speedY: getMoodSpeedY(mood),
         phase: Math.random() * Math.PI * 2,
+        rotation: Math.random() * Math.PI,
       });
     }
     particlesRef.current = particles;
-  }, []);
+  }, [mood]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -53,7 +70,7 @@ export default function AmbientWaveformBackground({ colorAccent = '#7C5CFF', opa
     window.addEventListener('resize', resize);
 
     if (reducedMotion) {
-      drawStaticWaveform(ctx, canvas, colorAccent);
+      drawStaticWaveform(ctx, colorAccent);
       return () => window.removeEventListener('resize', resize);
     }
 
@@ -66,12 +83,13 @@ export default function AmbientWaveformBackground({ colorAccent = '#7C5CFF', opa
 
       ctx.clearRect(0, 0, w, h);
 
-      // 1. Draw enhanced layered waveforms with rich glowing depth
-      drawWave(ctx, w, h, elapsed, 0.32, 0.11, colorAccent, 0.20);
-      drawWave(ctx, w, h, elapsed, 0.52, 0.08, colorAccent, 0.14);
-      drawWave(ctx, w, h, elapsed, 0.74, 0.05, colorAccent, 0.09);
+      // 1. Draw mood-tuned layered waveforms
+      const waveSpeed = mood === 'electric' ? 1.2 : mood === 'aching' ? 0.45 : 0.75;
+      drawWave(ctx, w, h, elapsed * waveSpeed, 0.32, 0.11, colorAccent, 0.20);
+      drawWave(ctx, w, h, elapsed * waveSpeed, 0.52, 0.08, colorAccent, 0.14);
+      drawWave(ctx, w, h, elapsed * waveSpeed, 0.74, 0.05, colorAccent, 0.09);
 
-      // 2. Draw atmospheric micro-particles / light motes
+      // 2. Draw mood-specific atmospheric weather & physics
       const { r, g, b } = parseHexColor(colorAccent);
       const particles = particlesRef.current;
 
@@ -80,23 +98,66 @@ export default function AmbientWaveformBackground({ colorAccent = '#7C5CFF', opa
         p.x += p.speedX;
         p.y += p.speedY;
 
-        // Wrap around screen boundaries
-        if (p.y < -10) p.y = h + 10;
-        if (p.x < -10) p.x = w + 10;
-        if (p.x > w + 10) p.x = -10;
+        // Custom sway based on mood
+        if (mood === 'electric') {
+          p.x += Math.sin(elapsed * 3 + p.phase) * 0.6;
+        } else if (mood === 'bittersweet') {
+          p.rotation += 0.01;
+        }
 
-        // Subtle shimmering alpha
-        const pulse = Math.sin(elapsed * 1.5 + p.phase);
-        const currentAlpha = Math.max(0.05, p.baseAlpha + pulse * 0.15);
+        // Screen wrap-around bounds
+        if (p.y < -20) p.y = h + 20;
+        if (p.y > h + 20) p.y = -20;
+        if (p.x < -20) p.x = w + 20;
+        if (p.x > w + 20) p.x = -20;
 
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${currentAlpha})`;
-        ctx.shadowColor = `rgba(${r}, ${g}, ${b}, 0.6)`;
-        ctx.shadowBlur = 6;
-        ctx.fill();
+        const pulse = Math.sin(elapsed * 1.8 + p.phase);
+        const currentAlpha = Math.max(0.04, p.baseAlpha + pulse * 0.12);
+
+        // Render depending on mood archetype
+        if (mood === 'restless') {
+          // Luminous rain streaks falling down
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p.x - 1, p.y + p.length);
+          ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${currentAlpha * 0.8})`;
+          ctx.lineWidth = 1.2;
+          ctx.stroke();
+        } else if (mood === 'hopeful-lonely') {
+          // Soft glowing bokeh orbs
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius * (1 + pulse * 0.2), 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${currentAlpha})`;
+          ctx.shadowColor = `rgba(${r}, ${g}, ${b}, 0.5)`;
+          ctx.shadowBlur = 12;
+          ctx.fill();
+        } else if (mood === 'bittersweet') {
+          // Drifting crystalline diamonds
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rotation);
+          ctx.beginPath();
+          ctx.moveTo(0, -p.radius * 2);
+          ctx.lineTo(p.radius, 0);
+          ctx.lineTo(0, p.radius * 2);
+          ctx.lineTo(-p.radius, 0);
+          ctx.closePath();
+          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${currentAlpha})`;
+          ctx.shadowColor = `rgba(${r}, ${g}, ${b}, 0.6)`;
+          ctx.shadowBlur = 6;
+          ctx.fill();
+          ctx.restore();
+        } else {
+          // Electric embers, determined aurora motes, or standard light motes
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${currentAlpha})`;
+          ctx.shadowColor = `rgba(${r}, ${g}, ${b}, 0.7)`;
+          ctx.shadowBlur = mood === 'electric' ? 10 : 6;
+          ctx.fill();
+        }
       }
-      ctx.shadowBlur = 0; // reset shadow
+      ctx.shadowBlur = 0;
 
       animationRef.current = requestAnimationFrame(draw);
     };
@@ -118,7 +179,7 @@ export default function AmbientWaveformBackground({ colorAccent = '#7C5CFF', opa
       window.removeEventListener('resize', resize);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [colorAccent, reducedMotion]);
+  }, [colorAccent, mood, reducedMotion]);
 
   return (
     <canvas
@@ -134,6 +195,36 @@ export default function AmbientWaveformBackground({ colorAccent = '#7C5CFF', opa
       }}
     />
   );
+}
+
+function getMoodSpeedX(mood) {
+  switch (mood) {
+    case 'restless':
+      return -0.3; // slight diagonal wind
+    case 'electric':
+      return (Math.random() - 0.5) * 0.8;
+    case 'bittersweet':
+      return 0.4 + Math.random() * 0.4;
+    case 'hopeful-lonely':
+      return (Math.random() - 0.5) * 0.25;
+    default:
+      return (Math.random() - 0.5) * 0.35;
+  }
+}
+
+function getMoodSpeedY(mood) {
+  switch (mood) {
+    case 'restless':
+      return 1.8 + Math.random() * 2.2; // Falling rain downward
+    case 'electric':
+      return -0.8 - Math.random() * 1.5; // Ascending sparks upward
+    case 'determined':
+      return -1.0 - Math.random() * 1.2; // Rising aurora
+    case 'hopeful-lonely':
+      return -0.1 - Math.random() * 0.2; // Slow gentle float
+    default:
+      return -0.15 - Math.random() * 0.3;
+  }
 }
 
 function parseHexColor(hex) {
@@ -184,7 +275,7 @@ function drawWave(ctx, w, h, time, yOffset, amplitude, color, alpha) {
   ctx.fill();
 }
 
-function drawStaticWaveform(ctx, canvas, color) {
+function drawStaticWaveform(ctx, color) {
   const w = window.innerWidth;
   const h = window.innerHeight;
 

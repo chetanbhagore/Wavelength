@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useState } from 'react';
+import { Compass } from 'lucide-react';
 import frequencies from '../data/frequencies.json';
 
 /**
@@ -32,6 +33,23 @@ export default function FrequencyDial({
       onNext();
     }
   }, [onNext, onPrev]);
+
+  // Auto-scan / seek mechanism across the analog band
+  const [isScanning, setIsScanning] = useState(false);
+
+  const handleAutoScan = useCallback(() => {
+    if (isScanning) return;
+    setIsScanning(true);
+    let stepsLeft = 5 + Math.floor(Math.random() * 4); // 5 to 8 steps
+    const interval = setInterval(() => {
+      onNext();
+      stepsLeft--;
+      if (stepsLeft <= 0) {
+        clearInterval(interval);
+        setIsScanning(false);
+      }
+    }, 170);
+  }, [isScanning, onNext]);
 
   // Touch/wheel handling for precise control
   const handleWheel = useCallback((e) => {
@@ -192,16 +210,58 @@ export default function FrequencyDial({
         </motion.div>
       </motion.div>
 
-      {/* Swipe hint */}
-      <p style={{
-        fontFamily: 'var(--font-body)',
-        fontSize: '12px',
-        color: 'var(--color-text-secondary)',
-        opacity: 0.6,
-        userSelect: 'none',
+      {/* Dial Controls Footer: Swipe hint & Auto-Seek */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        marginTop: '2px',
       }}>
-        ← drag or scroll to change →
-      </p>
+        <p style={{
+          fontFamily: 'var(--font-body)',
+          fontSize: '12px',
+          color: 'var(--color-text-secondary)',
+          opacity: 0.6,
+          userSelect: 'none',
+        }}>
+          ← drag or scroll →
+        </p>
+
+        <span style={{ opacity: 0.25, color: 'var(--color-text-secondary)' }}>•</span>
+
+        <motion.button
+          type="button"
+          onClick={handleAutoScan}
+          disabled={isScanning}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '4px 12px',
+            borderRadius: 'var(--radius-pill)',
+            background: isScanning ? `${currentFrequency.colorAccent}22` : 'rgba(23, 27, 39, 0.6)',
+            border: isScanning ? `1px solid ${currentFrequency.colorAccent}` : '1px solid rgba(255, 255, 255, 0.08)',
+            color: isScanning ? currentFrequency.colorAccent : 'var(--color-text-secondary)',
+            fontFamily: 'var(--font-mono)',
+            fontSize: '11px',
+            cursor: isScanning ? 'wait' : 'pointer',
+            transition: 'all 0.2s ease',
+            outline: 'none',
+          }}
+          title="Auto-scan to a random active frequency"
+        >
+          <motion.span
+            animate={isScanning ? { rotate: 360 } : { rotate: 0 }}
+            transition={isScanning ? { duration: 0.8, repeat: Infinity, ease: 'linear' } : {}}
+            style={{ display: 'flex', alignItems: 'center' }}
+          >
+            <Compass size={12} strokeWidth={2} />
+          </motion.span>
+          <span>{isScanning ? 'Seeking...' : 'Auto-Seek'}</span>
+        </motion.button>
+      </div>
     </div>
   );
 }
