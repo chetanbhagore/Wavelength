@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import AmbientWaveformBackground from '../components/AmbientWaveformBackground';
 import RoomHeader from '../components/RoomHeader';
 import RoomAvatarStack from '../components/RoomAvatarStack';
 import MessageStream from '../components/MessageStream';
@@ -10,7 +11,7 @@ import { useCountdown } from '../hooks/useCountdown';
 
 /**
  * Room Screen — the core synchronous interaction.
- * Ephemeral chat + countdown + simulated participants.
+ * Ephemeral chat + countdown + simulated participants + living atmosphere.
  */
 export default function RoomScreen({ frequency, onRoomEnd, demoMode = true }) {
   const announcerRef = useRef(null);
@@ -40,7 +41,7 @@ export default function RoomScreen({ frequency, onRoomEnd, demoMode = true }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
+      initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
       style={{
@@ -48,11 +49,14 @@ export default function RoomScreen({ frequency, onRoomEnd, demoMode = true }) {
         display: 'flex',
         flexDirection: 'column',
         height: 'calc(100dvh - 60px)',
-        background: 'var(--color-bg)',
+        background: 'radial-gradient(ellipse at 50% 10%, rgba(124, 92, 255, 0.05) 0%, var(--color-bg) 75%)',
         position: 'relative',
         zIndex: 1,
+        overflow: 'hidden',
       }}
     >
+      {/* Continuing ambient waveform backdrop */}
+      <AmbientWaveformBackground colorAccent={frequency.colorAccent} opacity={0.35} />
       {/* Screen reader announcer */}
       <div
         ref={announcerRef}

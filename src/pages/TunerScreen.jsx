@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import AmbientWaveformBackground from '../components/AmbientWaveformBackground';
 import FrequencyDial from '../components/FrequencyDial';
 import FrequencyReadout from '../components/FrequencyReadout';
@@ -25,13 +26,33 @@ export default function TunerScreen({ onTuneIn }) {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      gap: '32px',
+      gap: '28px',
       padding: '24px 16px',
       position: 'relative',
       zIndex: 1,
       minHeight: 'calc(100dvh - 60px)',
     }}>
       <AmbientWaveformBackground colorAccent={currentFrequency.colorAccent} />
+
+      {/* Manifesto Subtitle */}
+      <motion.p
+        initial={{ opacity: 0, y: -4 }}
+        animate={{ opacity: 0.55, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: '13px',
+          letterSpacing: '0.04em',
+          color: 'var(--color-text-secondary)',
+          textAlign: 'center',
+          maxWidth: '360px',
+          lineHeight: 1.4,
+          marginTop: '-8px',
+          userSelect: 'none',
+        }}
+      >
+        not who you follow. who you're in sync with, right now.
+      </motion.p>
 
       <FrequencyDial
         currentIndex={currentIndex}

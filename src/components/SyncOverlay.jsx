@@ -1,33 +1,42 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import { Radio, Sparkles } from 'lucide-react';
 
 /**
  * Full-screen transitional state between Tuner and Room.
- * Radial scan pulse + staggered participant dots.
- * Auto-advances after 1.8–2.2s.
+ * Analog radio frequency needle sweep + vibe phase lock + staggered participant dots.
+ * Auto-advances after 2.0–2.4s.
  */
 export default function SyncOverlay({ frequency, onComplete }) {
   const [syncedCount, setSyncedCount] = useState(0);
+  const [isLocked, setIsLocked] = useState(false);
   const [targetCount] = useState(() => Math.floor(Math.random() * 3) + 4); // 4-6
+  const [mhz] = useState(() => (88 + Math.random() * 19).toFixed(1));
 
   useEffect(() => {
-    // Stagger "found" dots
+    // Phase 1: Needle sweep & lock at 1s
+    const lockTimer = setTimeout(() => {
+      setIsLocked(true);
+    }, 1100);
+
+    // Phase 2: Stagger "found" stranger dots
     const timers = [];
     for (let i = 0; i < targetCount; i++) {
       timers.push(
         setTimeout(() => {
           setSyncedCount(i + 1);
-        }, 400 + i * 300)
+        }, 800 + i * 260)
       );
     }
 
-    // Auto-advance after randomized delay
+    // Phase 3: Auto-advance
     const advanceTimer = setTimeout(() => {
       onComplete?.();
-    }, 1800 + Math.random() * 400);
+    }, 2400);
 
     return () => {
       timers.forEach(clearTimeout);
+      clearTimeout(lockTimer);
       clearTimeout(advanceTimer);
     };
   }, [onComplete, targetCount]);
@@ -45,103 +54,224 @@ export default function SyncOverlay({ frequency, onComplete }) {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '32px',
-        background: 'var(--color-bg)',
+        gap: '36px',
+        padding: '24px',
+        background: 'radial-gradient(ellipse at center, rgba(16, 19, 28, 0.96) 0%, rgba(5, 6, 10, 0.98) 100%)',
+        backdropFilter: 'blur(20px)',
       }}
     >
-      {/* Scan pulse rings */}
-      <div style={{ position: 'relative', width: '160px', height: '160px' }}>
-        {[0, 1, 2].map((i) => (
+      {/* Analog Radio Tuner Glass Window */}
+      <div style={{
+        width: 'min(420px, 90vw)',
+        padding: '20px 24px',
+        borderRadius: 'var(--radius-lg)',
+        background: 'linear-gradient(180deg, rgba(23, 27, 39, 0.8) 0%, rgba(10, 12, 18, 0.95) 100%)',
+        border: `1px solid ${isLocked ? frequency.colorAccent : 'var(--color-border)'}`,
+        boxShadow: isLocked
+          ? `0 0 50px ${frequency.colorAccent}33, inset 0 0 30px ${frequency.colorAccent}15`
+          : '0 0 30px rgba(0,0,0,0.5)',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '16px',
+        position: 'relative',
+        overflow: 'hidden',
+        transition: 'all 0.4s ease',
+      }}>
+        {/* Top Radio Dial Header */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          fontFamily: 'var(--font-mono)',
+          fontSize: '11px',
+          color: 'var(--color-text-secondary)',
+          textTransform: 'uppercase',
+          letterSpacing: '0.1em',
+        }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Radio size={13} style={{ color: frequency.colorAccent }} />
+            Analog Waveform Receiver
+          </span>
+          <span style={{
+            color: isLocked ? frequency.colorAccent : 'var(--color-accent-live)',
+            fontWeight: 600,
+          }}>
+            {isLocked ? 'SIGNAL LOCKED' : 'SEARCHING SPECTRUM...'}
+          </span>
+        </div>
+
+        {/* Radio Spectrum Scale & Sweeping Needle */}
+        <div style={{
+          position: 'relative',
+          height: '60px',
+          background: 'rgba(5, 6, 10, 0.75)',
+          borderRadius: 'var(--radius-sm)',
+          border: '1px solid rgba(255, 255, 255, 0.05)',
+          overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+        }}>
+          {/* Background Spectrum Ticks */}
+          <div style={{
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '0 12px',
+            opacity: 0.35,
+          }}>
+            {Array.from({ length: 28 }).map((_, i) => (
+              <div
+                key={i}
+                style={{
+                  width: i % 4 === 0 ? '2px' : '1px',
+                  height: i % 4 === 0 ? '24px' : '12px',
+                  background: 'var(--color-text-secondary)',
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Sweeping Frequency Needle */}
           <motion.div
-            key={i}
-            animate={{
-              scale: [0.8, 2.2],
-              opacity: [0.6, 0],
-            }}
-            transition={{
-              duration: 1.2,
-              repeat: Infinity,
-              ease: 'easeOut',
-              delay: i * 0.4,
-            }}
+            initial={{ left: '5%' }}
+            animate={isLocked
+              ? { left: '50%' }
+              : { left: ['5%', '85%', '30%', '50%'] }
+            }
+            transition={isLocked
+              ? { type: 'spring', stiffness: 350, damping: 20 }
+              : { duration: 1.1, ease: 'easeInOut' }
+            }
             style={{
               position: 'absolute',
-              inset: 0,
-              borderRadius: '50%',
-              border: `2px solid ${frequency.colorAccent}`,
+              top: 0,
+              bottom: 0,
+              width: '3px',
+              background: isLocked ? frequency.colorAccent : '#FF5470',
+              boxShadow: `0 0 16px ${isLocked ? frequency.colorAccent : '#FF5470'}, 0 0 4px #fff`,
+              zIndex: 5,
+              transform: 'translateX(-50%)',
             }}
-          />
-        ))}
+          >
+            {/* Needle indicator diamond */}
+            <div style={{
+              position: 'absolute',
+              top: '2px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '8px',
+              height: '8px',
+              borderRadius: '2px',
+              background: '#fff',
+              boxShadow: `0 0 8px ${frequency.colorAccent}`,
+            }} />
+          </motion.div>
 
-        {/* Center dot */}
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-          }}
-          transition={{
-            duration: 1.2,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-          style={{
+          {/* Locked frequency badge in center */}
+          <div style={{
             position: 'absolute',
+            bottom: '6px',
             left: '50%',
-            top: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '16px',
-            height: '16px',
-            borderRadius: '50%',
-            background: `linear-gradient(135deg, var(--color-gradient-start), ${frequency.colorAccent})`,
-            boxShadow: `0 0 30px ${frequency.colorAccent}66`,
-          }}
-        />
+            transform: 'translateX(-50%)',
+            fontFamily: 'var(--font-mono)',
+            fontSize: '11px',
+            letterSpacing: '0.08em',
+            color: isLocked ? frequency.colorAccent : 'var(--color-text-secondary)',
+            fontWeight: 600,
+          }}>
+            {mhz} MHz
+          </div>
+        </div>
+
+        {/* Target Frequency Title & Vibe Phase Match */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}>
+          <span style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: '14px',
+            fontWeight: 600,
+            color: 'var(--color-text-primary)',
+          }}>
+            {frequency.label}
+          </span>
+          {isLocked && (
+            <motion.span
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
+                color: 'var(--color-accent-resonance)',
+                background: 'rgba(51, 230, 201, 0.1)',
+                padding: '2px 8px',
+                borderRadius: 'var(--radius-pill)',
+                border: '1px solid rgba(51, 230, 201, 0.25)',
+              }}
+            >
+              <Sparkles size={11} />
+              99.2% Phase Match
+            </motion.span>
+          )}
+        </div>
       </div>
 
-      {/* Status text */}
+      {/* Syncing Participants Presence */}
       <div style={{
         textAlign: 'center',
         display: 'flex',
         flexDirection: 'column',
-        gap: '16px',
+        alignItems: 'center',
+        gap: '14px',
       }}>
         <motion.p
-          animate={{ opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 2, repeat: Infinity }}
+          animate={{ opacity: [0.6, 1, 0.6] }}
+          transition={{ duration: 1.8, repeat: Infinity }}
           style={{
             fontFamily: 'var(--font-display)',
-            fontSize: '20px',
+            fontSize: '18px',
             fontWeight: 500,
             color: 'var(--color-text-primary)',
           }}
         >
-          finding your frequency...
+          {isLocked ? 'synchronizing with room strangers...' : 'tuning into the frequency...'}
         </motion.p>
 
-        {/* Participant dots */}
+        {/* Participant connection dots */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: '8px',
+          gap: '10px',
         }}>
           {Array.from({ length: targetCount }).map((_, i) => (
             <motion.div
               key={i}
               initial={{ scale: 0, opacity: 0 }}
               animate={i < syncedCount ? {
-                scale: 1,
+                scale: [1, 1.25, 1],
                 opacity: 1,
               } : {
                 scale: 0.5,
                 opacity: 0.2,
               }}
-              transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+              transition={{
+                scale: { duration: 0.4 },
+                default: { type: 'spring', stiffness: 400, damping: 15 },
+              }}
               style={{
-                width: '10px',
-                height: '10px',
+                width: '12px',
+                height: '12px',
                 borderRadius: '50%',
                 backgroundColor: i < syncedCount ? frequency.colorAccent : 'var(--color-border)',
-                boxShadow: i < syncedCount ? `0 0 8px ${frequency.colorAccent}` : 'none',
+                boxShadow: i < syncedCount ? `0 0 12px ${frequency.colorAccent}` : 'none',
               }}
             />
           ))}
@@ -152,7 +282,7 @@ export default function SyncOverlay({ frequency, onComplete }) {
           fontSize: '13px',
           color: 'var(--color-text-secondary)',
         }}>
-          {syncedCount} {syncedCount === 1 ? 'person' : 'people'} syncing
+          {syncedCount} {syncedCount === 1 ? 'stranger' : 'strangers'} in phase
         </p>
       </div>
     </motion.div>

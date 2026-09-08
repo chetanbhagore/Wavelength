@@ -72,10 +72,16 @@ export default function FrequencyReadout({ frequency }) {
           </p>
 
           <div style={{
-            display: 'flex',
+            display: 'inline-flex',
             alignItems: 'center',
-            gap: '6px',
-            marginTop: '4px',
+            gap: '8px',
+            marginTop: '6px',
+            padding: '5px 16px',
+            borderRadius: 'var(--radius-pill)',
+            background: 'rgba(23, 27, 39, 0.65)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            backdropFilter: 'blur(8px)',
+            boxShadow: `0 0 20px ${frequency.colorAccent}15`,
           }}>
             <motion.div
               animate={{
@@ -84,21 +90,28 @@ export default function FrequencyReadout({ frequency }) {
               }}
               transition={{ duration: 2, repeat: Infinity }}
               style={{
-                width: '6px',
-                height: '6px',
+                width: '7px',
+                height: '7px',
                 borderRadius: '50%',
                 backgroundColor: frequency.colorAccent,
-                boxShadow: `0 0 8px ${frequency.colorAccent}`,
+                boxShadow: `0 0 10px ${frequency.colorAccent}`,
               }}
             />
-            <span style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: '14px',
-              fontWeight: 500,
-              color: frequency.colorAccent,
-            }}>
-              {displayCount.toLocaleString()} tuned in
-            </span>
+            <motion.span
+              key={displayCount}
+              initial={{ scale: 1.1, filter: 'brightness(1.5)' }}
+              animate={{ scale: 1, filter: 'brightness(1)' }}
+              transition={{ duration: 0.3 }}
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '15px',
+                fontWeight: 600,
+                letterSpacing: '0.02em',
+                color: 'var(--color-text-primary)',
+              }}
+            >
+              <span style={{ color: frequency.colorAccent }}>{displayCount.toLocaleString()}</span> tuned in
+            </motion.span>
           </div>
         </motion.div>
       </AnimatePresence>

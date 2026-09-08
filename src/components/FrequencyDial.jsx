@@ -60,10 +60,25 @@ export default function FrequencyDial({
         }}
         whileTap={{ cursor: 'grabbing' }}
       >
+        {/* Top Alignment Needle / Tuning Index Marker */}
+        <div style={{
+          position: 'absolute',
+          top: '-14px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '3px',
+          height: '12px',
+          borderRadius: '2px',
+          background: currentFrequency.colorAccent,
+          boxShadow: `0 0 12px ${currentFrequency.colorAccent}`,
+          zIndex: 10,
+          pointerEvents: 'none',
+        }} />
+
         {/* Outer glow ring */}
         <motion.div
           animate={{ rotate: rotation }}
-          transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+          transition={{ type: 'spring', stiffness: 260, damping: 26 }}
           style={{
             width: '100%',
             height: '100%',
@@ -71,7 +86,7 @@ export default function FrequencyDial({
             position: 'relative',
             border: '2px solid var(--color-border)',
             background: 'radial-gradient(circle at center, rgba(124,92,255,0.08) 0%, transparent 70%)',
-            boxShadow: `0 0 60px ${currentFrequency.colorAccent}22, inset 0 0 40px ${currentFrequency.colorAccent}11`,
+            boxShadow: `0 0 60px ${currentFrequency.colorAccent}25, inset 0 0 40px ${currentFrequency.colorAccent}15`,
           }}
         >
           {/* Frequency tick marks */}
@@ -81,53 +96,53 @@ export default function FrequencyDial({
             const outerR = 48;
 
             return (
-              <div key={i} style={{
-                position: 'absolute',
-                left: '50%',
-                top: '50%',
-                width: '3px',
-                height: isActive ? '14px' : '8px',
-                borderRadius: '2px',
-                background: isActive ? currentFrequency.colorAccent : 'var(--color-text-secondary)',
-                opacity: isActive ? 1 : 0.4,
-                transform: `translate(-50%, -50%) rotate(${angle + 90}deg) translateY(-${outerR}%)`,
-                transformOrigin: 'center center',
-                transition: 'all 0.3s ease',
-                boxShadow: isActive ? `0 0 8px ${currentFrequency.colorAccent}` : 'none',
-              }} />
+              <div
+                key={i}
+                style={{
+                  position: 'absolute',
+                  left: '50%',
+                  top: '50%',
+                  width: isActive ? '5px' : '3px',
+                  height: isActive ? '18px' : '9px',
+                  borderRadius: '3px',
+                  background: isActive ? currentFrequency.colorAccent : 'var(--color-text-secondary)',
+                  opacity: isActive ? 1 : 0.45,
+                  transform: `translate(-50%, -50%) rotate(${angle + 90}deg) translateY(-${outerR}%)`,
+                  transformOrigin: 'center center',
+                  transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+                  boxShadow: isActive
+                    ? `0 0 16px ${currentFrequency.colorAccent}, 0 0 6px #fff`
+                    : 'none',
+                }}
+              />
             );
           })}
 
-          {/* Center indicator */}
+          {/* Center indicator & Haptic Light Flash */}
           <div style={{
             position: 'absolute',
             left: '50%',
             top: '50%',
             transform: 'translate(-50%, -50%)',
-            width: '40%',
-            height: '40%',
+            width: '42%',
+            height: '42%',
             borderRadius: '50%',
-            background: `radial-gradient(circle, ${currentFrequency.colorAccent}20, transparent)`,
+            background: `radial-gradient(circle, ${currentFrequency.colorAccent}25, transparent 75%)`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
           }}>
             <motion.div
-              animate={{
-                scale: [1, 1.15, 1],
-                opacity: [0.6, 1, 0.6],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
+              key={currentFrequency.id}
+              initial={{ scale: 0.75, opacity: 0.9, filter: 'brightness(2)' }}
+              animate={{ scale: 1, opacity: 1, filter: 'brightness(1)' }}
+              transition={{ type: 'spring', stiffness: 450, damping: 22 }}
               style={{
-                width: '24px',
-                height: '24px',
+                width: '28px',
+                height: '28px',
                 borderRadius: '50%',
                 background: `linear-gradient(135deg, var(--color-gradient-start), ${currentFrequency.colorAccent})`,
-                boxShadow: `0 0 20px ${currentFrequency.colorAccent}66`,
+                boxShadow: `0 0 28px ${currentFrequency.colorAccent}88, inset 0 0 8px rgba(255,255,255,0.6)`,
               }}
             />
           </div>
