@@ -68,6 +68,43 @@ export default function FrequencyReadout({ frequency, visitInfo }) {
             gap: '8px',
           }}
         >
+          {/* Radio Broadcast Coordinates & Signal dBm Meter (Sprint 1 Issues #3, #7, #11) */}
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '10px',
+            padding: '3px 12px',
+            borderRadius: 'var(--radius-pill)',
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.06)',
+            fontFamily: 'var(--font-mono)',
+            fontSize: '11px',
+            color: 'var(--color-text-secondary)',
+            letterSpacing: '0.04em',
+          }}>
+            <span style={{ color: frequency.colorAccent, fontWeight: 700 }}>
+              {frequency.mhz || '88.5 MHz'}
+            </span>
+            <span style={{ opacity: 0.3 }}>|</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-end', gap: '1.5px', height: '9px' }}>
+                {[3, 5, 7, 9].map((h, i) => (
+                  <span
+                    key={i}
+                    style={{
+                      width: '2px',
+                      height: `${h}px`,
+                      backgroundColor: frequency.colorAccent,
+                      borderRadius: '1px',
+                      opacity: i <= 2 ? 1 : 0.45,
+                    }}
+                  />
+                ))}
+              </div>
+              <span style={{ opacity: 0.85 }}>{frequency.signalDbm || -68} dBm</span>
+            </div>
+          </div>
+
           <h2 style={{
             fontFamily: 'var(--font-display)',
             fontSize: 'clamp(20px, 5vw, 28px)',
@@ -137,6 +174,17 @@ export default function FrequencyReadout({ frequency, visitInfo }) {
                 <span style={{ color: frequency.colorAccent }}>{displayCount.toLocaleString()}</span> tuned in
               </motion.span>
             </div>
+
+            {/* Ambient collective tuning activity (Sprint 1 Issue #5) */}
+            <span style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '11px',
+              color: 'var(--color-text-secondary)',
+              opacity: 0.55,
+              letterSpacing: '0.02em',
+            }}>
+              tuned {(frequency.tunedTonight || 1840).toLocaleString()} times into the ether tonight
+            </span>
 
             {/* Anonymous return continuity memory (Issue #4) */}
             {visitInfo && visitInfo.count > 0 && (

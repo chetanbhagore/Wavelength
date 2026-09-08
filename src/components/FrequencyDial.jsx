@@ -1,11 +1,14 @@
 import { motion } from 'framer-motion';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState, useEffect } from 'react';
 import { Compass } from 'lucide-react';
 import frequencies from '../data/frequencies.json';
+import { ambientDrone } from '../utils/ambientAudio';
 
 /**
  * Circular frequency dial control with analog tuning aesthetics:
  * - 5px active tick marks with rounded caps and luminous glow trails
+ * - Visible analog MHz frequency markings around the dial face
+ * - Tactile mechanical detent audio clicks (Web Audio API) on tick changes
  * - 12 o'clock tuning needle and center-orb tactile snap feedback
  * - Presence residue ghost halo on recently vacated frequency (Issue #3)
  * - Role="slider" with aria-valuetext and touch/drag controls
@@ -20,7 +23,16 @@ export default function FrequencyDial({
   onKeyDown,
 }) {
   const dialRef = useRef(null);
+  const prevIndexRef = useRef(currentIndex);
   const rotation = -(currentIndex * (360 / totalFrequencies));
+
+  // Trigger tactile analog mechanical click on rotary changes (Sprint 1 Issue #23)
+  useEffect(() => {
+    if (prevIndexRef.current !== currentIndex) {
+      ambientDrone.playDetentClick();
+      prevIndexRef.current = currentIndex;
+    }
+  }, [currentIndex]);
 
   const lastVisitedIndex = lastVisitedFrequencyId
     ? frequencies.findIndex((f) => f.id === lastVisitedFrequencyId)
@@ -47,6 +59,7 @@ export default function FrequencyDial({
       if (stepsLeft <= 0) {
         clearInterval(interval);
         setIsScanning(false);
+        ambientDrone.playLockChime(528); // Station lock chime
       }
     }, 170);
   }, [isScanning, onNext]);
@@ -115,42 +128,88 @@ export default function FrequencyDial({
             boxShadow: `0 0 60px ${currentFrequency.colorAccent}25, inset 0 0 40px ${currentFrequency.colorAccent}15`,
           }}
         >
-          {/* Frequency tick marks */}
+          {/* Frequency tick marks & visible MHz figures (Sprint 1 Issues #3 & #7) */}
           {Array.from({ length: totalFrequencies }).map((_, i) => {
             const angle = (i * 360) / totalFrequencies - 90;
             const isActive = i === currentIndex;
             const isResidue = i === lastVisitedIndex && !isActive;
             const outerR = 48;
+            const freqObj = frequencies[i];
+            const mhzNumber = freqObj?.mhz ? freqObj.mhz.replace(' MHz', '') : '';
 
             return (
-              <div
-                key={i}
-                style={{
-                  position: 'absolute',
-                  left: '50%',
-                  top: '50%',
-                  width: isActive ? '5px' : isResidue ? '4px' : '3px',
-                  height: isActive ? '18px' : isResidue ? '14px' : '9px',
-                  borderRadius: '3px',
-                  background: isActive
-                    ? currentFrequency.colorAccent
-                    : isResidue
-                      ? 'var(--color-gradient-start)'
-                      : 'var(--color-text-secondary)',
-                  opacity: isActive ? 1 : isResidue ? 0.9 : 0.45,
-                  transform: `translate(-50%, -50%) rotate(${angle + 90}deg) translateY(-${outerR}%)`,
-                  transformOrigin: 'center center',
-                  transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
-                  boxShadow: isActive
-                    ? `0 0 16px ${currentFrequency.colorAccent}, 0 0 6px #fff`
-                    : isResidue
-                      ? '0 0 12px rgba(124, 92, 255, 0.9), 0 0 4px #00F0FF'
-                      : 'none',
-                }}
-                title={isResidue ? 'Presence residue: you were recently tuned here' : undefined}
-              />
+              <div key={i}>
+                {/* Physical tick bar */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    left: '50%',
+                    top: '50%',
+                    width: isActive ? '5px' : isResidue ? '4px' : '3px',
+                    height: isActive ? '18px' : isResidue ? '14px' : '9px',
+                    borderRadius: '3px',
+                    background: isActive
+                      ? currentFrequency.colorAccent
+                      : isResidue
+                        ? 'var(--color-gradient-start)'
+                        : 'var(--color-text-secondary)',
+                    opacity: isActive ? 1 : isResidue ? 0.9 : 0.45,
+                    transform: `translate(-50%, -50%) rotate(${angle + 90}deg) translateY(-${outerR}%)`,
+                    transformOrigin: 'center center',
+                    transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+                    boxShadow: isActive
+                      ? `0 0 16px ${currentFrequency.colorAccent}, 0 0 6px #fff`
+                      : isResidue
+                        ? '0 0 12px rgba(124, 92, 255, 0.9), 0 0 4px #00F0FF'
+                        : 'none',
+                  }}
+                  title={isResidue ? 'Presence residue: you were recently tuned here' : undefined}
+                />
+
+                {/* Visible MHz Broadcast coordinate */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    left: '50%',
+                    top: '50%',
+                    transform: `translate(-50%, -50%) rotate(${angle + 90}deg) translateY(-${outerR - 13}%)`,
+                    transformOrigin: 'center center',
+                    pointerEvents: 'none',
+                    userSelect: 'none',
+                  }}
+                >
+                  <span
+                    style={{
+                      display: 'inline-block',
+                      transform: `rotate(-${angle + 90}deg)`,
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: isActive ? '10px' : '8px',
+                      fontWeight: isActive ? 700 : 500,
+                      color: isActive ? '#FFFFFF' : 'var(--color-text-secondary)',
+                      opacity: isActive ? 1 : 0.4,
+                      letterSpacing: '0.02em',
+                      textShadow: isActive ? `0 0 10px ${currentFrequency.colorAccent}` : 'none',
+                      transition: 'all 0.25s ease',
+                    }}
+                  >
+                    {mhzNumber}
+                  </span>
+                </div>
+              </div>
             );
           })}
+
+          {/* Analog Tuner Glass Lens Reflection */}
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.01) 42%, transparent 60%)',
+              pointerEvents: 'none',
+              zIndex: 4,
+            }}
+          />
 
 
           {/* Center indicator & Haptic Light Flash */}

@@ -3,6 +3,9 @@
     "id": "freq_racing_mind",
     "label": "Can't sleep, mind's racing",
     "mood": "restless",
+    "mhz": "88.5 MHz",
+    "signalDbm": -68,
+    "tunedTonight": 2840,
     "colorAccent": "#7C5CFF",
     "liveCount": 2847,
     "description": "For the 2am spirals that won't quiet down."
@@ -11,6 +14,9 @@
     "id": "freq_new_city",
     "label": "New city, no friends yet",
     "mood": "hopeful-lonely",
+    "mhz": "91.2 MHz",
+    "signalDbm": -76,
+    "tunedTonight": 490,
     "colorAccent": "#33E6C9",
     "liveCount": 412,
     "description": "You just moved. The apartment's unpacked. The people aren't found yet."
@@ -19,6 +25,9 @@
     "id": "freq_excited_noone",
     "label": "Excited and can't tell anyone",
     "mood": "electric",
+    "mhz": "94.8 MHz",
+    "signalDbm": -62,
+    "tunedTonight": 1530,
     "colorAccent": "#FFB020",
     "liveCount": 1203,
     "description": "Good news with nowhere to land yet."
@@ -27,6 +36,9 @@
     "id": "freq_post_breakup",
     "label": "Post-breakup clarity",
     "mood": "bittersweet",
+    "mhz": "98.1 MHz",
+    "signalDbm": -71,
+    "tunedTonight": 980,
     "colorAccent": "#FF4FA3",
     "liveCount": 890,
     "description": "The sadness faded. Something sharper is left."
@@ -35,6 +47,9 @@
     "id": "freq_sunday_scaries",
     "label": "Sunday scaries hitting early",
     "mood": "anxious",
+    "mhz": "101.3 MHz",
+    "signalDbm": -65,
+    "tunedTonight": 1870,
     "colorAccent": "#FF5470",
     "liveCount": 1567,
     "description": "Tomorrow is already pressing on tonight."
@@ -43,6 +58,9 @@
     "id": "freq_quiet_proud",
     "label": "Quietly proud of myself today",
     "mood": "warm",
+    "mhz": "103.7 MHz",
+    "signalDbm": -74,
+    "tunedTonight": 720,
     "colorAccent": "#FFD166",
     "liveCount": 634,
     "description": "No one noticed but you know what you did."
@@ -51,6 +69,9 @@
     "id": "freq_missing_someone",
     "label": "Missing someone I can't text",
     "mood": "aching",
+    "mhz": "106.2 MHz",
+    "signalDbm": -69,
+    "tunedTonight": 2150,
     "colorAccent": "#A78BFA",
     "liveCount": 1891,
     "description": "The contact exists. The permission doesn't."
@@ -59,6 +80,9 @@
     "id": "freq_fresh_start",
     "label": "Ready for a fresh start",
     "mood": "determined",
+    "mhz": "107.9 MHz",
+    "signalDbm": -64,
+    "tunedTonight": 890,
     "colorAccent": "#34D399",
     "liveCount": 723,
     "description": "Something ended. Something is about to begin."

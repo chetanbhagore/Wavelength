@@ -1,8 +1,10 @@
 /**
- * Pure Web Audio API Ambient Analog Drone Synthesizer.
+ * Pure Web Audio API Ambient Analog Drone & Mechanical Detent Synthesizer.
  * Requires zero external audio files.
- * Generates soothing binaural sine drones tuned to emotional frequencies
- * layered with filtered analog radio tape warmth.
+ * Generates:
+ * 1. Tactile mechanical rotary detent switch clicks on dial rotation.
+ * 2. Soothing binaural sine drones tuned to emotional frequencies.
+ * 3. Filtered analog radio tape warmth & RF static.
  */
 
 const MOOD_FREQUENCIES = {
@@ -81,6 +83,82 @@ class AmbientDroneSynth {
     } catch {
       // Noise buffer fallback gracefully
     }
+  }
+
+  /**
+   * Synthesize a tactile, mechanical analog rotary detent click sound.
+   * Fired when the dial snaps or changes frequency ticks.
+   */
+  playDetentClick() {
+    this.init();
+    if (!this.ctx) return;
+
+    if (this.ctx.state === 'suspended') {
+      this.ctx.resume().catch(() => {});
+    }
+
+    const now = this.ctx.currentTime;
+
+    // 1. High transient mechanical snap
+    const snapOsc = this.ctx.createOscillator();
+    const snapGain = this.ctx.createGain();
+    snapOsc.type = 'triangle';
+    snapOsc.frequency.setValueAtTime(1400, now);
+    snapOsc.frequency.exponentialRampToValueAtTime(320, now + 0.014);
+
+    snapGain.gain.setValueAtTime(0.09, now);
+    snapGain.gain.exponentialRampToValueAtTime(0.001, now + 0.018);
+
+    snapOsc.connect(snapGain);
+    snapGain.connect(this.ctx.destination);
+
+    snapOsc.start(now);
+    snapOsc.stop(now + 0.02);
+
+    // 2. Low mechanical housing detent thud
+    const thudOsc = this.ctx.createOscillator();
+    const thudGain = this.ctx.createGain();
+    thudOsc.type = 'sine';
+    thudOsc.frequency.setValueAtTime(110, now);
+    thudOsc.frequency.exponentialRampToValueAtTime(45, now + 0.035);
+
+    thudGain.gain.setValueAtTime(0.07, now);
+    thudGain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+
+    thudOsc.connect(thudGain);
+    thudGain.connect(this.ctx.destination);
+
+    thudOsc.start(now);
+    thudOsc.stop(now + 0.045);
+  }
+
+  /**
+   * Synthesize a subtle resonant chime when locking into a frequency station.
+   */
+  playLockChime(pitch = 528) {
+    this.init();
+    if (!this.ctx) return;
+
+    if (this.ctx.state === 'suspended') {
+      this.ctx.resume().catch(() => {});
+    }
+
+    const now = this.ctx.currentTime;
+    const chimeOsc = this.ctx.createOscillator();
+    const chimeGain = this.ctx.createGain();
+
+    chimeOsc.type = 'sine';
+    chimeOsc.frequency.setValueAtTime(pitch, now);
+
+    chimeGain.gain.setValueAtTime(0, now);
+    chimeGain.gain.linearRampToValueAtTime(0.06, now + 0.04);
+    chimeGain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+
+    chimeOsc.connect(chimeGain);
+    chimeGain.connect(this.ctx.destination);
+
+    chimeOsc.start(now);
+    chimeOsc.stop(now + 0.5);
   }
 
   start(mood = 'restless') {

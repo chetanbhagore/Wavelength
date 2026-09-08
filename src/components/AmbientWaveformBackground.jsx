@@ -23,11 +23,17 @@ export default function AmbientWaveformBackground({
   const animationRef = useRef(null);
   const startTimeRef = useRef(null);
   const particlesRef = useRef([]);
+  const energyRef = useRef(1.0);
 
   const reducedMotion = useMemo(() => {
     if (typeof window === 'undefined') return false;
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }, []);
+
+  // Surge energy on frequency or mood shift (Sprint 1 Issue #6)
+  useEffect(() => {
+    energyRef.current = 2.0; // Temporary swell on tuning
+  }, [mood, colorAccent]);
 
   // Initialize or re-seed particles when mood changes
   useEffect(() => {
@@ -78,16 +84,23 @@ export default function AmbientWaveformBackground({
       if (!startTimeRef.current) startTimeRef.current = timestamp;
       const elapsed = (timestamp - startTimeRef.current) / 1000;
 
+      // Smooth decay of tuning surge toward baseline 1.0
+      energyRef.current += (1.0 - energyRef.current) * 0.035;
+      const currentEnergy = energyRef.current;
+
       const w = window.innerWidth;
       const h = window.innerHeight;
 
       ctx.clearRect(0, 0, w, h);
 
-      // 1. Draw mood-tuned layered waveforms
-      const waveSpeed = mood === 'electric' ? 1.2 : mood === 'aching' ? 0.45 : 0.75;
-      drawWave(ctx, w, h, elapsed * waveSpeed, 0.32, 0.11, colorAccent, 0.20);
-      drawWave(ctx, w, h, elapsed * waveSpeed, 0.52, 0.08, colorAccent, 0.14);
-      drawWave(ctx, w, h, elapsed * waveSpeed, 0.74, 0.05, colorAccent, 0.09);
+      // 1. Draw mood-tuned layered waveforms reacting to tuning energy
+      const baseWaveSpeed = mood === 'electric' ? 1.2 : mood === 'aching' ? 0.45 : 0.75;
+      const waveSpeed = baseWaveSpeed * (0.8 + currentEnergy * 0.2);
+      const ampBoost = 0.75 + currentEnergy * 0.25;
+
+      drawWave(ctx, w, h, elapsed * waveSpeed, 0.32, 0.11 * ampBoost, colorAccent, 0.20);
+      drawWave(ctx, w, h, elapsed * waveSpeed, 0.52, 0.08 * ampBoost, colorAccent, 0.14);
+      drawWave(ctx, w, h, elapsed * waveSpeed, 0.74, 0.05 * ampBoost, colorAccent, 0.09);
 
       // 2. Draw mood-specific atmospheric weather & physics
       const { r, g, b } = parseHexColor(colorAccent);
