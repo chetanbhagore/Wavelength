@@ -14,17 +14,35 @@ export default function FrequencyReadout({ frequency, visitInfo }) {
     setDisplayCount(frequency.liveCount);
   }
 
-  // Simulate live count fluctuation
+  // Simulate realistic Brownian motion stochastic fluctuation with mean reversion (Issue #34)
   useEffect(() => {
-    const interval = setInterval(() => {
-      setDisplayCount((prev) => {
-        const delta = Math.floor(Math.random() * 7) - 3; // -3 to +3
-        return Math.max(0, prev + delta);
-      });
-    }, 2500);
+    const baseCount = frequency.liveCount;
+    let timer;
 
-    return () => clearInterval(interval);
-  }, [frequency.id]);
+    const tick = () => {
+      setDisplayCount((current) => {
+        // Mean-reverting drift pull toward base count
+        const drift = (baseCount - current) * 0.12;
+        // Gaussian-like Brownian shock
+        const shock = (Math.random() + Math.random() - 1) * 3.5;
+        // Occasional organic micro-spike (8% chance)
+        const spike = Math.random() < 0.08 ? (Math.random() < 0.5 ? -1 : 1) * Math.floor(Math.random() * 8 + 3) : 0;
+        const next = Math.round(current + drift + shock + spike);
+        return Math.max(8, next);
+      });
+
+      const nextDelay = 2000 + Math.random() * 1400;
+      timer = setTimeout(tick, nextDelay);
+    };
+
+    const initialDelay = setTimeout(tick, 2200);
+
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(initialDelay);
+    };
+  }, [frequency.id, frequency.liveCount]);
+
 
   return (
     <div style={{

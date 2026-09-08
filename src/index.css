@@ -214,12 +214,22 @@ body {
 }
 
 /* ============================================
-   Focus & Accessibility
+   Focus & Accessibility (Issue #33)
    ============================================ */
 
 :focus-visible {
-  outline: 2px solid var(--color-gradient-start);
-  outline-offset: 2px;
+  outline: 2px solid var(--color-gradient-start) !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 16px rgba(124, 92, 255, 0.65) !important;
+}
+
+button:focus-visible,
+input:focus-visible,
+[role="slider"]:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid #7C5CFF !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 20px rgba(124, 92, 255, 0.75) !important;
 }
 
 /* ============================================
@@ -244,16 +254,22 @@ body {
 }
 
 /* ============================================
-   Reduced Motion
+   Reduced Motion Accessibility (Issue #23)
    ============================================ */
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
-    animation-duration: 0.01ms !important;
+    animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  canvas {
+    filter: none !important;
   }
 }
+
 
 /* ============================================
    Utility: Gradient Text

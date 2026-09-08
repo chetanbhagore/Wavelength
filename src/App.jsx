@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { useState, useCallback, useEffect } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import TopBar from './components/TopBar';
 import SyncOverlay from './components/SyncOverlay';
 import EchoModal from './components/EchoModal';
@@ -21,14 +21,43 @@ export default function App() {
   // 'tuner' | 'syncing' | 'room' | 'echoModal' | 'echoWall'
 
   const [demoMode, setDemoMode] = useState(true);
+  const [demoToast, setDemoToast] = useState(null);
   const [selectedFrequency, setSelectedFrequency] = useState(null);
   const [lastVisitedFrequencyId, setLastVisitedFrequencyId] = useLocalStorage('wavelength_last_visited_id', null);
   const [frequencyHistory, setFrequencyHistory] = useLocalStorage('wavelength_frequency_history', {});
   const [, setMyEchoes] = useLocalStorage('myEchoHistory', []);
 
   const handleToggleDemoMode = useCallback(() => {
-    setDemoMode((prev) => !prev);
+    setDemoMode((prev) => {
+      const next = !prev;
+      setDemoToast(next ? 'Demo Mode (90s sessions) Active' : 'Standard Mode (12m sessions) Active');
+      return next;
+    });
   }, []);
+
+  // Global Shift+D shortcut listener for judge inspection (Issue #29)
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.shiftKey && (e.key === 'D' || e.key === 'd')) {
+        const tag = document.activeElement?.tagName?.toLowerCase();
+        if (tag !== 'input' && tag !== 'textarea') {
+          e.preventDefault();
+          handleToggleDemoMode();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleToggleDemoMode]);
+
+  // Dismiss demo toast after 2.5s
+  useEffect(() => {
+    if (demoToast) {
+      const timer = setTimeout(() => setDemoToast(null), 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [demoToast]);
+
 
   // ─── Direct Navigation ───
   const handleNavigateToEchoWall = useCallback(() => {
@@ -122,8 +151,52 @@ export default function App() {
       </main>
 
 
-      {/* Overlays */}
+      {/* Overlays & Notifications */}
       <AnimatePresence>
+        {demoToast && (
+          <motion.div
+            key="demoToast"
+            initial={{ opacity: 0, y: -20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -15, scale: 0.9 }}
+            transition={{ duration: 0.25 }}
+            style={{
+              position: 'fixed',
+              top: '72px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              zIndex: 100,
+              padding: '8px 18px',
+              borderRadius: 'var(--radius-pill)',
+              background: 'rgba(23, 27, 39, 0.95)',
+              border: '1px solid var(--color-accent-live)',
+              boxShadow: '0 8px 30px rgba(0, 0, 0, 0.6), 0 0 16px rgba(255, 176, 32, 0.3)',
+              backdropFilter: 'blur(16px)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              pointerEvents: 'none',
+            }}
+          >
+            <span style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              backgroundColor: 'var(--color-accent-live)',
+              boxShadow: '0 0 8px var(--color-accent-live)',
+            }} />
+            <span style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: '12px',
+              fontWeight: 600,
+              color: 'var(--color-text-primary)',
+              letterSpacing: '0.02em',
+            }}>
+              {demoToast}
+            </span>
+          </motion.div>
+        )}
+
         {appState === 'syncing' && selectedFrequency && (
           <SyncOverlay
             key="sync"
@@ -144,3 +217,4 @@ export default function App() {
     </div>
   );
 }
+

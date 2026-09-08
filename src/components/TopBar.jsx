@@ -1,7 +1,9 @@
-import { Activity, MessageSquareQuote, Radio, Clock } from 'lucide-react';
+import { Activity, MessageSquareQuote, Radio } from 'lucide-react';
 
 /**
- * Minimal top bar with branding, screen navigation, and demo mode toggle.
+ * Minimal top bar with branding and borderless glass navigation pills:
+ * - Soft borderless glass buttons that blend harmoniously into the header void (Issue #13).
+ * - Discrete double-click or long-press on logo toggles demo mode (Issue #29).
  */
 export default function TopBar({
   appState,
@@ -17,10 +19,13 @@ export default function TopBar({
       justifyContent: 'space-between',
       padding: '16px 24px',
       position: 'relative',
-      zIndex: 10,
+      zIndex: 20,
     }}>
+      {/* Brand logo & discrete demo trigger */}
       <div
         onClick={appState !== 'room' && appState !== 'syncing' ? onNavigateToTuner : undefined}
+        onDoubleClick={onToggleDemoMode}
+        title={demoMode ? "Wavelength (Demo Mode Active: 90s • Double-click or Shift+D to toggle)" : "Wavelength (Double-click or Shift+D for 90s demo)"}
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -29,11 +34,29 @@ export default function TopBar({
           userSelect: 'none',
         }}
       >
-        <Activity
-          size={20}
-          strokeWidth={1.5}
-          style={{ color: 'var(--color-gradient-start)' }}
-        />
+        <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+          <Activity
+            size={20}
+            strokeWidth={1.8}
+            style={{ color: 'var(--color-gradient-start)' }}
+          />
+          {/* Subtle demo active indicator dot */}
+          {demoMode && (
+            <span
+              style={{
+                position: 'absolute',
+                top: '-2px',
+                right: '-2px',
+                width: '5px',
+                height: '5px',
+                borderRadius: '50%',
+                backgroundColor: 'var(--color-accent-live)',
+                boxShadow: '0 0 6px var(--color-accent-live)',
+              }}
+              title="Demo Mode: 90s sessions active"
+            />
+          )}
+        </div>
         <span style={{
           fontFamily: 'var(--font-display)',
           fontSize: '16px',
@@ -46,34 +69,11 @@ export default function TopBar({
         </span>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      {/* Borderless Glass Navigation Pills */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
         {appState === 'tuner' && (
-          <>
-            <button
-              onClick={onToggleDemoMode}
-              aria-label="Toggle Demo Mode"
-              title={demoMode ? "Demo Mode: 90s session" : "Full Mode: 12m session"}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '5px',
-                padding: '6px 12px',
-                borderRadius: 'var(--radius-pill)',
-                border: demoMode ? '1px solid var(--color-accent-live)' : '1px solid var(--color-border)',
-                background: demoMode ? 'rgba(255, 176, 32, 0.08)' : 'var(--color-surface)',
-                color: demoMode ? 'var(--color-accent-live)' : 'var(--color-text-secondary)',
-                fontSize: '12px',
-                fontFamily: 'var(--font-mono)',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-              }}
-            >
-              <Clock size={13} strokeWidth={1.5} />
-              <span>{demoMode ? '90s Demo' : '12m Standard'}</span>
-            </button>
-
-            <button
-              onClick={onNavigateToEchoWall}
+          <button
+            onClick={onNavigateToEchoWall}
             aria-label="View Echo Wall"
             style={{
               display: 'inline-flex',
@@ -81,8 +81,9 @@ export default function TopBar({
               gap: '6px',
               padding: '6px 14px',
               borderRadius: 'var(--radius-pill)',
-              border: '1px solid var(--color-border)',
-              background: 'var(--color-surface)',
+              border: '1px solid rgba(255, 255, 255, 0.07)',
+              background: 'rgba(255, 255, 255, 0.03)',
+              backdropFilter: 'blur(12px)',
               color: 'var(--color-text-secondary)',
               fontSize: '13px',
               fontFamily: 'var(--font-body)',
@@ -90,18 +91,19 @@ export default function TopBar({
               transition: 'all 0.2s ease',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = 'var(--color-gradient-start)';
+              e.currentTarget.style.borderColor = 'rgba(124, 92, 255, 0.4)';
               e.currentTarget.style.color = 'var(--color-text-primary)';
+              e.currentTarget.style.background = 'rgba(124, 92, 255, 0.08)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = 'var(--color-border)';
+              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.07)';
               e.currentTarget.style.color = 'var(--color-text-secondary)';
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
             }}
           >
-            <MessageSquareQuote size={15} strokeWidth={1.5} />
+            <MessageSquareQuote size={14} strokeWidth={1.8} />
             <span>Echo Wall</span>
           </button>
-        </>
         )}
 
         {appState === 'echoWall' && (
@@ -114,8 +116,9 @@ export default function TopBar({
               gap: '6px',
               padding: '6px 14px',
               borderRadius: 'var(--radius-pill)',
-              border: '1px solid var(--color-border)',
-              background: 'var(--color-surface)',
+              border: '1px solid rgba(255, 255, 255, 0.07)',
+              background: 'rgba(255, 255, 255, 0.03)',
+              backdropFilter: 'blur(12px)',
               color: 'var(--color-text-secondary)',
               fontSize: '13px',
               fontFamily: 'var(--font-body)',
@@ -123,15 +126,17 @@ export default function TopBar({
               transition: 'all 0.2s ease',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = 'var(--color-gradient-start)';
+              e.currentTarget.style.borderColor = 'rgba(124, 92, 255, 0.4)';
               e.currentTarget.style.color = 'var(--color-text-primary)';
+              e.currentTarget.style.background = 'rgba(124, 92, 255, 0.08)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = 'var(--color-border)';
+              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.07)';
               e.currentTarget.style.color = 'var(--color-text-secondary)';
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
             }}
           >
-            <Radio size={15} strokeWidth={1.5} />
+            <Radio size={14} strokeWidth={1.8} />
             <span>Tuner</span>
           </button>
         )}
@@ -139,3 +144,4 @@ export default function TopBar({
     </header>
   );
 }
+
