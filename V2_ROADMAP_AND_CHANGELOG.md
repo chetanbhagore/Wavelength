@@ -102,11 +102,11 @@ Legend:
 ### Area 1: Concept & Interaction Model
 | # | Issue Identified | Severity | Proposed V2 Solution | Files Affected | Status |
 |---|------------------|----------|-----------------------|----------------|:------:|
-| **1** | Simulated participants feel scripted | High | Add dynamic `isTyping` state machine with 3-dot pulse, randomized pause intervals (3s–11s), variable message lengths, and participant presence fluctuation. | `useRoomSimulation.js`, `MessageStream.jsx` | 🟡 Pending Approval |
-| **2** | Resonance has no collective room feedback | Medium | When resonance is triggered, emit a room-wide backdrop illumination wave and surge the `ResonanceMeter` with an ethereal glow ripple. | `RoomScreen.jsx`, `ResonanceMeter.jsx`, `MessageBubble.jsx` | 🟡 Pending Approval |
+| **1** | Simulated participants feel scripted | High | Add dynamic `isTyping` state machine with 3-dot pulse, randomized pause intervals (3s–11s), variable message lengths, and participant presence fluctuation. | `useRoomSimulation.js`, `MessageStream.jsx` | ✅ Completed |
+| **2** | Resonance has no collective room feedback | Medium | When resonance is triggered, emit a room-wide backdrop illumination wave and surge the `ResonanceMeter` with an ethereal glow ripple. | `RoomScreen.jsx`, `ResonanceMeter.jsx`, `MessageBubble.jsx` | ✅ Completed |
 | **3** | No presence residue after leaving a room | Medium | Save the last active frequency ID in session state; render an ambient pulsating ring and a subtle *"strangers were just here"* ghost glow on that dial frequency tick. | `TunerScreen.jsx`, `FrequencyDial.jsx`, `App.jsx` | 🟡 Pending Approval |
 | **4** | Identity lacks return continuity | Low-Med | Track anonymous visit counts per frequency in `localStorage` without profiles; show a discrete cue: *"You tuned to this frequency 2 days ago"*. | `useLocalStorage.js`, `FrequencyReadout.jsx` | 🟡 Pending Approval |
-| **5** | Frequency matching lacks clustering feel | Low | Display a dynamic micro-badge during sync: *"98.2% frequency phase match"* or *"emotional clustering aligned"*. | `SyncOverlay.jsx` | 🟡 Pending Approval |
+| **5** | Frequency matching lacks clustering feel | Low | Display a dynamic micro-badge during sync: *"98.2% frequency phase match"* or *"emotional clustering aligned"*. | `SyncOverlay.jsx` | ✅ Completed |
 
 ### Area 2: Graphic & Visual Design
 | # | Issue Identified | Severity | Proposed V2 Solution | Files Affected | Status |
@@ -116,7 +116,7 @@ Legend:
 | **8** | Live count font is small & low contrast | Medium | Increase font to `16px`, upgrade font-weight, and trigger a soft neon counter-bump whenever the number fluctuates. | `FrequencyReadout.jsx` | ✅ Completed |
 | **9** | No frequency-specific particle atmosphere | Medium | Render subtle floating canvas dust/motes whose density, velocity, and color align with the mood (e.g. fast restless sparks vs slow quiet drifts). | `AmbientWaveformBackground.jsx` | ✅ Completed |
 | **10** | Room background feels flat vs Tuner | Medium | Extend the ambient waveform canvas into the room background at 40% opacity with a dark vignette overlay. | `RoomScreen.jsx` | ✅ Completed |
-| **11** | Avatars lack individual visual identity | Medium | Vary avatar glow radii, pulse rates (1.8s to 3.2s), border weights, and hue subtleties across pseudonyms. | `RoomAvatarStack.jsx` | 🟡 Pending Approval |
+| **11** | Avatars lack individual visual identity | Medium | Vary avatar glow radii, pulse rates (1.8s to 3.2s), border weights, and hue subtleties across pseudonyms. | `RoomAvatarStack.jsx` | ✅ Completed |
 | **12** | Echo Wall cards are too uniform | Low-Med | Apply slight organic card tilts (`rotate(-0.5deg)` to `rotate(0.5deg)`), depth shadows, and subtle timestamp fades. | `EchoCard.jsx`, `EchoWallScreen.jsx` | 🟡 Pending Approval |
 | **13** | Top bar buttons compete with atmosphere | Low | Soften top-bar buttons into borderless glass pills that blend harmoniously into the header void. | `TopBar.jsx` | 🟡 Pending Approval |
 | **14** | Primary CTA gradient is overused | Low | Keep Tune-In button subtly dark/luminescent at rest, bursting into full vibrant gradient glow only upon dial settle and hover. | `TuneInButton.jsx` | ✅ Completed |
@@ -126,19 +126,19 @@ Legend:
 |---|------------------|----------|-----------------------|----------------|:------:|
 | **15** | Dial spring feels under-damped | Medium | Calibrate Framer Motion spring to `stiffness: 260, damping: 28` and trigger a subtle scale bounce (`1.0 -> 1.04 -> 1.0`) upon snap-to-tick. | `FrequencyDial.jsx` | ✅ Completed |
 | **16** | Sync Overlay lacks radio tuning aesthetic | Medium | Add an illuminated horizontal scanning needle line that sweeps across frequency bands before locking onto target frequency. | `SyncOverlay.jsx` | ✅ Completed |
-| **17** | Avatar entry feels too uniform | Medium | Introduce randomized spring overshoots, varied initial blur transitions, and staggered scale reveals for avatars. | `RoomAvatarStack.jsx` | 🟡 Pending Approval |
-| **18** | Resonance pulse is too subtle | Medium | Add an expanding chromatic ring explosion on tapped bubble and a rapid surge in the room energy meter. | `MessageBubble.jsx`, `ResonanceMeter.jsx` | 🟡 Pending Approval |
+| **17** | Avatar entry feels too uniform | Medium | Introduce randomized spring overshoots, varied initial blur transitions, and staggered scale reveals for avatars. | `RoomAvatarStack.jsx` | ✅ Completed |
+| **18** | Resonance pulse is too subtle | Medium | Add an expanding chromatic ring explosion on tapped bubble and a rapid surge in the room energy meter. | `MessageBubble.jsx`, `ResonanceMeter.jsx` | ✅ Completed |
 | **19** | Echo drop animation is a simple translate | Medium | Create a physical "drop into the ether" effect with slight 3D perspective rotation, scale reduction, and a fading light spark trail. | `EchoModal.jsx` | 🟡 Pending Approval |
 | **20** | Page transitions lack spatial depth | Low-Med | Implement shared layout transitions or a soft radial frequency wipe between Tuner and Room. | `App.jsx`, `index.css` | 🟡 Pending Approval |
 | **21** | Frequency change lacks micro-feedback | Low | Center orb should emit a tactile light flare and expand momentarily when a tick snaps into place. | `FrequencyDial.jsx` | ✅ Completed |
-| **22** | Countdown ring color change is sudden | Low | Create a smooth, linear color interpolation from violet (`#7C5CFF`) to amber (`#FFB020`) starting at 90s, shifting to crimson at 15s. | `CountdownRing.jsx` | 🟡 Pending Approval |
+| **22** | Countdown ring color change is sudden | Low | Create a smooth, linear color interpolation from violet (`#7C5CFF`) to amber (`#FFB020`) starting at 90s, shifting to crimson at 15s. | `CountdownRing.jsx` | ✅ Completed |
 | **23** | Reduced motion fallback needs rigorous audit | Medium | Ensure every canvas loop, SVG rotate, spring drag, and pulse adheres to `prefers-reduced-motion` with clean static fallbacks. | `index.css`, Canvas components | 🟡 Pending Approval |
 
 ### Area 4: UX & Flow
 | # | Issue Identified | Severity | Proposed V2 Solution | Files Affected | Status |
 |---|------------------|----------|-----------------------|----------------|:------:|
-| **24** | Missing room arrival confirmation | Medium | Render a gentle floating banner on room entry: *"You're in sync. 4 strangers are here with you."* that fades after 3 seconds. | `RoomScreen.jsx` | 🟡 Pending Approval |
-| **25** | Leaving early lacks emotional weight | Medium | Display a poetic confirmation dialog: *"Leave this frequency? The room will dissolve for you, but you can leave an echo behind."* | `RoomScreen.jsx`, `RoomHeader.jsx` | 🟡 Pending Approval |
+| **24** | Missing room arrival confirmation | Medium | Render a gentle floating banner on room entry: *"You're in sync. 4 strangers are here with you."* that fades after 3 seconds. | `RoomScreen.jsx` | ✅ Completed |
+| **25** | Leaving early lacks emotional weight | Medium | Display a poetic confirmation dialog: *"Leave this frequency? The room will dissolve for you, but you can leave an echo behind."* | `RoomScreen.jsx`, `RoomHeader.jsx` | ✅ Completed |
 | **26** | Echo Wall filter chips feel secondary | Medium | Active filter chips should dynamically inherit the glowing accent color and mood aura of that specific frequency. | `FrequencyFilterChips.jsx` | 🟡 Pending Approval |
 | **27** | Empty state on Echo Wall is generic | Low | Replace generic empty text with poetic copy tailored per mood (e.g. *"The silence here is waiting for your words."*). | `EchoWallScreen.jsx` | 🟡 Pending Approval |
 | **28** | Composer lacks character limit cue | Low | Display a minimal unobtrusive character countdown that fades in only when within 25 characters of the limit. | `MessageComposer.jsx` | 🟡 Pending Approval |
@@ -159,7 +159,7 @@ Legend:
 | # | Issue Identified | Severity | Proposed V2 Solution | Files Affected | Status |
 |---|------------------|----------|-----------------------|----------------|:------:|
 | **37** | No backup demo video linked | High | Provide a clear instructions/recording guide and embed a demo asset reference for judges. | `README.md`, repository | 🟡 Pending Approval |
-| **38** | Missing "Why no likes" philosophy cue | Medium | Add an elegant micro-tooltip / info popover on the resonance bar: *"No like counters. No algorithms. Just pure shared presence."* | `ResonanceMeter.jsx`, `RoomScreen.jsx` | 🟡 Pending Approval |
+| **38** | Missing "Why no likes" philosophy cue | Medium | Add an elegant micro-tooltip / info popover on the resonance bar: *"No like counters. No algorithms. Just pure shared presence."* | `ResonanceMeter.jsx`, `RoomScreen.jsx` | ✅ Completed |
 | **39** | Tagline missing from active interface | Medium | Place *"Not who you follow. Who you're in sync with, right now."* as a subtle breathing tagline beneath the Tuner header. | `TunerScreen.jsx`, `TopBar.jsx` | ✅ Completed |
 
 ---
@@ -182,19 +182,21 @@ To maintain clean code quality and ensure each piece is thoroughly tested, we wi
   - Upgraded live audience counter with glass pill capsule and animated count bump.
 
 ### Sprint 2: The Living Room & Resonance Surge (Social Illusion & Emotional Feedback)
-- **Status**: 🟡 **READY FOR APPROVAL**
+- **Status**: ✅ **COMPLETED & VERIFIED**
 - **Scope**: Issues #1, #2, #11, #17, #18, #22, #24, #25, #38
-- **Deliverables**:
-  - Implement dynamic `"stranger is typing..."` indicators with realistic human rhythm.
-  - Implement room-wide backdrop resonance light flash upon message taps.
-  - Add progressive multi-stage color interpolation on countdown ring (Violet -> Amber -> Crimson).
-  - Add room arrival announcement banner (*"You're in sync. 4 strangers are here."*).
-  - Add philosophy tooltip explaining the anti-metric resonance philosophy.
-  - Add poetic early leave confirmation modal.
+- **Deliverables Completed**:
+  - Dynamic `stranger_XX is typing...` indicators with animated 3-dot pulse and human typing pauses.
+  - Organic conversational cadences: quick response bursts, thoughtful reflection pauses, and simulated peer resonance.
+  - Collective room-wide backdrop radial illumination flash when resonance surges.
+  - Progressive sunset countdown ring interpolation (Ethereal Violet `#7C5CFF` -> Warm Amber `#FFB020` -> Twilight Crimson `#FF5470`).
+  - Serene room arrival confirmation toast: *"You're in sync. 4 strangers are sharing this frequency with you."*
+  - Poetic early leave confirmation modal before dissolving the room.
+  - Individual avatar visual identity: organic breathing rhythms, size variations, and lively spring overshoot entrances.
+  - Anti-metric philosophy popover explaining why Wavelength has zero like counters or algorithmic incentives.
 
 ### Sprint 3: Presence Residue & Echo Ritual Elevation (Memory & Closure)
-- **Status**: 🟡 Pending (After Sprint 2)
-- **Scope**: Issues #3, #4, #5, #12, #19, #26, #27, #28
+- **Status**: 🟡 Ready for Sprint 3
+- **Scope**: Issues #3, #4, #12, #19, #26, #27, #28
 
 ### Sprint 4: Technical Polish, Accessibility & Immersion Finishing (Zero Tolerance QA)
 - **Status**: 🟡 Pending (After Sprint 3)
@@ -208,7 +210,9 @@ To maintain clean code quality and ensure each piece is thoroughly tested, we wi
 | :--- | :--- | :--- | :--- | :--- |
 | *Baseline* | *Scaffolding* | Initial app structure, tuner, room, echo system built and pushed to GitHub. | Vite build & dev server HTTP 200 | ✅ Baseline |
 | *2026-09-08* | *Sprint 1* | Package renamed to wavelength; manifesto tagline added; atmospheric particles & deeper wave gradients; analog radio needle sweep in SyncOverlay with vibe lock; thicker dial ticks + haptic center orb; obsidian CTA button; glass live count bump; room wave backdrop. | OxLint (0 errors) + Vite build (7.90s) + HTTP 200 | ✅ Completed |
+| *2026-09-08* | *Sprint 2* | Dynamic typing indicator ("stranger_XX is typing") with animated 3-dot pulse; simulated peer resonance; collective room backdrop illumination wave; progressive sunset countdown (Violet -> Amber -> Crimson); room arrival banner; poetic early departure modal; avatar individual breathing rates & spring overshoots; anti-metric philosophy popover. | OxLint (0 errors, 0 warnings) + Vite build (1.20s) + HTTP 200 | ✅ Completed |
 
 ---
 
 *This document is dynamically updated as changes are reviewed, approved, and merged.*
+

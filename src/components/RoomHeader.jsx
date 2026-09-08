@@ -2,9 +2,16 @@ import { Activity, LogOut } from 'lucide-react';
 import CountdownRing from './CountdownRing';
 
 /**
- * Room header with frequency label, waveform icon, countdown ring, and leave action.
+ * Room header with frequency label, waveform icon, countdown ring, and graceful leave action.
  */
-export default function RoomHeader({ frequency, timeRemaining, totalDuration, isWarning, isUrgent, onLeave }) {
+export default function RoomHeader({
+  frequency,
+  timeRemaining,
+  totalDuration,
+  isWarning,
+  isUrgent,
+  onRequestLeave,
+}) {
   return (
     <div style={{
       display: 'flex',
@@ -12,31 +19,54 @@ export default function RoomHeader({ frequency, timeRemaining, totalDuration, is
       justifyContent: 'space-between',
       padding: '12px 16px',
       borderBottom: '1px solid var(--color-border)',
-      background: 'var(--color-surface)',
-      backdropFilter: 'blur(12px)',
+      background: 'rgba(10, 8, 18, 0.85)',
+      backdropFilter: 'blur(16px)',
+      zIndex: 10,
     }}>
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '8px',
+        gap: '10px',
         minWidth: 0,
       }}>
-        <Activity
-          size={16}
-          strokeWidth={1.5}
-          style={{ color: frequency.colorAccent, flexShrink: 0 }}
-        />
-        <span style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: '14px',
-          fontWeight: 600,
-          color: 'var(--color-text-primary)',
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
+        <div style={{
+          width: '28px',
+          height: '28px',
+          borderRadius: '50%',
+          background: `${frequency.colorAccent}18`,
+          border: `1px solid ${frequency.colorAccent}33`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexShrink: 0,
         }}>
-          {frequency.label}
-        </span>
+          <Activity
+            size={14}
+            strokeWidth={2}
+            style={{ color: frequency.colorAccent }}
+          />
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+          <span style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: '14px',
+            fontWeight: 600,
+            color: 'var(--color-text-primary)',
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}>
+            {frequency.label}
+          </span>
+          <span style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: '11px',
+            color: frequency.colorAccent,
+            opacity: 0.8,
+          }}>
+            {frequency.mhz} MHz
+          </span>
+        </div>
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -47,9 +77,9 @@ export default function RoomHeader({ frequency, timeRemaining, totalDuration, is
           isUrgent={isUrgent}
         />
 
-        {onLeave && (
+        {onRequestLeave && (
           <button
-            onClick={onLeave}
+            onClick={onRequestLeave}
             aria-label="Leave room"
             title="Leave frequency"
             style={{
@@ -57,7 +87,7 @@ export default function RoomHeader({ frequency, timeRemaining, totalDuration, is
               height: '32px',
               borderRadius: '50%',
               border: '1px solid var(--color-border)',
-              background: 'transparent',
+              background: 'rgba(255, 255, 255, 0.03)',
               color: 'var(--color-text-secondary)',
               display: 'flex',
               alignItems: 'center',
@@ -66,18 +96,21 @@ export default function RoomHeader({ frequency, timeRemaining, totalDuration, is
               transition: 'all 0.2s ease',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = 'var(--color-error)';
-              e.currentTarget.style.color = 'var(--color-error)';
+              e.currentTarget.style.borderColor = 'rgba(255, 84, 112, 0.5)';
+              e.currentTarget.style.color = '#FF5470';
+              e.currentTarget.style.background = 'rgba(255, 84, 112, 0.1)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.borderColor = 'var(--color-border)';
               e.currentTarget.style.color = 'var(--color-text-secondary)';
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
             }}
           >
-            <LogOut size={15} strokeWidth={1.5} />
+            <LogOut size={14} strokeWidth={1.8} />
           </button>
         )}
       </div>
     </div>
   );
 }
+
