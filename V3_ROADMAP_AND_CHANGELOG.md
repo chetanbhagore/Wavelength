@@ -45,8 +45,8 @@ The "match by emotional state / frequency / vibe" landscape contains notable pre
 | 10 | Echo Wall cards lack materiality | Medium | Sprint 3 | Physical analog receipt / paper card styling with frequency stamp and subtle signal traces | ✅ Completed |
 | 11 | Live count presentation static | Medium | Sprint 1 | Signal strength meter (-72 dBm) with periodic micro-glitch fluctuation | ✅ Completed |
 | 12 | Color system needs distinct atmospheric temperature | Medium | Sprint 1 | Per-frequency motion speeds, particle densities, and color temperatures | ✅ Completed |
-| 13 | Typography hierarchy soft | Low-Med | Sprint 4 | Sharpen contrast, font weight tokens, and display tracking across all views | ⏳ Planned |
-| 14 | TopBar competes with immersion | Low | Sprint 4 | Auto-dimming TopBar during active room presence to prioritize focus | ⏳ Planned |
+| 13 | Typography hierarchy soft | Low-Med | Sprint 4 | Sharpen contrast, font weight tokens, and display tracking across all views | ✅ Completed |
+| 14 | TopBar competes with immersion | Low | Sprint 4 | Auto-dimming TopBar during active room presence to prioritize focus | ✅ Completed |
 
 ### Group C: Motion & Signature Interactions
 | # | Issue / Gap | Severity | Sprint | Proposed Resolution | Status |
@@ -57,8 +57,8 @@ The "match by emotional state / frequency / vibe" landscape contains notable pre
 | 18 | Dial spring feels slightly digital | Medium | Sprint 1 | Mechanical spring detent with haptic scale pulse and click sound on snap | ✅ Completed |
 | 19 | Avatar entry not organic enough | Medium | Sprint 2 | Staggered arrivals with slight spring overshoot and blur-to-focus emergence | ✅ Completed |
 | 20 | Countdown color transition predictable | Medium | Sprint 3 | Final 30s signal weakening: progressive desaturation and CRT interference | ✅ Completed |
-| 21 | Page transitions lack spatial continuity | Medium | Sprint 4 | Smooth frequency-accented wave wipe transition between routes | ⏳ Planned |
-| 22 | Reduced-motion needs verified proof | Medium | Sprint 4 | Automated test verification and documented reduced-motion snapshot | ⏳ Planned |
+| 21 | Page transitions lack spatial continuity | Medium | Sprint 4 | Smooth frequency-accented wave wipe transition between routes | ✅ Completed |
+| 22 | Reduced-motion needs verified proof | Medium | Sprint 4 | Automated test verification and documented reduced-motion snapshot | ✅ Completed |
 | 23 | No micro-sound design | Low | Sprint 1 | Synthesized analog rotary tick click & frequency lock chime using Web Audio | ✅ Completed |
 
 ### Group D: Simulation & "Living Room" Realism
@@ -72,19 +72,19 @@ The "match by emotional state / frequency / vibe" landscape contains notable pre
 ### Group E: UX & Flow Polish
 | # | Issue / Gap | Severity | Sprint | Proposed Resolution | Status |
 |---|-------------|----------|--------|---------------------|:------:|
-| 28 | First-time user needs clear ambient guidance | Medium | Sprint 4 | Disappearing atmospheric onboarding tooltips that vanish after first interaction | ⏳ Planned |
-| 29 | Early departure modal feels abrupt | Medium | Sprint 4 | Weighty, poetic exit confirmation reinforcing the sacredness of the remaining time | ⏳ Planned |
+| 28 | First-time user needs clear ambient guidance | Medium | Sprint 4 | Disappearing atmospheric onboarding tooltips that vanish after first interaction | ✅ Completed |
+| 29 | Early departure modal feels abrupt | Medium | Sprint 4 | Weighty, poetic exit confirmation reinforcing the sacredness of the remaining time | ✅ Completed |
 | 30 | Echo Wall filter chips feel secondary | Medium | Sprint 3 | Glowing frequency spectrum chips that feel like retuning the receiver | ✅ Completed |
 | 31 | No soft return path celebrating the residual | Medium | Sprint 3 | Graceful transition back to Tuner highlighting recently deposited echo | ✅ Completed |
 
 ### Group F: Technical & Presentation Hygiene
 | # | Issue / Gap | Severity | Sprint | Proposed Resolution | Status |
 |---|-------------|----------|--------|---------------------|:------:|
-| 32 | Meaningful semantic git tags & release history | Medium | Sprint 4 | Formal `v1.0.0`, `v2.0.0`, and `v3.0.0` git tags pushed to GitHub | ⏳ Planned |
-| 33 | Residual token inconsistencies | Low-Med | Sprint 4 | CSS variable token consolidation for all colors, glass blurs, and typography | ⏳ Planned |
-| 34 | Demo mode discovery perfected | Low | Sprint 4 | Seamless Shift+D hotkey + discreet logo glyph trigger with smooth feedback | ⏳ Planned |
-| 35 | Demo walkthrough & evaluation script | High | Sprint 4 | Complete step-by-step judge demonstration guide in README | ⏳ Planned |
-| 36 | Publicly verifiable accessibility audit | Medium | Sprint 4 | WCAG AA color contrast, full keyboard navigation, and aria-live validation | ⏳ Planned |
+| 32 | Meaningful semantic git tags & release history | Medium | Sprint 4 | Formal `v1.0.0`, `v2.0.0`, and `v3.0.0` git tags pushed to GitHub | ✅ Completed |
+| 33 | Residual token inconsistencies | Low-Med | Sprint 4 | CSS variable token consolidation for all colors, glass blurs, and typography | ✅ Completed |
+| 34 | Demo mode discovery perfected | Low | Sprint 4 | Seamless Shift+D hotkey + discreet logo glyph trigger with smooth feedback | ✅ Completed |
+| 35 | Demo walkthrough & evaluation script | High | Sprint 4 | Complete step-by-step judge demonstration guide in README | ✅ Completed |
+| 36 | Publicly verifiable accessibility audit | Medium | Sprint 4 | WCAG AA color contrast, full keyboard navigation, and aria-live validation | ✅ Completed |
 
 ---
 
@@ -124,8 +124,10 @@ graph LR
 | `v3.0.0-wip` | Sprint 1 | Radio MHz markings, physical detent click sound, signal strength dBm, reactive drag velocity | OxLint 0 err / Build 1.42s | ✅ Completed |
 | `v3.0.0-wip` | Sprint 2 | Atmospheric canvas in Room, unique stranger signatures, early burst, join/leave events, enriched pools | OxLint 0 err / Build 5.44s | ✅ Completed |
 | `v3.0.0-wip` | Sprint 3 | Sacred dissolution climax, room resonance shockwave, gravity echo drop, material paper cards, retuning chips | OxLint 0 err / Build 12.9s | ✅ Completed |
+| `v3.0.0` | Sprint 4 | Spatial page transitions, auto-dimming TopBar, disappearing guidance, poetic departure modal, full a11y & release | OxLint 0 err / Build clean | ✅ Released |
 
 ---
 
 *This document is the source of truth for Version 3 development.*
+
 

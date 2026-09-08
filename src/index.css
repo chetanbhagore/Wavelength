@@ -11,7 +11,7 @@
   --color-surface-2: #171B27;
   --color-border: #232733;
   --color-text-primary: #F5F3F7;
-  --color-text-secondary: #9A96AC;
+  --color-text-secondary: #ADA8C2;
   --color-gradient-start: #7C5CFF;
   --color-gradient-end: #FF4FA3;
   --color-accent-live: #FFB020;
@@ -36,9 +36,9 @@
   --radius-pill: 999px;
 
   /* Fonts */
-  --font-display: 'Space Grotesk', sans-serif;
-  --font-body: 'Inter', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-display: 'Space Grotesk', -apple-system, sans-serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
   /* Shadows */
   --shadow-glow-sm: 0 0 20px rgba(124, 92, 255, 0.25);
@@ -46,6 +46,27 @@
   --shadow-glow-lg: 0 0 60px rgba(124, 92, 255, 0.45);
   --shadow-glow-resonance: 0 0 30px rgba(51, 230, 201, 0.35);
   --shadow-glow-live: 0 0 30px rgba(255, 176, 32, 0.35);
+}
+
+:root {
+  --color-bg: #05060A;
+  --color-surface: #10131C;
+  --color-surface-2: #171B27;
+  --color-border: #232733;
+  --color-text-primary: #F5F3F7;
+  --color-text-secondary: #ADA8C2;
+  --color-gradient-start: #7C5CFF;
+  --color-gradient-end: #FF4FA3;
+  --color-accent-live: #FFB020;
+  --color-accent-resonance: #33E6C9;
+  --color-error: #FF5470;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+  --font-display: 'Space Grotesk', -apple-system, sans-serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
 
 /* ============================================

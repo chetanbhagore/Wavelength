@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { useState, useEffect, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import AmbientWaveformBackground from '../components/AmbientWaveformBackground';
 import FloatingWhispers from '../components/FloatingWhispers';
 import FrequencyDial from '../components/FrequencyDial';
@@ -28,6 +29,33 @@ export default function TunerScreen({
     goTo,
     handleKeyDown,
   } = useDial();
+
+  const [showGuidance, setShowGuidance] = useState(() => {
+    try {
+      return !sessionStorage.getItem('wavelength_tuner_guidance_seen');
+    } catch {
+      return true;
+    }
+  });
+
+  const dismissGuidance = useCallback(() => {
+    setShowGuidance((prev) => {
+      if (!prev) return false;
+      try {
+        sessionStorage.setItem('wavelength_tuner_guidance_seen', 'true');
+      } catch {
+        // ignore storage error
+      }
+      return false;
+    });
+  }, []);
+
+  // Auto-dismiss after 9 seconds if not interacted
+  useEffect(() => {
+    if (!showGuidance) return;
+    const timer = setTimeout(dismissGuidance, 9000);
+    return () => clearTimeout(timer);
+  }, [showGuidance, dismissGuidance]);
 
   const currentVisitInfo = frequencyHistory[currentFrequency.id] || null;
 
@@ -90,17 +118,76 @@ export default function TunerScreen({
           totalFrequencies={totalFrequencies}
           currentFrequency={currentFrequency}
           lastVisitedFrequencyId={lastVisitedFrequencyId}
-          onNext={goNext}
-          onPrev={goPrev}
-          onKeyDown={handleKeyDown}
+          onNext={() => {
+            dismissGuidance();
+            goNext();
+          }}
+          onPrev={() => {
+            dismissGuidance();
+            goPrev();
+          }}
+          onKeyDown={(e) => {
+            dismissGuidance();
+            handleKeyDown(e);
+          }}
         />
       </div>
+
+      {/* Disappearing Ambient Guidance Hint (Sprint 4 Issue #28) */}
+      <AnimatePresence>
+        {showGuidance && (
+          <motion.div
+            initial={{ opacity: 0, y: 6, scale: 0.96 }}
+            animate={{ opacity: 0.85, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -6, filter: 'blur(6px)', scale: 0.96 }}
+            transition={{ duration: 0.35 }}
+            style={{
+              zIndex: 2,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '6px 14px',
+              borderRadius: 'var(--radius-pill)',
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: `1px solid ${currentFrequency.colorAccent}33`,
+              boxShadow: `0 4px 16px rgba(0, 0, 0, 0.4), 0 0 10px ${currentFrequency.colorAccent}18`,
+              backdropFilter: 'blur(12px)',
+              pointerEvents: 'none',
+              marginTop: '-8px',
+              marginBottom: '-4px',
+            }}
+          >
+            <span
+              style={{
+                width: '5px',
+                height: '5px',
+                borderRadius: '50%',
+                backgroundColor: currentFrequency.colorAccent,
+                boxShadow: `0 0 6px ${currentFrequency.colorAccent}`,
+              }}
+            />
+            <span
+              style={{
+                fontFamily: 'var(--font-mono)',
+                fontSize: '11px',
+                color: 'var(--color-text-secondary)',
+                letterSpacing: '0.04em',
+              }}
+            >
+              Rotate dial or use <strong style={{ color: '#FFFFFF' }}>← →</strong> keys to tune frequencies
+            </span>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* 4. Interactive Frequency Spectrum Ribbon */}
       <div style={{ zIndex: 2 }}>
         <FrequencySpectrumRibbon
           currentIndex={currentIndex}
-          onSelectIndex={goTo}
+          onSelectIndex={(idx) => {
+            dismissGuidance();
+            goTo(idx);
+          }}
         />
       </div>
 

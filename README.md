@@ -71,21 +71,83 @@ Following a strict **39-point Judge Audit Report**, Wavelength was elevated acro
 
 ---
 
-## 🛠️ Architecture & Tech Stack
+## 🌊 Version 3: Sacred Dissolution & Analog Precision
 
-```mermaid
-flowchart LR
-    A[Tuner Screen<br/>Waveform + Dial + Dust Motes] -->|Tune In CTA| B[Sync Overlay<br/>Analog Radio Needle + Vibe Lock]
-    B -->|Locked In| C[Living Room<br/>Typing Indicators + Resonance Wave]
-    C -->|Timer 0:00 or Leave| D[Echo Modal<br/>3D Physical Drop Into Ether]
-    D -->|Drop or Skip| E[Echo Wall<br/>Organic Tilts + Mood Chips]
-    E -->|Return to Dial| A
-```
+Following the **36-point Version 3 Judge Audit**, Wavelength achieved its final, competition-grade form:
+
+### 📻 Sprint 1: Radio Signal Metaphor & Sensory Detent
+- **Exact Broadcast MHz Dial Coordinates**: Discrete MHz bands (`88.5 MHz` through `107.9 MHz`) marked with radial detents and outer numerals.
+- **Web Audio Mechanical Detent Synthesis**: Pure synthesized mechanical rotary tick clicks on dial rotation and 528Hz pure sine station lock chime.
+- **Dynamic RF Signal Strength dBm Meter**: `-68 dBm` RF indicator with 4-bar signal bars and organic stochastic micro-glitches.
+- **Velocity-Reactive Canvas Weather**: Dragging the dial surges background wave amplitude and particle velocity proportionally to drag speed.
+
+### 👥 Sprint 2: Living Constellation & Co-Presence Realism
+- **Continuous Atmospheric Canvas into Room**: Carries mood-specific particle physics (insomnia rain, kinetic embers, bokeh mist) into the room.
+- **Unique Stranger Visual Signatures**: Asymmetric border-radii, individual breathing cycles (`2.1s`–`3.45s`), and blur-to-sharp emergence.
+- **Dynamic Typing Pulse & Early Sparks**: Stranger avatars pulse actively with beacon dots when typing; initial conversational spark drops within 2.5–3.5s.
+- **Ambient Mid-Session Join/Leave Events**: Ethereal inline micro-toasts when strangers tune in or drift away.
+
+### ⏳ Sprint 3: Sacred Dissolution & Physical Echo Finality
+- **Sacred 30-Second Dissolution Climax**: Progressive desaturation (up to 75% grayscale) and analog CRT scanline interference before session expiration.
+- **Room-Wide Resonance Shockwave**: Multi-ring collective radial expansion illuminating the entire room for 1.1s on any resonance.
+- **Anti-Vanity Philosophy Whisper**: Ambient toast on first resonance: *"Resonance: shared vibration without counters or likes."*
+- **Physical Gravity Echo Drop**: Acceleration curve with Web Audio sub-bass drop thud and 16 ascending ether dispersion particles.
+- **Material Paper Receipt Cards**: Dashed thermal printer tear lines, station receipt codes (`#REC-XXXX`), and retuning frequency chips.
+
+### 🌐 Sprint 4: Spatial Continuity, Atmospheric Immersion & Release
+- **Spatial Route Transitions**: Seamless page transitions with scale and directional glide.
+- **Auto-Dimming TopBar**: Smoothly dims to 0.22 opacity during room immersion, restoring on pointer activity.
+- **Disappearing Ambient Guidance**: Gentle first-time tuning prompt that permanently dissolves on first interaction.
+- **Poetic Departure Modal**: Weighty confirmation dialogue honoring the ephemeral constellation.
+- **Full Keyboard & Reduced-Motion Accessibility**: WCAG AA/AAA contrast ratios and verified static fallbacks.
+
+---
+
+## 🧭 3-Minute Odyssey Judge Walkthrough Script
+
+Follow these exact steps to evaluate every sensory and architectural layer of Wavelength:
+
+1. **Ambient Guidance & Sensory Tuning**:
+   - Open [Wavelength Live](https://chetanbhagore.github.io/Wavelength/).
+   - Notice the ambient hint: *"Rotate dial or use ← → keys to tune frequencies"*.
+   - Drag the dial or press `ArrowLeft`/`ArrowRight`. Listen to the synthesized mechanical rotary detent clicks.
+   - Observe the velocity-reactive canvas particles accelerate and the RF signal meter (`-68 dBm`) fluctuate with subtle static glitches.
+
+2. **The Staged Tune-In Sequence**:
+   - Click **Tune In** (or hit `Enter`).
+   - Experience the staged sequence: needle sweep to exact MHz frequency, 528Hz pure sine lock chime, and staggered stranger arrivals.
+
+3. **The Living Constellation & Immersion**:
+   - In the Room, notice the TopBar auto-dims after 2 seconds to keep visual priority on the conversation.
+   - Look at the avatar stack: each stranger has an organic breathing cycle and a distinct aura glow.
+   - When a stranger types, their avatar pulses actively with an illuminated beacon dot.
+
+4. **Collective Resonance & The Anti-Metric Rule**:
+   - Send a reflection using the composer.
+   - Click **Resonate**: observe the room-wide radial shockwave that illuminates all avatars simultaneously, followed by the anti-vanity philosophy whisper (*"No likes. No counts. Only a shared ripple in the ether."*).
+
+5. **Sacred Dissolution Climax**:
+   - With **Demo Mode** active (`DEMO: 90s` pill in TopBar or `Shift+D`), let the timer count down to the final 30 seconds.
+   - Watch the screen progressively desaturate and CRT scanlines shimmer as the signal dissolves into the void.
+
+6. **The Physical Echo Ritual**:
+   - Type a single-line reflection in the Echo Modal and click **Drop Echo into Void**.
+   - Watch the physical gravity drop with ether dispersion particles and listen to the sub-bass audio drop thud.
+
+7. **The Material Echo Wall**:
+   - Examine the material thermal paper receipts with dashed perforation headers and frequency stamps.
+   - Click the glowing frequency filter chips to retune the receiver with mechanical click audio feedback.
+   - Click **Tuner** to return home.
+
+---
+
+## 🛠️ Architecture & Tech Stack
 
 - **Framework**: [React 19](https://react.dev/)
 - **Build Tool**: [Vite 8](https://vitejs.dev/) with `base: './'` for universal asset routing
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) + Custom HSL Design Tokens
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) + Consolidated Design System Tokens
 - **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Audio**: Web Audio API (Synthesized detent clicks, sine resonance pulses, sub-bass thuds)
 - **Icons**: [Lucide React](https://lucide.dev/)
 - **Linter**: [OxLint](https://oxc.rs/)
 
@@ -116,4 +178,5 @@ npm run build
 ## 📄 License
 
 MIT License • Created with craft for the Frontend Odyssey Challenge.
+
 

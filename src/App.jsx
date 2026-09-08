@@ -84,8 +84,13 @@ export default function App() {
   }, []);
 
   // ─── Room → Echo Modal ───
-  const handleRoomEnd = useCallback(() => {
-    setAppState('echoModal');
+  const handleRoomEnd = useCallback((skipEcho = false) => {
+    if (skipEcho) {
+      setSelectedFrequency(null);
+      setAppState('tuner');
+    } else {
+      setAppState('echoModal');
+    }
   }, []);
 
   // ─── Echo → Echo Wall ───
@@ -125,29 +130,59 @@ export default function App() {
         onToggleDemoMode={handleToggleDemoMode}
       />
 
-      <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-        {appState === 'tuner' && (
-          <TunerScreen
-            onTuneIn={handleTuneIn}
-            lastVisitedFrequencyId={lastVisitedFrequencyId}
-            frequencyHistory={frequencyHistory}
-          />
-        )}
+      <main style={{ flex: 1, display: 'flex', flexDirection: 'column', position: 'relative' }}>
+        {/* Spatial Page Transitions (Sprint 4 Issue #21) */}
+        <AnimatePresence mode="wait">
+          {appState === 'tuner' && (
+            <motion.div
+              key="tuner"
+              initial={{ opacity: 0, scale: 0.985 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.015, filter: 'blur(8px)' }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              style={{ flex: 1, display: 'flex', flexDirection: 'column' }}
+            >
+              <TunerScreen
+                onTuneIn={handleTuneIn}
+                lastVisitedFrequencyId={lastVisitedFrequencyId}
+                frequencyHistory={frequencyHistory}
+              />
+            </motion.div>
+          )}
 
-        {appState === 'room' && selectedFrequency && (
-          <RoomScreen
-            frequency={selectedFrequency}
-            onRoomEnd={handleRoomEnd}
-            demoMode={demoMode}
-          />
-        )}
+          {appState === 'room' && selectedFrequency && (
+            <motion.div
+              key={`room_${selectedFrequency.id}`}
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.96, filter: 'blur(10px)' }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              style={{ flex: 1, display: 'flex', flexDirection: 'column' }}
+            >
+              <RoomScreen
+                frequency={selectedFrequency}
+                onRoomEnd={handleRoomEnd}
+                demoMode={demoMode}
+              />
+            </motion.div>
+          )}
 
-        {appState === 'echoWall' && (
-          <EchoWallScreen
-            initialFrequencyId={selectedFrequency?.id}
-            onBack={handleBackToTuner}
-          />
-        )}
+          {appState === 'echoWall' && (
+            <motion.div
+              key="echoWall"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12, filter: 'blur(8px)' }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              style={{ flex: 1, display: 'flex', flexDirection: 'column' }}
+            >
+              <EchoWallScreen
+                initialFrequencyId={selectedFrequency?.id}
+                onBack={handleBackToTuner}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
 
 

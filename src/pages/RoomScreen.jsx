@@ -1,12 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, LogOut } from 'lucide-react';
+import { Users } from 'lucide-react';
 import AmbientWaveformBackground from '../components/AmbientWaveformBackground';
 import RoomHeader from '../components/RoomHeader';
 import RoomAvatarStack from '../components/RoomAvatarStack';
 import MessageStream from '../components/MessageStream';
 import ResonanceMeter from '../components/ResonanceMeter';
 import MessageComposer from '../components/MessageComposer';
+import DepartureModal from '../components/DepartureModal';
 import { useRoomSimulation } from '../hooks/useRoomSimulation';
 import { useCountdown } from '../hooks/useCountdown';
 
@@ -274,125 +275,22 @@ export default function RoomScreen({ frequency, onRoomEnd, demoMode = true }) {
         disabled={timeRemaining <= 0}
       />
 
-      {/* Poetic Early Leave Confirmation Modal (Issue #25) */}
+      {/* Poetic Early Departure Confirmation Modal (Sprint 4 Issue #29) */}
       <AnimatePresence>
         {showLeaveConfirm && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            style={{
-              position: 'absolute',
-              inset: 0,
-              background: 'rgba(5, 4, 10, 0.85)',
-              backdropFilter: 'blur(12px)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '24px',
-              zIndex: 50,
+          <DepartureModal
+            frequency={frequency}
+            timeRemaining={timeRemaining}
+            onStay={() => setShowLeaveConfirm(false)}
+            onLeaveAndEcho={() => {
+              setShowLeaveConfirm(false);
+              onRoomEnd?.();
             }}
-          >
-            <motion.div
-              initial={{ scale: 0.9, y: 16 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 16 }}
-              transition={{ type: 'spring', stiffness: 320, damping: 24 }}
-              style={{
-                maxWidth: '380px',
-                width: '100%',
-                background: 'rgba(18, 14, 28, 0.96)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: 'var(--radius-lg)',
-                padding: '24px',
-                boxShadow: '0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(124, 92, 255, 0.1)',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '16px',
-                textAlign: 'center',
-              }}
-            >
-              <div style={{
-                width: '44px',
-                height: '44px',
-                borderRadius: '50%',
-                background: 'rgba(255, 84, 112, 0.12)',
-                border: '1px solid rgba(255, 84, 112, 0.3)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto',
-                color: '#FF5470',
-              }}>
-                <LogOut size={20} strokeWidth={1.8} />
-              </div>
-
-              <div>
-                <h3 style={{
-                  fontFamily: 'var(--font-display)',
-                  fontSize: '18px',
-                  fontWeight: 600,
-                  color: 'var(--color-text-primary)',
-                  margin: '0 0 6px 0',
-                }}>
-                  Depart this frequency?
-                </h3>
-                <p style={{
-                  fontFamily: 'var(--font-body)',
-                  fontSize: '13px',
-                  color: 'var(--color-text-secondary)',
-                  lineHeight: 1.5,
-                  margin: 0,
-                }}>
-                  The room will dissolve for you, but you can leave an echo behind on the wall before returning to the void.
-                </p>
-              </div>
-
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '8px',
-                marginTop: '8px',
-              }}>
-                <button
-                  onClick={() => {
-                    setShowLeaveConfirm(false);
-                    onRoomEnd?.();
-                  }}
-                  style={{
-                    padding: '10px 16px',
-                    borderRadius: 'var(--radius-pill)',
-                    background: 'linear-gradient(135deg, var(--color-gradient-start), var(--color-gradient-end))',
-                    border: 'none',
-                    color: '#FFFFFF',
-                    fontFamily: 'var(--font-body)',
-                    fontSize: '13px',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    boxShadow: '0 4px 16px rgba(124, 92, 255, 0.3)',
-                  }}
-                >
-                  Leave Echo & Depart
-                </button>
-
-                <button
-                  onClick={() => setShowLeaveConfirm(false)}
-                  style={{
-                    padding: '8px 16px',
-                    borderRadius: 'var(--radius-pill)',
-                    background: 'transparent',
-                    border: '1px solid var(--color-border)',
-                    color: 'var(--color-text-secondary)',
-                    fontFamily: 'var(--font-body)',
-                    fontSize: '13px',
-                    cursor: 'pointer',
-                  }}
-                >
-                  Stay in Sync
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
+            onDirectLeave={() => {
+              setShowLeaveConfirm(false);
+              onRoomEnd?.(true);
+            }}
+          />
         )}
       </AnimatePresence>
     </motion.div>
