@@ -103,27 +103,27 @@ export default function MessageStream({ messages, onResonate, colorAccent, typin
             }}>
               {typingParticipant.displayName} is typing
             </span>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
-              {[0, 1, 2].map((i) => (
+            {/* Soft radio waveform typing indicator */}
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '2.5px', height: '12px' }}>
+              {[0, 1, 2, 3].map((i) => (
                 <motion.span
                   key={i}
                   animate={{
-                    opacity: [0.25, 1, 0.25],
-                    y: [0, -2.5, 0],
+                    height: ['3px', '11px', '3px'],
+                    opacity: [0.35, 1, 0.35],
                   }}
                   transition={{
-                    duration: 0.85,
+                    duration: 0.65,
                     repeat: Infinity,
-                    delay: i * 0.16,
+                    delay: i * 0.12,
                     ease: 'easeInOut',
                   }}
                   style={{
-                    width: '3.5px',
-                    height: '3.5px',
-                    borderRadius: '50%',
+                    width: '2px',
+                    borderRadius: '1px',
                     backgroundColor: typingParticipant.avatarColor || colorAccent,
                     display: 'inline-block',
-                    boxShadow: `0 0 6px ${typingParticipant.avatarColor || colorAccent}66`,
+                    boxShadow: `0 0 6px ${typingParticipant.avatarColor || colorAccent}88`,
                   }}
                 />
               ))}

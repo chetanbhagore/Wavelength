@@ -229,6 +229,7 @@ export default function RoomScreen({ frequency, onRoomEnd, demoMode = true }) {
         participants={participants}
         colorAccent={frequency.colorAccent}
         typingParticipant={typingParticipant}
+        surgeTrigger={surgeTrigger}
       />
 
       <ResonanceMeter

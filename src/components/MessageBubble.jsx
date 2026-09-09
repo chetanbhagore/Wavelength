@@ -18,8 +18,20 @@ export default function MessageBubble({ message, onResonate, colorAccent }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 10, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.28, ease: 'easeOut' }}
+      animate={{
+        opacity: 1,
+        y: [0, -2, 0],
+        scale: 1,
+      }}
+      transition={{
+        y: {
+          repeat: Infinity,
+          duration: 4.5 + ((message.id?.charCodeAt(0) || 0) % 3),
+          ease: 'easeInOut',
+        },
+        opacity: { duration: 0.28, ease: 'easeOut' },
+        scale: { duration: 0.28, ease: 'easeOut' },
+      }}
       whileTap={message.isUser ? {} : { scale: 0.985 }}
       onClick={handleResonate}
       role={message.isUser ? undefined : 'button'}

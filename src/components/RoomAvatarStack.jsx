@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
  * - Dynamic presence state: accelerated luminous pulse when participant is typing
  * - Distinct avatar scale variations and subtle hue tinting
  */
-export default function RoomAvatarStack({ participants, colorAccent, typingParticipant }) {
+export default function RoomAvatarStack({ participants, colorAccent, typingParticipant, surgeTrigger = 0 }) {
   return (
     <div style={{
       display: 'flex',
@@ -32,8 +32,16 @@ export default function RoomAvatarStack({ participants, colorAccent, typingParti
           <motion.div
             key={p.id}
             initial={{ scale: 0.4, opacity: 0, filter: 'blur(8px)', y: -16 }}
-            animate={{ scale: 1, opacity: 1, filter: 'blur(0px)', y: 0 }}
-            transition={{
+            animate={surgeTrigger > 0 ? {
+              scale: [1, 1.09, 1],
+              y: [0, -3, 0],
+              opacity: 1,
+            } : { scale: 1, opacity: 1, filter: 'blur(0px)', y: 0 }}
+            transition={surgeTrigger > 0 ? {
+              duration: 0.5,
+              delay: index * 0.04,
+              ease: 'easeOut',
+            } : {
               type: 'spring',
               stiffness: 300,
               damping: 18,

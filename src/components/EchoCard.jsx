@@ -31,19 +31,21 @@ export default function EchoCard({ echo, index }) {
       animate={{ opacity: 1, y: 0, rotate: tiltAngle }}
       transition={{ duration: 0.35, delay: Math.min(index * 0.03, 0.4), ease: 'easeOut' }}
       whileHover={{
-        scale: 1.015,
+        y: -4,
+        scale: 1.02,
         rotate: 0,
-        borderColor: `${colorAccent}88`,
-        boxShadow: `0 10px 32px rgba(0, 0, 0, 0.65), 0 0 24px ${colorAccent}33`,
-        transition: { duration: 0.2 },
+        borderColor: `${colorAccent}99`,
+        boxShadow: `0 14px 36px rgba(0, 0, 0, 0.7), 0 0 28px ${colorAccent}40`,
+        transition: { duration: 0.18 },
       }}
       style={{
         padding: '16px 20px',
         borderRadius: 'var(--radius-md)',
-        background: 'linear-gradient(180deg, rgba(24, 18, 36, 0.82) 0%, rgba(14, 11, 22, 0.88) 100%)',
-        border: '1px solid rgba(255, 255, 255, 0.07)',
-        borderLeft: `3px solid ${colorAccent}99`,
-        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.45)',
+        background: 'linear-gradient(180deg, rgba(24, 18, 36, 0.85) 0%, rgba(14, 11, 22, 0.92) 100%)',
+        border: '1px solid rgba(255, 255, 255, 0.08)',
+        borderLeft: `3px solid ${colorAccent}`,
+        borderTop: '1px dashed rgba(255, 255, 255, 0.15)',
+        boxShadow: '0 6px 24px rgba(0, 0, 0, 0.5)',
         backdropFilter: 'blur(14px)',
         cursor: 'default',
         transformOrigin: 'center center',
@@ -64,11 +66,11 @@ export default function EchoCard({ echo, index }) {
         color: 'var(--color-text-secondary)',
         letterSpacing: '0.08em',
         textTransform: 'uppercase',
-        opacity: 0.65,
+        opacity: 0.75,
         userSelect: 'none',
       }}>
-        <span>RF SIGNAL SLIP</span>
-        <span>{freq?.mhz || 'ANALOG RESIDUAL'}</span>
+        <span>RECEIPT #{echo.id?.slice(-4)?.toUpperCase() || 'ECHO'}</span>
+        <span style={{ color: colorAccent, fontWeight: 600 }}>{freq?.mhz || 'ANALOG'}</span>
       </div>
 
       <p style={{

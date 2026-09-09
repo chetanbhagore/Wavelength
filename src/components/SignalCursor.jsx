@@ -32,14 +32,14 @@ export default function SignalCursor() {
       posRef.current.targetY = e.clientY;
       if (!isVisible) setIsVisible(true);
 
-      // Detect hover target context
+      // Detect hover target context using e.target (instant, zero layout thrash)
       if (isDraggingRef.current) {
         setCursorState('dragging');
         return;
       }
 
-      const target = document.elementFromPoint(e.clientX, e.clientY);
-      if (!target) {
+      const target = e.target;
+      if (!target || !(target instanceof Element)) {
         setCursorState('default');
         return;
       }
@@ -62,8 +62,8 @@ export default function SignalCursor() {
     };
 
     const handlePointerDown = (e) => {
-      const target = document.elementFromPoint(e.clientX, e.clientY);
-      if (target && (target.closest('[data-cursor="dial"]') || target.closest('.frequency-dial-container'))) {
+      const target = e.target;
+      if (target instanceof Element && (target.closest('[data-cursor="dial"]') || target.closest('.frequency-dial-container'))) {
         isDraggingRef.current = true;
         setCursorState('dragging');
       }
@@ -90,12 +90,11 @@ export default function SignalCursor() {
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mouseenter', handleMouseEnter);
 
-    // Smooth RAF lerp loop
+    // High-speed smooth RAF loop with 0.48 lerp for instant response
     const render = () => {
       const pos = posRef.current;
-      // Lerp factor: 0.22 gives immediate yet cushioned responsiveness
-      pos.x += (pos.targetX - pos.x) * 0.22;
-      pos.y += (pos.targetY - pos.y) * 0.22;
+      pos.x += (pos.targetX - pos.x) * 0.48;
+      pos.y += (pos.targetY - pos.y) * 0.48;
 
       if (cursorRef.current) {
         cursorRef.current.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
