@@ -1,13 +1,16 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, lazy, Suspense } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import ErrorBoundary from './components/ErrorBoundary';
 import TopBar from './components/TopBar';
 import SyncOverlay from './components/SyncOverlay';
 import EchoModal from './components/EchoModal';
 import SignalCursor from './components/SignalCursor';
 import TunerScreen from './pages/TunerScreen';
 import RoomScreen from './pages/RoomScreen';
-import EchoWallScreen from './pages/EchoWallScreen';
 import { useLocalStorage } from './hooks/useLocalStorage';
+
+// Code-splitting secondary historical screen for optimal initial bundle performance
+const EchoWallScreen = lazy(() => import('./pages/EchoWallScreen'));
 
 /**
  * App shell — single-flow navigation.
@@ -117,77 +120,97 @@ export default function App() {
   }, []);
 
   return (
-    <div style={{
-      minHeight: '100dvh',
-      display: 'flex',
-      flexDirection: 'column',
-      background: 'var(--color-bg)',
-    }}>
-      {/* Custom Signal-Probe Cursor for Desktop Pointer Devices */}
-      <SignalCursor />
+    <ErrorBoundary>
+      <div style={{
+        minHeight: '100dvh',
+        display: 'flex',
+        flexDirection: 'column',
+        background: 'var(--color-bg)',
+      }}>
+        {/* Custom Signal-Probe Cursor for Desktop Pointer Devices */}
+        <SignalCursor />
 
-      <TopBar
-        appState={appState}
-        onNavigateToEchoWall={handleNavigateToEchoWall}
-        onNavigateToTuner={handleBackToTuner}
-        demoMode={demoMode}
-        onToggleDemoMode={handleToggleDemoMode}
-      />
+        <TopBar
+          appState={appState}
+          onNavigateToEchoWall={handleNavigateToEchoWall}
+          onNavigateToTuner={handleBackToTuner}
+          demoMode={demoMode}
+          onToggleDemoMode={handleToggleDemoMode}
+        />
 
-      <main style={{ flex: 1, display: 'flex', flexDirection: 'column', position: 'relative' }}>
-        {/* Spatial Page Transitions (Sprint 4 Issue #21) */}
-        <AnimatePresence mode="wait">
-          {appState === 'tuner' && (
-            <motion.div
-              key="tuner"
-              initial={{ opacity: 0, scale: 0.985 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.015, filter: 'blur(8px)' }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              style={{ flex: 1, display: 'flex', flexDirection: 'column' }}
-            >
-              <TunerScreen
-                onTuneIn={handleTuneIn}
-                lastVisitedFrequencyId={lastVisitedFrequencyId}
-                frequencyHistory={frequencyHistory}
-              />
-            </motion.div>
-          )}
+        <main style={{ flex: 1, display: 'flex', flexDirection: 'column', position: 'relative' }}>
+          {/* Spatial Page Transitions (Sprint 4 Issue #21) */}
+          <AnimatePresence mode="wait">
+            {appState === 'tuner' && (
+              <motion.div
+                key="tuner"
+                initial={{ opacity: 0, scale: 0.985 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.015, filter: 'blur(8px)' }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                style={{ flex: 1, display: 'flex', flexDirection: 'column' }}
+              >
+                <TunerScreen
+                  onTuneIn={handleTuneIn}
+                  lastVisitedFrequencyId={lastVisitedFrequencyId}
+                  frequencyHistory={frequencyHistory}
+                />
+              </motion.div>
+            )}
 
-          {appState === 'room' && selectedFrequency && (
-            <motion.div
-              key={`room_${selectedFrequency.id}`}
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.96, filter: 'blur(10px)' }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              style={{ flex: 1, display: 'flex', flexDirection: 'column' }}
-            >
-              <RoomScreen
-                frequency={selectedFrequency}
-                onRoomEnd={handleRoomEnd}
-                demoMode={demoMode}
-              />
-            </motion.div>
-          )}
+            {appState === 'room' && selectedFrequency && (
+              <motion.div
+                key={`room_${selectedFrequency.id}`}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.96, filter: 'blur(10px)' }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                style={{ flex: 1, display: 'flex', flexDirection: 'column' }}
+              >
+                <RoomScreen
+                  frequency={selectedFrequency}
+                  onRoomEnd={handleRoomEnd}
+                  demoMode={demoMode}
+                />
+              </motion.div>
+            )}
 
-          {appState === 'echoWall' && (
-            <motion.div
-              key="echoWall"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12, filter: 'blur(8px)' }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              style={{ flex: 1, display: 'flex', flexDirection: 'column' }}
-            >
-              <EchoWallScreen
-                initialFrequencyId={selectedFrequency?.id}
-                onBack={handleBackToTuner}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </main>
+            {appState === 'echoWall' && (
+              <motion.div
+                key="echoWall"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12, filter: 'blur(8px)' }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                style={{ flex: 1, display: 'flex', flexDirection: 'column' }}
+              >
+                <Suspense fallback={
+                  <div style={{
+                    flex: 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    minHeight: '45vh',
+                  }}>
+                    <span style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '12px',
+                      color: 'var(--color-text-secondary)',
+                      letterSpacing: '0.08em',
+                    }}>
+                      TUNING ARCHIVE ECHOS...
+                    </span>
+                  </div>
+                }>
+                  <EchoWallScreen
+                    initialFrequencyId={selectedFrequency?.id}
+                    onBack={handleBackToTuner}
+                  />
+                </Suspense>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </main>
 
 
       {/* Overlays & Notifications */}
@@ -253,7 +276,8 @@ export default function App() {
           />
         )}
       </AnimatePresence>
-    </div>
+      </div>
+    </ErrorBoundary>
   );
 }
 
