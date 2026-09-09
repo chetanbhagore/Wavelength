@@ -57,11 +57,14 @@ export default function EchoWallScreen({ initialFrequencyId, onBack }) {
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <button
+            type="button"
             onClick={onBack}
             aria-label="Back to tuner"
             style={{
-              width: '36px',
-              height: '36px',
+              width: '44px',
+              height: '44px',
+              minWidth: '44px',
+              minHeight: '44px',
               borderRadius: '50%',
               border: '1px solid var(--color-border)',
               background: 'rgba(255, 255, 255, 0.02)',

@@ -67,12 +67,13 @@ export default function TunerScreen({
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      gap: '20px',
-      padding: '16px',
+      gap: 'clamp(10px, 2vh, 18px)',
+      padding: 'clamp(12px, 3vw, 20px) 16px',
       position: 'relative',
       zIndex: 1,
       minHeight: 'calc(100dvh - 64px)',
-      overflow: 'hidden',
+      overflowY: 'auto',
+      overflowX: 'hidden',
     }}>
       {/* 1. Dynamic Mood-Themed Canvas Weather (Rain, Embers, Bokeh, Prisms) */}
       <AmbientWaveformBackground

@@ -96,8 +96,10 @@ export default function MessageComposer({ onSend, disabled }) {
         disabled={!text.trim() || disabled}
         aria-label="Send message"
         style={{
-          width: '40px',
-          height: '40px',
+          width: '44px',
+          height: '44px',
+          minWidth: '44px',
+          minHeight: '44px',
           borderRadius: '50%',
           border: 'none',
           background: text.trim()

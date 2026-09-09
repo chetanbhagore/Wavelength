@@ -78,6 +78,7 @@ export default function FloatingWhispers({ frequency, onPullToFrequency }) {
   return (
     <div
       aria-hidden="true"
+      className="floating-whispers-container"
       style={{
         position: 'absolute',
         inset: 0,

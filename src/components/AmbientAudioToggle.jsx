@@ -40,7 +40,8 @@ export default function AmbientAudioToggle({ frequency }) {
         display: 'inline-flex',
         alignItems: 'center',
         gap: '8px',
-        padding: '6px 14px',
+        padding: '8px 16px',
+        minHeight: '44px',
         borderRadius: 'var(--radius-pill)',
         background: isPlaying ? 'rgba(23, 27, 39, 0.9)' : 'rgba(23, 27, 39, 0.5)',
         border: isPlaying

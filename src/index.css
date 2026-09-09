@@ -322,6 +322,24 @@ input:focus-visible,
   }
 }
 
+/* ============================================
+   Responsive Design & Mobile Ergonomics
+   ============================================ */
+
+@media (max-width: 768px) {
+  /* Prevent orbital whispers from colliding with central dial on mobile */
+  .floating-whispers-container {
+    display: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Universal mobile touch target safeguard */
+  button, [role="button"], input[type="submit"] {
+    min-height: 44px;
+  }
+}
+
 
 /* ============================================
    Utility: Gradient Text

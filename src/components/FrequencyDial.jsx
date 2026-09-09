@@ -154,8 +154,8 @@ export default function FrequencyDial({
           scale: { type: 'spring', stiffness: 450, damping: 22 },
         }}
         style={{
-          width: 'clamp(220px, 55vw, 320px)',
-          height: 'clamp(220px, 55vw, 320px)',
+          width: 'clamp(195px, 50vw, 300px)',
+          height: 'clamp(195px, 50vw, 300px)',
           borderRadius: '50%',
           position: 'relative',
           cursor: 'grab',

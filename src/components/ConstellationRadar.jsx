@@ -30,6 +30,7 @@ export default function ConstellationRadar({ activeFrequency }) {
     >
       {/* Mini Radar Button / Scope */}
       <button
+        type="button"
         onClick={() => {
           ambientDrone.playDetentClick();
           setExpanded((prev) => !prev);
@@ -40,7 +41,8 @@ export default function ConstellationRadar({ activeFrequency }) {
           display: 'flex',
           alignItems: 'center',
           gap: '8px',
-          padding: '5px 12px',
+          padding: '8px 14px',
+          minHeight: '44px',
           borderRadius: 'var(--radius-pill)',
           background: 'rgba(17, 21, 33, 0.75)',
           border: '1px solid rgba(255, 255, 255, 0.08)',

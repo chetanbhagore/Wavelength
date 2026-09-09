@@ -25,9 +25,11 @@ export default function FrequencyFilterChips({ selectedId, onSelect }) {
     }}>
       <style>{`.freq-chips::-webkit-scrollbar { display: none; }`}</style>
       <button
+        type="button"
         onClick={() => handleSelect(null)}
         style={{
           padding: '8px 16px',
+          minHeight: '44px',
           borderRadius: 'var(--radius-pill)',
           border: `1px solid ${!selectedId ? 'var(--color-gradient-start)' : 'var(--color-border)'}`,
           background: !selectedId ? 'rgba(124, 92, 255, 0.18)' : 'rgba(255, 255, 255, 0.02)',
@@ -53,10 +55,12 @@ export default function FrequencyFilterChips({ selectedId, onSelect }) {
         const isSelected = selectedId === freq.id;
         return (
           <button
+            type="button"
             key={freq.id}
             onClick={() => handleSelect(freq.id)}
             style={{
-              padding: '8px 14px',
+              padding: '8px 16px',
+              minHeight: '44px',
               borderRadius: 'var(--radius-pill)',
               border: `1px solid ${isSelected ? freq.colorAccent : 'var(--color-border)'}`,
               background: isSelected ? `${freq.colorAccent}25` : 'rgba(255, 255, 255, 0.02)',

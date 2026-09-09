@@ -79,12 +79,15 @@ export default function RoomHeader({
 
         {onRequestLeave && (
           <button
+            type="button"
             onClick={onRequestLeave}
             aria-label="Leave room"
             title="Leave frequency"
             style={{
-              width: '32px',
-              height: '32px',
+              width: '44px',
+              height: '44px',
+              minWidth: '44px',
+              minHeight: '44px',
               borderRadius: '50%',
               border: '1px solid var(--color-border)',
               background: 'rgba(255, 255, 255, 0.03)',
@@ -106,7 +109,7 @@ export default function RoomHeader({
               e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)';
             }}
           >
-            <LogOut size={14} strokeWidth={1.8} />
+            <LogOut size={16} strokeWidth={1.8} />
           </button>
         )}
       </div>

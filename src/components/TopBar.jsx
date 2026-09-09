@@ -48,11 +48,12 @@ export default function TopBar({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '16px 24px',
+        padding: 'clamp(10px, 2vh, 16px) clamp(12px, 3vw, 24px)',
         position: 'relative',
         zIndex: 20,
         opacity: isDimmed ? 0.22 : 1,
         transition: 'opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1)',
+        width: '100%',
       }}
     >
       {/* Brand logo & discrete demo trigger */}
@@ -66,6 +67,7 @@ export default function TopBar({
           gap: '8px',
           cursor: appState !== 'room' && appState !== 'syncing' ? 'pointer' : 'default',
           userSelect: 'none',
+          minHeight: '44px',
         }}
       >
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
@@ -88,9 +90,10 @@ export default function TopBar({
       </div>
 
       {/* Right Controls: Demo Mode Pill & Navigation Pills */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'clamp(6px, 1.5vw, 10px)' }}>
         {/* Discoverable Demo Mode Trigger Pill (Issue #34) */}
         <button
+          type="button"
           onClick={onToggleDemoMode}
           title="Click or press Shift+D to toggle 90-second Demo Mode"
           aria-label={demoMode ? "Switch to Standard 12-minute sessions" : "Switch to 90-second Demo sessions"}
@@ -98,13 +101,14 @@ export default function TopBar({
             display: 'inline-flex',
             alignItems: 'center',
             gap: '6px',
-            padding: '4px 10px',
+            padding: '8px clamp(8px, 2vw, 12px)',
+            minHeight: '44px',
             borderRadius: 'var(--radius-pill)',
             border: demoMode ? '1px solid rgba(255, 176, 32, 0.45)' : '1px solid rgba(255, 255, 255, 0.08)',
             background: demoMode ? 'rgba(255, 176, 32, 0.09)' : 'rgba(255, 255, 255, 0.02)',
             color: demoMode ? 'var(--color-accent-live)' : 'var(--color-text-secondary)',
             fontFamily: 'var(--font-mono)',
-            fontSize: '11px',
+            fontSize: '11.5px',
             fontWeight: 600,
             letterSpacing: '0.04em',
             cursor: 'pointer',
@@ -132,13 +136,15 @@ export default function TopBar({
 
         {appState === 'tuner' && (
           <button
+            type="button"
             onClick={onNavigateToEchoWall}
             aria-label="View Echo Wall"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: '6px',
-              padding: '6px 14px',
+              padding: '8px clamp(10px, 2.5vw, 16px)',
+              minHeight: '44px',
               borderRadius: 'var(--radius-pill)',
               border: '1px solid rgba(255, 255, 255, 0.07)',
               background: 'rgba(255, 255, 255, 0.03)',
@@ -167,13 +173,15 @@ export default function TopBar({
 
         {appState === 'echoWall' && (
           <button
+            type="button"
             onClick={onNavigateToTuner}
             aria-label="Return to Tuner"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: '6px',
-              padding: '6px 14px',
+              padding: '8px clamp(10px, 2.5vw, 16px)',
+              minHeight: '44px',
               borderRadius: 'var(--radius-pill)',
               border: '1px solid rgba(255, 255, 255, 0.07)',
               background: 'rgba(255, 255, 255, 0.03)',

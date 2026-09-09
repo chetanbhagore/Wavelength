@@ -8,8 +8,10 @@ import { Radio } from 'lucide-react';
 export default function TuneInButton({ onClick, disabled }) {
   return (
     <motion.button
+      type="button"
       onClick={onClick}
       disabled={disabled}
+      aria-label="Tune into active frequency"
       initial={{ opacity: 0, y: 8 }}
       animate={{
         opacity: 1,
