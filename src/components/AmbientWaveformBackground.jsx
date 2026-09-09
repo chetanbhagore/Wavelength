@@ -75,11 +75,13 @@ export default function AmbientWaveformBackground({
     };
   }, []);
 
-  // Initialize or re-seed particles when mood changes
+  // Initialize or re-seed particles when mood changes (throttled on mobile for high performance)
   useEffect(() => {
     const w = window.innerWidth || 1000;
     const h = window.innerHeight || 800;
-    const count = mood === 'hopeful-lonely' ? 24 : mood === 'restless' ? 55 : 45;
+    const isMobile = w < 768;
+    const baseCount = mood === 'hopeful-lonely' ? 24 : mood === 'restless' ? 55 : 45;
+    const count = isMobile ? Math.round(baseCount * 0.42) : baseCount;
     const particles = [];
 
     for (let i = 0; i < count; i++) {
@@ -106,11 +108,13 @@ export default function AmbientWaveformBackground({
     const ctx = canvas.getContext('2d');
 
     const resize = () => {
-      canvas.width = window.innerWidth * window.devicePixelRatio;
-      canvas.height = window.innerHeight * window.devicePixelRatio;
+      // Clamped to 2 to eliminate mobile GPU fill-rate bottle-necks on 3x Retina
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
       canvas.style.width = window.innerWidth + 'px';
       canvas.style.height = window.innerHeight + 'px';
-      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      ctx.scale(dpr, dpr);
     };
     resize();
     window.addEventListener('resize', resize);
@@ -162,6 +166,7 @@ export default function AmbientWaveformBackground({
 
       // 2. Draw cursor trail wake particles
       const trail = trailParticlesRef.current;
+      const enableShadowBlur = w >= 768;
       for (let i = trail.length - 1; i >= 0; i--) {
         const tp = trail[i];
         tp.x += tp.vx;
@@ -175,10 +180,14 @@ export default function AmbientWaveformBackground({
         ctx.beginPath();
         ctx.arc(tp.x, tp.y, tp.size * (tp.life / tp.maxLife), 0, Math.PI * 2);
         ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
-        ctx.shadowColor = colorAccent;
-        ctx.shadowBlur = 8;
+        if (enableShadowBlur) {
+          ctx.shadowColor = colorAccent;
+          ctx.shadowBlur = 8;
+        }
         ctx.fill();
-        ctx.shadowBlur = 0;
+        if (enableShadowBlur) {
+          ctx.shadowBlur = 0;
+        }
       }
       const particles = particlesRef.current;
 
@@ -217,8 +226,10 @@ export default function AmbientWaveformBackground({
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.radius * (1 + pulse * 0.2), 0, Math.PI * 2);
           ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${currentAlpha})`;
-          ctx.shadowColor = `rgba(${r}, ${g}, ${b}, 0.5)`;
-          ctx.shadowBlur = 12;
+          if (enableShadowBlur) {
+            ctx.shadowColor = `rgba(${r}, ${g}, ${b}, 0.5)`;
+            ctx.shadowBlur = 12;
+          }
           ctx.fill();
         } else if (mood === 'bittersweet') {
           // Drifting crystalline diamonds
@@ -232,8 +243,10 @@ export default function AmbientWaveformBackground({
           ctx.lineTo(-p.radius, 0);
           ctx.closePath();
           ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${currentAlpha})`;
-          ctx.shadowColor = `rgba(${r}, ${g}, ${b}, 0.6)`;
-          ctx.shadowBlur = 6;
+          if (enableShadowBlur) {
+            ctx.shadowColor = `rgba(${r}, ${g}, ${b}, 0.6)`;
+            ctx.shadowBlur = 6;
+          }
           ctx.fill();
           ctx.restore();
         } else {
@@ -241,12 +254,16 @@ export default function AmbientWaveformBackground({
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
           ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${currentAlpha})`;
-          ctx.shadowColor = `rgba(${r}, ${g}, ${b}, 0.7)`;
-          ctx.shadowBlur = mood === 'electric' ? 10 : 6;
+          if (enableShadowBlur) {
+            ctx.shadowColor = `rgba(${r}, ${g}, ${b}, 0.7)`;
+            ctx.shadowBlur = mood === 'electric' ? 10 : 6;
+          }
           ctx.fill();
         }
       }
-      ctx.shadowBlur = 0;
+      if (enableShadowBlur) {
+        ctx.shadowBlur = 0;
+      }
 
       animationRef.current = requestAnimationFrame(draw);
     };

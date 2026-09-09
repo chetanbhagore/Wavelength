@@ -1,11 +1,12 @@
 import { motion } from 'framer-motion';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, memo } from 'react';
 
 /**
  * A single message bubble in the room.
  * Tapping triggers a chromatic resonance pulse with NO visible counters or viral metrics.
+ * Wrapped in React.memo for high-performance virtual message rendering.
  */
-export default function MessageBubble({ message, onResonate, colorAccent }) {
+function MessageBubble({ message, onResonate, colorAccent }) {
   const [showPulse, setShowPulse] = useState(false);
 
   const handleResonate = useCallback(() => {
@@ -150,4 +151,6 @@ export default function MessageBubble({ message, onResonate, colorAccent }) {
     </motion.div>
   );
 }
+
+export default memo(MessageBubble);
 
