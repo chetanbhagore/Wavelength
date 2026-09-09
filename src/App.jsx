@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import TopBar from './components/TopBar';
 import SyncOverlay from './components/SyncOverlay';
 import EchoModal from './components/EchoModal';
+import SignalCursor from './components/SignalCursor';
 import TunerScreen from './pages/TunerScreen';
 import RoomScreen from './pages/RoomScreen';
 import EchoWallScreen from './pages/EchoWallScreen';
@@ -122,6 +123,9 @@ export default function App() {
       flexDirection: 'column',
       background: 'var(--color-bg)',
     }}>
+      {/* Custom Signal-Probe Cursor for Desktop Pointer Devices */}
+      <SignalCursor />
+
       <TopBar
         appState={appState}
         onNavigateToEchoWall={handleNavigateToEchoWall}

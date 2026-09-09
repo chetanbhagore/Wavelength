@@ -41,8 +41,8 @@ export function useCountdown(isActive, demoMode = false, onComplete) {
         if (prev <= 1) {
           clearInterval(interval);
           hasCompletedRef.current = true;
-          // Defer to avoid setState during render
-          setTimeout(() => onCompleteRef.current?.(), 0);
+          // Defer by 750ms for carrier wave collapse animation (Sprint 4 Climax)
+          setTimeout(() => onCompleteRef.current?.(), 750);
           return 0;
         }
         return prev - 1;

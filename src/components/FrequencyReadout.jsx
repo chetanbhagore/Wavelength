@@ -107,21 +107,24 @@ export default function FrequencyReadout({ frequency, visitInfo }) {
 
           <h2 style={{
             fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(20px, 5vw, 28px)',
-            fontWeight: 600,
+            fontSize: 'clamp(22px, 5.5vw, 30px)',
+            fontWeight: 650,
             lineHeight: 1.2,
-            color: 'var(--color-text-primary)',
-            maxWidth: '400px',
+            color: '#FFFFFF',
+            maxWidth: '420px',
+            letterSpacing: '-0.01em',
+            textShadow: '0 2px 16px rgba(0,0,0,0.5)',
           }}>
             {frequency.label}
           </h2>
 
           <p style={{
             fontFamily: 'var(--font-body)',
-            fontSize: '14px',
+            fontSize: '14.5px',
             color: 'var(--color-text-secondary)',
-            maxWidth: '320px',
-            lineHeight: 1.4,
+            maxWidth: '340px',
+            lineHeight: 1.45,
+            opacity: 0.85,
           }}>
             {frequency.description}
           </p>
@@ -137,12 +140,12 @@ export default function FrequencyReadout({ frequency, visitInfo }) {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '8px',
-              padding: '5px 16px',
+              padding: '6px 18px',
               borderRadius: 'var(--radius-pill)',
-              background: 'rgba(23, 27, 39, 0.65)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              backdropFilter: 'blur(8px)',
-              boxShadow: `0 0 20px ${frequency.colorAccent}15`,
+              background: 'rgba(23, 27, 39, 0.75)',
+              border: `1px solid ${frequency.colorAccent}33`,
+              backdropFilter: 'blur(10px)',
+              boxShadow: `0 0 24px ${frequency.colorAccent}20`,
             }}>
               <motion.div
                 animate={{
@@ -171,7 +174,7 @@ export default function FrequencyReadout({ frequency, visitInfo }) {
                   color: 'var(--color-text-primary)',
                 }}
               >
-                <span style={{ color: frequency.colorAccent }}>{displayCount.toLocaleString()}</span> tuned in
+                <span style={{ color: frequency.colorAccent, fontWeight: 700 }}>{displayCount.toLocaleString()}</span> tuned in
               </motion.span>
             </div>
 

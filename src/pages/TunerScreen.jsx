@@ -80,8 +80,14 @@ export default function TunerScreen({
         mood={currentFrequency.mood}
       />
 
-      {/* 2. Floating Ethereal Whispers drifting across the ether */}
-      <FloatingWhispers frequency={currentFrequency} onTuneIn={onTuneIn} />
+      {/* 2. Floating Ethereal Whispers drifting across the ether with Magnetic Pull */}
+      <FloatingWhispers
+        frequency={currentFrequency}
+        onPullToFrequency={(targetIdx) => {
+          dismissGuidance();
+          goTo(targetIdx);
+        }}
+      />
 
       {/* Header Bar: Manifesto Subtitle & Controls */}
       <div style={{

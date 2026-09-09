@@ -26,13 +26,56 @@ export default function FrequencyDial({
   const prevIndexRef = useRef(currentIndex);
   const rotation = -(currentIndex * (360 / totalFrequencies));
 
-  // Trigger tactile analog mechanical click on rotary changes (Sprint 1 Issue #23)
+  // 3D Perspective Tilt State (Phase 3)
+  const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
+  const [isRecentSnap, setIsRecentSnap] = useState(false);
+  const [particles, setParticles] = useState([]);
+
+  // Trigger tactile analog mechanical click and snap burst on rotary changes
   useEffect(() => {
     if (prevIndexRef.current !== currentIndex) {
       ambientDrone.playDetentClick();
       prevIndexRef.current = currentIndex;
+      setIsRecentSnap(true);
+
+      // Radial particle sparks from active 12 o'clock needle
+      const newParticles = Array.from({ length: 8 }).map((_, i) => {
+        const angle = (i * Math.PI * 2) / 8 + (Math.random() - 0.5) * 0.4;
+        const dist = 14 + Math.random() * 18;
+        return {
+          id: Math.random(),
+          tx: Math.cos(angle) * dist,
+          ty: Math.sin(angle) * dist - 8,
+        };
+      });
+      setParticles(newParticles);
+
+      const snapTimer = setTimeout(() => setIsRecentSnap(false), 240);
+      const particleTimer = setTimeout(() => setParticles([]), 380);
+      return () => {
+        clearTimeout(snapTimer);
+        clearTimeout(particleTimer);
+      };
     }
   }, [currentIndex]);
+
+  const handleMouseMove = (e) => {
+    if (!dialRef.current || window.matchMedia('(pointer: coarse)').matches) return;
+    const rect = dialRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const dx = (e.clientX - centerX) / (rect.width / 2);
+    const dy = (e.clientY - centerY) / (rect.height / 2);
+    // Subtle physical tilt max ±6.5deg
+    setTilt({
+      rotateY: Math.max(-1, Math.min(1, dx)) * 6.5,
+      rotateX: -Math.max(-1, Math.min(1, dy)) * 6.5,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ rotateX: 0, rotateY: 0 });
+  };
 
   const lastVisitedIndex = lastVisitedFrequencyId
     ? frequencies.findIndex((f) => f.id === lastVisitedFrequencyId)
@@ -72,11 +115,23 @@ export default function FrequencyDial({
   }, [onNext, onPrev]);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '8px',
+        perspective: '800px',
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
       <motion.div
         ref={dialRef}
         role="slider"
         tabIndex={0}
+        data-cursor="dial"
+        className="frequency-dial-container"
         aria-valuemin={1}
         aria-valuemax={totalFrequencies}
         aria-valuenow={currentIndex + 1}
@@ -88,6 +143,16 @@ export default function FrequencyDial({
         dragConstraints={{ top: 0, bottom: 0, left: 0, right: 0 }}
         dragElastic={0.2}
         onDragEnd={handleDragEnd}
+        animate={{
+          rotateX: tilt.rotateX,
+          rotateY: tilt.rotateY,
+          scale: isRecentSnap ? 1.06 : 1,
+        }}
+        transition={{
+          rotateX: { type: 'spring', stiffness: 350, damping: 26 },
+          rotateY: { type: 'spring', stiffness: 350, damping: 26 },
+          scale: { type: 'spring', stiffness: 450, damping: 22 },
+        }}
         style={{
           width: 'clamp(220px, 55vw, 320px)',
           height: 'clamp(220px, 55vw, 320px)',
@@ -96,6 +161,7 @@ export default function FrequencyDial({
           cursor: 'grab',
           outline: 'none',
           touchAction: 'none',
+          transformStyle: 'preserve-3d',
         }}
         whileTap={{ cursor: 'grabbing' }}
       >
@@ -105,14 +171,39 @@ export default function FrequencyDial({
           top: '-14px',
           left: '50%',
           transform: 'translateX(-50%)',
-          width: '3px',
-          height: '12px',
+          width: isRecentSnap ? '4px' : '3px',
+          height: isRecentSnap ? '15px' : '12px',
           borderRadius: '2px',
           background: currentFrequency.colorAccent,
-          boxShadow: `0 0 12px ${currentFrequency.colorAccent}`,
+          boxShadow: isRecentSnap
+            ? `0 0 18px ${currentFrequency.colorAccent}, 0 0 6px #fff`
+            : `0 0 12px ${currentFrequency.colorAccent}`,
           zIndex: 10,
           pointerEvents: 'none',
+          transition: 'all 0.18s ease',
         }} />
+
+        {/* Snap Pop Stardust Particle Sparks */}
+        {particles.map((p) => (
+          <motion.span
+            key={p.id}
+            initial={{ opacity: 1, scale: 1, x: '-50%', y: -14 }}
+            animate={{ opacity: 0, scale: 0.2, x: `calc(-50% + ${p.tx}px)`, y: -14 + p.ty }}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: '50%',
+              width: '3.5px',
+              height: '3.5px',
+              borderRadius: '50%',
+              backgroundColor: currentFrequency.colorAccent,
+              boxShadow: `0 0 6px ${currentFrequency.colorAccent}`,
+              pointerEvents: 'none',
+              zIndex: 15,
+            }}
+          />
+        ))}
 
         {/* Dynamic Radio Equalizer Orbit Ring */}
         <div
@@ -175,13 +266,22 @@ export default function FrequencyDial({
             return (
               <div key={i}>
                 {/* Physical tick bar */}
-                <div
+                <motion.div
+                  animate={isResidue ? {
+                    opacity: [0.45, 0.95, 0.45],
+                    scaleY: [1, 1.25, 1],
+                  } : undefined}
+                  transition={isResidue ? {
+                    duration: 2.2,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  } : undefined}
                   style={{
                     position: 'absolute',
                     left: '50%',
                     top: '50%',
-                    width: isActive ? '5px' : isResidue ? '4px' : '3px',
-                    height: isActive ? '18px' : isResidue ? '14px' : '9px',
+                    width: isActive ? (isRecentSnap ? '6px' : '5px') : isResidue ? '4px' : '3px',
+                    height: isActive ? (isRecentSnap ? '21px' : '18px') : isResidue ? '14px' : '9px',
                     borderRadius: '3px',
                     background: isActive
                       ? currentFrequency.colorAccent
@@ -193,9 +293,11 @@ export default function FrequencyDial({
                     transformOrigin: 'center center',
                     transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
                     boxShadow: isActive
-                      ? `0 0 16px ${currentFrequency.colorAccent}, 0 0 6px #fff`
+                      ? isRecentSnap
+                        ? `0 0 24px ${currentFrequency.colorAccent}, 0 0 10px #fff`
+                        : `0 0 16px ${currentFrequency.colorAccent}, 0 0 6px #fff`
                       : isResidue
-                        ? '0 0 12px rgba(124, 92, 255, 0.9), 0 0 4px #00F0FF'
+                        ? '0 0 14px rgba(124, 92, 255, 0.95), 0 0 6px #00F0FF'
                         : 'none',
                   }}
                   title={isResidue ? 'Presence residue: you were recently tuned here' : undefined}
@@ -356,6 +458,37 @@ export default function FrequencyDial({
           <span>{isScanning ? 'Seeking...' : 'Auto-Seek'}</span>
         </motion.button>
       </div>
+
+      {/* Presence Residue Living Memory Micro-Indicator (Phase 6) */}
+      {lastVisitedIndex >= 0 && lastVisitedIndex !== currentIndex && (
+        <motion.div
+          initial={{ opacity: 0, y: 4 }}
+          animate={{ opacity: 0.8, y: 0 }}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            fontFamily: 'var(--font-mono)',
+            fontSize: '10.5px',
+            color: 'var(--color-text-secondary)',
+            letterSpacing: '0.02em',
+            marginTop: '2px',
+          }}
+        >
+          <motion.span
+            animate={{ opacity: [0.4, 1, 0.4], scale: [1, 1.3, 1] }}
+            transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+            style={{
+              width: '5px',
+              height: '5px',
+              borderRadius: '50%',
+              backgroundColor: 'var(--color-gradient-start)',
+              boxShadow: '0 0 8px var(--color-gradient-start)',
+            }}
+          />
+          <span>signal residue • you were just tuned to {frequencies[lastVisitedIndex]?.label}</span>
+        </motion.div>
+      )}
     </div>
   );
 }

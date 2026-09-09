@@ -94,11 +94,19 @@ export default function RoomScreen({ frequency, onRoomEnd, demoMode = true }) {
     }
   }, [timeRemaining]);
 
+  const isCollapsing = timeRemaining === 0;
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.98 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.4, ease: 'easeOut' }}
+      animate={{
+        opacity: isCollapsing ? 0 : 1,
+        scale: isCollapsing ? 0.94 : 1,
+      }}
+      transition={{
+        duration: isCollapsing ? 0.75 : 0.4,
+        ease: isCollapsing ? 'easeInOut' : 'easeOut',
+      }}
       style={{
         flex: 1,
         display: 'flex',
@@ -108,7 +116,9 @@ export default function RoomScreen({ frequency, onRoomEnd, demoMode = true }) {
         position: 'relative',
         zIndex: 1,
         overflow: 'hidden',
-        filter: dissolutionProgress > 0
+        filter: isCollapsing
+          ? 'blur(16px) grayscale(100%)'
+          : dissolutionProgress > 0
           ? `grayscale(${dissolutionProgress * 0.85}) brightness(${1 - dissolutionProgress * 0.18}) contrast(${1 + dissolutionProgress * 0.12})`
           : 'none',
         transition: 'filter 0.6s ease',
@@ -126,9 +136,9 @@ export default function RoomScreen({ frequency, onRoomEnd, demoMode = true }) {
             inset: 0,
             pointerEvents: 'none',
             background: 'repeating-linear-gradient(0deg, rgba(0,0,0,0.22) 0px, rgba(0,0,0,0.22) 1px, transparent 1px, transparent 3px)',
-            opacity: dissolutionProgress * 0.65,
+            opacity: dissolutionProgress * (isUrgent ? 0.8 : 0.6),
             zIndex: 4,
-            animation: dissolutionProgress > 0.25 ? 'crt-jitter 0.12s infinite, crt-flicker 0.09s infinite' : 'none',
+            animation: dissolutionProgress > 0.2 ? 'crt-jitter 0.12s infinite, crt-flicker 0.09s infinite' : 'none',
           }}
         />
       )}
@@ -227,12 +237,21 @@ export default function RoomScreen({ frequency, onRoomEnd, demoMode = true }) {
         surgeTrigger={surgeTrigger}
       />
 
-      <MessageStream
-        messages={messages}
-        onResonate={handleResonate}
-        colorAccent={frequency.colorAccent}
-        typingParticipant={typingParticipant}
-      />
+      <div style={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: 0,
+        opacity: dissolutionProgress > 0.4 ? Math.max(0.4, 1 - (dissolutionProgress - 0.4) * 0.7) : 1,
+        transition: 'opacity 0.6s ease',
+      }}>
+        <MessageStream
+          messages={messages}
+          onResonate={handleResonate}
+          colorAccent={frequency.colorAccent}
+          typingParticipant={typingParticipant}
+        />
+      </div>
 
       {/* Non-intrusive Anti-Metric Philosophy Toast on first resonance (Sprint 3 Issue #2) */}
       <AnimatePresence>

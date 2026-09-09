@@ -15,27 +15,27 @@ export default function SyncOverlay({ frequency, onComplete }) {
   const mhz = frequency.mhz ? frequency.mhz.replace(' MHz', '') : '94.8';
 
   useEffect(() => {
-    // Phase 1: Needle sweep & lock at 1s + Lock Chime
+    // Phase 1: Precision needle sweep & lock at 950ms + 528Hz Lock Chime
     const lockTimer = setTimeout(() => {
       setIsLocked(true);
       ambientDrone.playLockChime(528);
-    }, 1100);
+    }, 950);
 
-    // Phase 2: Stagger "found" stranger dots with micro-click
+    // Phase 2: Stagger organic stranger dots across 700ms - 1700ms with micro-clicks
     const timers = [];
     for (let i = 0; i < targetCount; i++) {
       timers.push(
         setTimeout(() => {
           setSyncedCount(i + 1);
           ambientDrone.playDetentClick();
-        }, 800 + i * 260)
+        }, 700 + i * 220)
       );
     }
 
-    // Phase 3: Auto-advance
+    // Phase 3: Auto-advance cleanly at 2.2s
     const advanceTimer = setTimeout(() => {
       onComplete?.();
-    }, 2450);
+    }, 2200);
 
     return () => {
       timers.forEach(clearTimeout);

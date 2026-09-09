@@ -67,6 +67,28 @@
   --font-display: 'Space Grotesk', -apple-system, sans-serif;
   --font-body: 'Inter', -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --cursor-size: 18px;
+  --cursor-glow: 0 0 18px rgba(167, 139, 250, 0.55);
+  --dial-depth: 12px;
+  --snap-pop-scale: 1.06;
+}
+
+/* ============================================
+   Custom Signal-Probe Theme Cursor (Phase 1)
+   ============================================ */
+
+body.custom-cursor-active,
+body.custom-cursor-active * {
+  cursor: none !important;
+}
+
+.signal-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  will-change: transform;
 }
 
 /* ============================================
@@ -288,6 +310,15 @@ input:focus-visible,
 
   canvas {
     filter: none !important;
+  }
+
+  .signal-cursor {
+    display: none !important;
+  }
+
+  body.custom-cursor-active,
+  body.custom-cursor-active * {
+    cursor: auto !important;
   }
 }
 

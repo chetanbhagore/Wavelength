@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import seedEchoes from '../data/seedEchoes.json';
+import frequencies from '../data/frequencies.json';
 import { ambientDrone } from '../utils/ambientAudio';
 
 // Pre-defined spatial orbital slots: reduced to 2 positions so the dial hero breathes
@@ -10,31 +11,69 @@ const WHISPER_SLOTS = [
 ];
 
 /**
- * FloatingWhispers — Ethereal fragments of anonymous thoughts drifting across the screen.
- * Interactive: Clicking any whisper directly tunes the user into that frequency!
+ * FloatingWhispers — Ethereal fragments of anonymous thoughts drifting across the ether.
+ * Interactive: Clicking any whisper magnetically pulls the dial to that frequency!
  */
-export default function FloatingWhispers({ frequency, onTuneIn }) {
+export default function FloatingWhispers({ frequency, onPullToFrequency }) {
   const [hoveredId, setHoveredId] = useState(null);
+  const [probeLine, setProbeLine] = useState(null);
 
-  // Get matching whispers for the active frequency
+  // Get matching whispers: slot 0 from current frequency, slot 1 from an adjacent frequency to invite tuning
   const activeWhispers = useMemo(() => {
-    const matched = seedEchoes.filter((e) => e.frequencyId === frequency.id);
-    const pool = matched.length > 0 ? matched : [
-      { id: 'fallback_1', text: 'someone else is feeling this right now.' },
-      { id: 'fallback_2', text: 'you are not carrying this alone.' },
-      { id: 'fallback_3', text: 'waiting for the storm to clear.' },
-    ];
+    const currentIdx = Math.max(0, frequencies.findIndex((f) => f.id === frequency.id));
+    const otherIdx = (currentIdx + 2) % frequencies.length;
+    const otherFreq = frequencies[otherIdx] || frequencies[0];
 
-    // Pick 2 items and assign to orbital slots
-    return WHISPER_SLOTS.map((slot, index) => {
-      const echo = pool[index % pool.length];
-      return {
-        ...slot,
-        echoId: `${echo.id}-${frequency.id}`,
-        text: echo.text,
-      };
+    const currentMatches = seedEchoes.filter((e) => e.frequencyId === frequency.id);
+    const otherMatches = seedEchoes.filter((e) => e.frequencyId === otherFreq.id);
+
+    const echo0 = currentMatches[0] || { id: 'fallback_0', text: 'someone else is feeling this right now.' };
+    const echo1 = otherMatches[0] || seedEchoes[1] || { id: 'fallback_1', text: 'waiting for the storm to clear.' };
+
+    return [
+      {
+        ...WHISPER_SLOTS[0],
+        echoId: `${echo0.id}-${frequency.id}`,
+        text: echo0.text,
+        targetFrequencyIndex: currentIdx,
+        frequencyLabel: frequency.label,
+        frequencyColor: frequency.colorAccent,
+        mhz: frequency.mhz,
+      },
+      {
+        ...WHISPER_SLOTS[1],
+        echoId: `${echo1.id}-${otherFreq.id}`,
+        text: echo1.text,
+        targetFrequencyIndex: otherIdx,
+        frequencyLabel: otherFreq.label,
+        frequencyColor: otherFreq.colorAccent,
+        mhz: otherFreq.mhz,
+      },
+    ];
+  }, [frequency.id, frequency.label, frequency.colorAccent, frequency.mhz]);
+
+  const handleWhisperClick = (item, e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const startX = rect.left + rect.width / 2;
+    const startY = rect.top + rect.height / 2;
+    const endX = window.innerWidth / 2;
+    const endY = window.innerHeight / 2;
+
+    setProbeLine({
+      x1: startX,
+      y1: startY,
+      x2: endX,
+      y2: endY,
+      color: item.frequencyColor,
     });
-  }, [frequency.id]);
+
+    ambientDrone.playLockChime(528);
+    onPullToFrequency?.(item.targetFrequencyIndex);
+
+    setTimeout(() => {
+      setProbeLine(null);
+    }, 750);
+  };
 
   return (
     <div
@@ -112,13 +151,12 @@ export default function FloatingWhispers({ frequency, onTuneIn }) {
                     ease: 'easeInOut',
                   },
                 }}
+                data-cursor="whisper"
+                className="floating-whisper-card"
                 onMouseEnter={() => setHoveredId(item.echoId)}
                 onMouseLeave={() => setHoveredId(null)}
-                onClick={() => {
-                  ambientDrone.playLockChime(528);
-                  onTuneIn?.(frequency);
-                }}
-                title="Click to tune into this stranger frequency"
+                onClick={(e) => handleWhisperClick(item, e)}
+                title={`Click to magnetically pull dial to ${item.mhz} (${item.frequencyLabel})`}
                 style={{
                   position: 'absolute',
                   top: item.top,
@@ -129,13 +167,13 @@ export default function FloatingWhispers({ frequency, onTuneIn }) {
                   padding: '10px 15px',
                   borderRadius: '16px',
                   background: isHovered
-                    ? 'rgba(23, 27, 42, 0.92)'
-                    : 'rgba(23, 27, 39, 0.35)',
+                    ? 'rgba(23, 27, 42, 0.94)'
+                    : 'rgba(23, 27, 39, 0.38)',
                   border: isHovered
-                    ? `1px solid ${frequency.colorAccent}`
+                    ? `1px solid ${item.frequencyColor}`
                     : '1px solid rgba(255, 255, 255, 0.06)',
                   boxShadow: isHovered
-                    ? `0 12px 35px rgba(0,0,0,0.65), 0 0 24px ${frequency.colorAccent}44`
+                    ? `0 12px 35px rgba(0,0,0,0.65), 0 0 24px ${item.frequencyColor}44`
                     : 'none',
                   backdropFilter: isHovered ? 'blur(16px)' : 'blur(4px)',
                   filter: isHovered ? 'none' : `blur(${depthStyles.blur})`,
@@ -158,9 +196,9 @@ export default function FloatingWhispers({ frequency, onTuneIn }) {
                         width: '4px',
                         height: '4px',
                         borderRadius: '50%',
-                        background: frequency.colorAccent,
+                        background: item.frequencyColor,
                         opacity: isHovered ? 1 : 0.6,
-                        boxShadow: `0 0 6px ${frequency.colorAccent}`,
+                        boxShadow: `0 0 6px ${item.frequencyColor}`,
                       }}
                     />
                     <span
@@ -171,25 +209,25 @@ export default function FloatingWhispers({ frequency, onTuneIn }) {
                         letterSpacing: '0.08em',
                         opacity: 0.75,
                         fontStyle: 'normal',
+                        color: item.frequencyColor,
                       }}
                     >
-                      whisper in ether
+                      {item.mhz || 'ether'}
                     </span>
                   </div>
 
-                  {isHovered && (
-                    <span
-                      style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '8.5px',
-                        color: frequency.colorAccent,
-                        fontStyle: 'normal',
-                        letterSpacing: '0.04em',
-                      }}
-                    >
-                      tune in →
-                    </span>
-                  )}
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: '8.5px',
+                      color: item.frequencyColor,
+                      fontStyle: 'normal',
+                      letterSpacing: '0.04em',
+                      opacity: isHovered ? 1 : 0.6,
+                    }}
+                  >
+                    pull dial ⟲
+                  </span>
                 </div>
                 "{item.text}"
               </motion.div>
@@ -197,6 +235,47 @@ export default function FloatingWhispers({ frequency, onTuneIn }) {
           })}
         </motion.div>
       </AnimatePresence>
+
+      {/* Luminous SVG Magnetic Probe Beam on Whisper Pull (Phase 5) */}
+      {probeLine && (
+        <svg
+          style={{
+            position: 'fixed',
+            inset: 0,
+            width: '100vw',
+            height: '100vh',
+            pointerEvents: 'none',
+            zIndex: 25,
+          }}
+        >
+          <defs>
+            <linearGradient
+              id="whisperProbeGrad"
+              x1={probeLine.x1}
+              y1={probeLine.y1}
+              x2={probeLine.x2}
+              y2={probeLine.y2}
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop offset="0%" stopColor={probeLine.color} stopOpacity="1" />
+              <stop offset="60%" stopColor={probeLine.color} stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.3" />
+            </linearGradient>
+          </defs>
+          <motion.line
+            x1={probeLine.x1}
+            y1={probeLine.y1}
+            x2={probeLine.x2}
+            y2={probeLine.y2}
+            stroke="url(#whisperProbeGrad)"
+            strokeWidth="2.5"
+            strokeDasharray="6 4"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: [0, 0.95, 0] }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
+          />
+        </svg>
+      )}
     </div>
   );
 }
