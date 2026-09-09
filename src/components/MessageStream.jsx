@@ -1,4 +1,6 @@
 import { useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+import { MessageShape, ParticipantShape } from '../types/propTypes';
 import { motion, AnimatePresence } from 'framer-motion';
 import MessageBubble from './MessageBubble';
 
@@ -137,3 +139,13 @@ export default function MessageStream({ messages, onResonate, colorAccent, typin
   );
 }
 
+MessageStream.propTypes = {
+  /** Array of message objects to render */
+  messages: PropTypes.arrayOf(MessageShape).isRequired,
+  /** Callback when user resonates with a message */
+  onResonate: PropTypes.func.isRequired,
+  /** Accent color for the frequency */
+  colorAccent: PropTypes.string.isRequired,
+  /** Currently typing participant */
+  typingParticipant: ParticipantShape,
+};

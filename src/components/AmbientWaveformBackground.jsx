@@ -1,4 +1,5 @@
 import { useEffect, useRef, useMemo } from 'react';
+import PropTypes from 'prop-types';
 
 /**
  * Full-bleed animated SVG waveform & atmospheric mood-reactive particle background.
@@ -399,3 +400,12 @@ function drawStaticWaveform(ctx, color) {
   drawWave(ctx, w, h, 0, 0.52, 0.08, color, 0.10);
   drawWave(ctx, w, h, 0, 0.74, 0.05, color, 0.06);
 }
+
+AmbientWaveformBackground.propTypes = {
+  /** Hex color accent for the waveform rendering */
+  colorAccent: PropTypes.string,
+  /** Mood string controlling particle physics */
+  mood: PropTypes.string,
+  /** Background layer opacity */
+  opacity: PropTypes.number,
+};

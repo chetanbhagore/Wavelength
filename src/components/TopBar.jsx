@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { Activity, MessageSquareQuote, Radio } from 'lucide-react';
 
 /**
@@ -43,7 +44,7 @@ export default function TopBar({
 
   return (
     <header
-      onMouseEnter={() => setIsDimmed(false)}
+      onMouseEnter={() => setIsInactive(false)}
       style={{
         display: 'flex',
         alignItems: 'center',
@@ -212,4 +213,15 @@ export default function TopBar({
   );
 }
 
-
+TopBar.propTypes = {
+  /** Current application state for conditional nav rendering */
+  appState: PropTypes.string.isRequired,
+  /** Navigate to echo wall */
+  onNavigateToEchoWall: PropTypes.func.isRequired,
+  /** Navigate back to tuner */
+  onNavigateToTuner: PropTypes.func.isRequired,
+  /** Whether demo mode is active */
+  demoMode: PropTypes.bool.isRequired,
+  /** Toggle demo/standard mode */
+  onToggleDemoMode: PropTypes.func.isRequired,
+};

@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send } from 'lucide-react';
 
@@ -121,3 +122,9 @@ export default function MessageComposer({ onSend, disabled }) {
   );
 }
 
+MessageComposer.propTypes = {
+  /** Callback when user sends a message */
+  onSend: PropTypes.func.isRequired,
+  /** Whether the composer is disabled (session ended) */
+  disabled: PropTypes.bool,
+};

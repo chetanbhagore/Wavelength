@@ -106,6 +106,9 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color-scheme: dark;
+  scroll-behavior: smooth;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -113,14 +116,33 @@ body {
   background-color: var(--color-bg);
   color: var(--color-text-primary);
   line-height: 1.5;
+  min-height: 100vh;
   min-height: 100dvh;
+  width: 100%;
+  max-width: 100vw;
   overflow-x: hidden;
+  overscroll-behavior-y: none;
 }
 
 #root {
+  min-height: 100vh;
   min-height: 100dvh;
+  width: 100%;
+  max-width: 100vw;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* Touch & Interaction Ergonomics (UI/UX Responsiveness Engine) */
+button,
+a,
+input,
+textarea,
+[role="button"],
+[role="slider"] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* ============================================
@@ -323,22 +345,170 @@ input:focus-visible,
 }
 
 /* ============================================
-   Responsive Design & Mobile Ergonomics
+   Responsive Design & Mobile Ergonomics Engine
+   Covers standard breakpoints: 320px, 375px, 480px, 768px, 1024px, 1440px
    ============================================ */
 
+/* 1. Ultra-Compact Mobile / Small Handhelds (≤ 375px e.g. iPhone SE, Galaxy Fold) */
+@media (max-width: 375px) {
+  html {
+    font-size: 14px;
+  }
+
+  .text-display {
+    font-size: 32px !important;
+    line-height: 38px !important;
+  }
+
+  .text-h1 {
+    font-size: 26px !important;
+    line-height: 32px !important;
+  }
+
+  .text-h2 {
+    font-size: 20px !important;
+    line-height: 26px !important;
+  }
+
+  .text-h3 {
+    font-size: 16px !important;
+    line-height: 22px !important;
+  }
+
+  /* Dial scaling for small screens to prevent vertical overflow */
+  .frequency-dial-container {
+    width: clamp(170px, 52vw, 210px) !important;
+    height: clamp(170px, 52vw, 210px) !important;
+  }
+
+  /* Compact button padding */
+  .btn-primary,
+  .btn-secondary {
+    padding: 10px 20px !important;
+    font-size: 14px !important;
+  }
+
+  /* Floating whispers hide on tiny screens to prevent clutter */
+  .floating-whispers-container {
+    display: none !important;
+  }
+
+  /* Safe area inset support */
+  .tuner-screen-container,
+  .room-screen-container {
+    padding-left: max(8px, env(safe-area-inset-left, 8px)) !important;
+    padding-right: max(8px, env(safe-area-inset-right, 8px)) !important;
+  }
+}
+
+/* 2. Standard Mobile Devices (376px to 480px) */
+@media (max-width: 480px) {
+  /* Universal touch target standard for accessibility (WCAG 2.5.5) */
+  button,
+  [role="button"],
+  input[type="submit"],
+  [role="slider"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .text-display {
+    font-size: 38px;
+    line-height: 44px;
+  }
+
+  .text-h1 {
+    font-size: 30px;
+    line-height: 36px;
+  }
+
+  /* Ensure modal dialogue fits mobile comfortably */
+  .echo-modal-card {
+    width: calc(100vw - 24px) !important;
+    max-width: 100% !important;
+    padding: 18px 16px !important;
+  }
+}
+
+/* 3. Phablets & Small Tablets (481px to 768px) */
 @media (max-width: 768px) {
   /* Prevent orbital whispers from colliding with central dial on mobile */
   .floating-whispers-container {
     display: none !important;
   }
-}
 
-@media (max-width: 480px) {
-  /* Universal mobile touch target safeguard */
-  button, [role="button"], input[type="submit"] {
-    min-height: 44px;
+  /* Auto-scroll containers ensure bottom CTA is never clipped */
+  .mobile-scroll-container {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 }
+
+/* 4. Tablet Landscape & Small Laptops (769px to 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .text-display {
+    font-size: 48px;
+    line-height: 52px;
+  }
+
+  .frequency-dial-container {
+    width: 260px !important;
+    height: 260px !important;
+  }
+}
+
+/* 5. Standard Desktop (1025px to 1439px) */
+@media (min-width: 1025px) {
+  .floating-whispers-container {
+    display: block;
+  }
+}
+
+/* 6. Ultra-Wide & 4K Displays (≥ 1440px) */
+@media (min-width: 1440px) {
+  .text-display {
+    font-size: 64px;
+    line-height: 70px;
+  }
+
+  .text-h1 {
+    font-size: 44px;
+    line-height: 50px;
+  }
+
+  /* Centered readable max content width */
+  .desktop-content-bound {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* Universal Safe Area Inset Support (Notched displays, iOS Safari dynamic toolbar) */
+@supports (padding-top: env(safe-area-inset-top)) {
+  body {
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+
+  .safe-area-bottom {
+    padding-bottom: max(12px, env(safe-area-inset-bottom, 12px));
+  }
+}
+
+/* Container Viewport Ergonomics */
+.tuner-screen-container {
+  min-height: calc(100vh - 64px);
+  min-height: calc(100dvh - 64px);
+}
+
+.room-screen-container {
+  height: calc(100vh - 60px);
+  height: calc(100dvh - 60px);
+}
+
+
 
 
 /* ============================================

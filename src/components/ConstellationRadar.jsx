@@ -239,3 +239,8 @@ export default function ConstellationRadar({ activeFrequency }) {
     </div>
   );
 }
+
+ConstellationRadar.propTypes = {
+  /** Active frequency for radar display */
+  activeFrequency: FrequencyShape.isRequired,
+};

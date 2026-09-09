@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import PropTypes from 'prop-types';
 import frequencies from '../data/frequencies.json';
 
 /**
@@ -111,3 +112,10 @@ export default function FrequencySpectrumRibbon({ currentIndex, onSelectIndex })
     </div>
   );
 }
+
+FrequencySpectrumRibbon.propTypes = {
+  /** Currently active frequency index */
+  currentIndex: PropTypes.number.isRequired,
+  /** Callback when user selects a frequency index */
+  onSelectIndex: PropTypes.func.isRequired,
+};

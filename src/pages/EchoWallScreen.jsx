@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Radio } from 'lucide-react';
 import FrequencyFilterChips from '../components/FrequencyFilterChips';
@@ -6,6 +7,7 @@ import EchoCard from '../components/EchoCard';
 import seedEchoes from '../data/seedEchoes.json';
 import frequencies from '../data/frequencies.json';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import { STORAGE_KEYS } from '../constants/index.js';
 
 /**
  * Echo Wall — browse accumulated anonymous echoes for a frequency:
@@ -15,7 +17,7 @@ import { useLocalStorage } from '../hooks/useLocalStorage';
  */
 export default function EchoWallScreen({ initialFrequencyId, onBack }) {
   const [selectedFrequencyId, setSelectedFrequencyId] = useState(initialFrequencyId || null);
-  const [myEchoes] = useLocalStorage('myEchoHistory', []);
+  const [myEchoes] = useLocalStorage(STORAGE_KEYS.ECHO_HISTORY, []);
 
   const selectedFreq = useMemo(() => {
     return frequencies.find((f) => f.id === selectedFrequencyId) || null;
@@ -186,3 +188,9 @@ export default function EchoWallScreen({ initialFrequencyId, onBack }) {
   );
 }
 
+EchoWallScreen.propTypes = {
+  /** Pre-selected frequency ID to filter echoes on load */
+  initialFrequencyId: PropTypes.string,
+  /** Callback to navigate back to the tuner */
+  onBack: PropTypes.func.isRequired,
+};

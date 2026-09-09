@@ -1,4 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+import { FrequencyShape } from '../types/propTypes';
+import { ARRIVAL_BANNER_DURATION_MS, PHILOSOPHY_TOAST_DURATION_MS, RESONANCE_FLASH_DURATION_MS } from '../constants/index.js';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Users } from 'lucide-react';
 import AmbientWaveformBackground from '../components/AmbientWaveformBackground';
@@ -61,7 +64,7 @@ export default function RoomScreen({ frequency, onRoomEnd, demoMode = true }) {
     if (!hasSeenPhilosophyRef.current) {
       hasSeenPhilosophyRef.current = true;
       setShowPhilosophyToast(true);
-      setTimeout(() => setShowPhilosophyToast(false), 3600);
+      setTimeout(() => setShowPhilosophyToast(false), PHILOSOPHY_TOAST_DURATION_MS);
     }
   };
 
@@ -69,7 +72,7 @@ export default function RoomScreen({ frequency, onRoomEnd, demoMode = true }) {
   useEffect(() => {
     if (surgeTrigger > 0) {
       const startTimer = setTimeout(() => setResonanceFlash(true), 0);
-      const endTimer = setTimeout(() => setResonanceFlash(false), 1200);
+      const endTimer = setTimeout(() => setResonanceFlash(false), RESONANCE_FLASH_DURATION_MS);
       return () => {
         clearTimeout(startTimer);
         clearTimeout(endTimer);
@@ -77,11 +80,11 @@ export default function RoomScreen({ frequency, onRoomEnd, demoMode = true }) {
     }
   }, [surgeTrigger]);
 
-  // Gracefully auto-dismiss arrival banner after 3.2 seconds
+  // Gracefully auto-dismiss arrival banner after configured duration
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowArrivalBanner(false);
-    }, 3200);
+    }, ARRIVAL_BANNER_DURATION_MS);
     return () => clearTimeout(timer);
   }, []);
 
@@ -107,6 +110,7 @@ export default function RoomScreen({ frequency, onRoomEnd, demoMode = true }) {
         duration: isCollapsing ? 0.75 : 0.4,
         ease: isCollapsing ? 'easeInOut' : 'easeOut',
       }}
+      className="room-screen-container"
       style={{
         flex: 1,
         display: 'flex',
@@ -327,4 +331,13 @@ export default function RoomScreen({ frequency, onRoomEnd, demoMode = true }) {
     </motion.div>
   );
 }
+
+RoomScreen.propTypes = {
+  /** The active broadcast frequency object */
+  frequency: FrequencyShape.isRequired,
+  /** Callback when the room session ends */
+  onRoomEnd: PropTypes.func.isRequired,
+  /** Whether demo mode (90s sessions) is active */
+  demoMode: PropTypes.bool,
+};
 

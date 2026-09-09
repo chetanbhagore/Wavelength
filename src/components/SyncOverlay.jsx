@@ -1,4 +1,6 @@
 import { motion } from 'framer-motion';
+import PropTypes from 'prop-types';
+import { FrequencyShape } from '../types/propTypes';
 import { useState, useEffect } from 'react';
 import { Radio, Sparkles } from 'lucide-react';
 import { ambientDrone } from '../utils/ambientAudio';
@@ -291,3 +293,10 @@ export default function SyncOverlay({ frequency, onComplete }) {
     </motion.div>
   );
 }
+
+SyncOverlay.propTypes = {
+  /** The frequency being tuned into */
+  frequency: FrequencyShape.isRequired,
+  /** Callback when sync animation completes */
+  onComplete: PropTypes.func.isRequired,
+};

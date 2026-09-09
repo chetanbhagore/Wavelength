@@ -280,3 +280,10 @@ export default function FloatingWhispers({ frequency, onPullToFrequency }) {
     </div>
   );
 }
+
+FloatingWhispers.propTypes = {
+  /** Active frequency for whisper content */
+  frequency: FrequencyShape.isRequired,
+  /** Callback when user pulls to a frequency */
+  onPullToFrequency: PropTypes.func,
+};

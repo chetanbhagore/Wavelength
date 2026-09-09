@@ -112,3 +112,8 @@ export default function AmbientAudioToggle({ frequency }) {
     </motion.button>
   );
 }
+
+AmbientAudioToggle.propTypes = {
+  /** Active broadcast frequency for audio tuning */
+  frequency: FrequencyShape.isRequired,
+};

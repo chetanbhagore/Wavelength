@@ -135,3 +135,14 @@ export default function RoomAvatarStack({ participants, colorAccent, typingParti
     </div>
   );
 }
+
+RoomAvatarStack.propTypes = {
+  /** Array of participant objects */
+  participants: PropTypes.arrayOf(ParticipantShape).isRequired,
+  /** Accent color for avatar styling */
+  colorAccent: PropTypes.string.isRequired,
+  /** Currently typing participant */
+  typingParticipant: ParticipantShape,
+  /** Surge trigger counter */
+  surgeTrigger: PropTypes.number,
+};

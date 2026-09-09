@@ -94,3 +94,15 @@ export default function CountdownRing({ timeRemaining, totalDuration, isWarning,
   );
 }
 
+CountdownRing.propTypes = {
+  /** Seconds remaining */
+  timeRemaining: PropTypes.number.isRequired,
+  /** Total session duration in seconds */
+  totalDuration: PropTypes.number.isRequired,
+  /** Whether in warning phase */
+  isWarning: PropTypes.bool,
+  /** Whether in urgent phase */
+  isUrgent: PropTypes.bool,
+  /** Ring diameter in pixels */
+  size: PropTypes.number,
+};

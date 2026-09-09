@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
 import { useState, useCallback, memo } from 'react';
+import PropTypes from 'prop-types';
+import { MessageShape } from '../types/propTypes';
 
 /**
  * A single message bubble in the room.
@@ -152,5 +154,10 @@ function MessageBubble({ message, onResonate, colorAccent }) {
   );
 }
 
-export default memo(MessageBubble);
+MessageBubble.propTypes = {
+  message: MessageShape.isRequired,
+  onResonate: PropTypes.func,
+  colorAccent: PropTypes.string,
+};
 
+export default memo(MessageBubble);

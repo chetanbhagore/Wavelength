@@ -1,4 +1,6 @@
 import { Activity, LogOut } from 'lucide-react';
+import PropTypes from 'prop-types';
+import { FrequencyShape } from '../types/propTypes';
 import CountdownRing from './CountdownRing';
 
 /**
@@ -117,3 +119,17 @@ export default function RoomHeader({
   );
 }
 
+RoomHeader.propTypes = {
+  /** Active frequency object */
+  frequency: FrequencyShape.isRequired,
+  /** Seconds remaining */
+  timeRemaining: PropTypes.number.isRequired,
+  /** Total session duration */
+  totalDuration: PropTypes.number.isRequired,
+  /** Whether in warning phase */
+  isWarning: PropTypes.bool,
+  /** Whether in urgent phase */
+  isUrgent: PropTypes.bool,
+  /** Callback to initiate leave */
+  onRequestLeave: PropTypes.func.isRequired,
+};

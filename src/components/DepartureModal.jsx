@@ -1,4 +1,6 @@
 import { useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+import { FrequencyShape } from '../types/propTypes';
 import { motion } from 'framer-motion';
 import { Radio, LogOut, HeartHandshake } from 'lucide-react';
 import { ambientDrone } from '../utils/ambientAudio';
@@ -259,3 +261,16 @@ export default function DepartureModal({
     </motion.div>
   );
 }
+
+DepartureModal.propTypes = {
+  /** The active frequency */
+  frequency: FrequencyShape.isRequired,
+  /** Seconds remaining in room */
+  timeRemaining: PropTypes.number,
+  /** Stay in the room */
+  onStay: PropTypes.func.isRequired,
+  /** Leave and drop an echo */
+  onLeaveAndEcho: PropTypes.func.isRequired,
+  /** Leave directly without echo */
+  onDirectLeave: PropTypes.func.isRequired,
+};

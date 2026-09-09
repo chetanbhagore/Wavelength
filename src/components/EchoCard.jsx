@@ -1,4 +1,6 @@
 import { useMemo } from 'react';
+import PropTypes from 'prop-types';
+import { EchoShape } from '../types/propTypes';
 import { motion } from 'framer-motion';
 import frequencies from '../data/frequencies.json';
 
@@ -112,3 +114,10 @@ export default function EchoCard({ echo, index }) {
     </motion.div>
   );
 }
+
+EchoCard.propTypes = {
+  /** The echo object to render */
+  echo: EchoShape.isRequired,
+  /** Index for stagger animation and tilt calculation */
+  index: PropTypes.number.isRequired,
+};

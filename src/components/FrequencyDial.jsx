@@ -1,4 +1,6 @@
 import { motion } from 'framer-motion';
+import PropTypes from 'prop-types';
+import { FrequencyShape } from '../types/propTypes';
 import { useCallback, useRef, useState, useEffect } from 'react';
 import { Compass } from 'lucide-react';
 import frequencies from '../data/frequencies.json';
@@ -492,3 +494,20 @@ export default function FrequencyDial({
     </div>
   );
 }
+
+FrequencyDial.propTypes = {
+  /** Current active frequency index */
+  currentIndex: PropTypes.number.isRequired,
+  /** Total number of frequencies */
+  totalFrequencies: PropTypes.number.isRequired,
+  /** Current frequency object */
+  currentFrequency: FrequencyShape.isRequired,
+  /** ID of last visited frequency for residue ghost halo */
+  lastVisitedFrequencyId: PropTypes.string,
+  /** Navigate to next frequency */
+  onNext: PropTypes.func.isRequired,
+  /** Navigate to previous frequency */
+  onPrev: PropTypes.func.isRequired,
+  /** Keyboard event handler */
+  onKeyDown: PropTypes.func.isRequired,
+};

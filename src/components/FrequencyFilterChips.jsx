@@ -104,3 +104,10 @@ export default function FrequencyFilterChips({ selectedId, onSelect }) {
     </div>
   );
 }
+
+FrequencyFilterChips.propTypes = {
+  /** Currently selected frequency ID */
+  selectedId: PropTypes.string,
+  /** Callback when a filter chip is selected */
+  onSelect: PropTypes.func.isRequired,
+};

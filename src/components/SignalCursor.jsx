@@ -250,3 +250,5 @@ export default function SignalCursor() {
     </div>
   );
 }
+
+SignalCursor.propTypes = {};

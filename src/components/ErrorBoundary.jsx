@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import { RefreshCw, AlertTriangle } from 'lucide-react';
 
 /**
@@ -130,3 +131,8 @@ export default class ErrorBoundary extends Component {
     return this.props.children;
   }
 }
+
+ErrorBoundary.propTypes = {
+  /** Child components to wrap with error boundary protection */
+  children: PropTypes.node.isRequired,
+};

@@ -1,4 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
+import PropTypes from 'prop-types';
+import { FrequencyShape } from '../types/propTypes';
 import { useState, useCallback } from 'react';
 import { Sparkles } from 'lucide-react';
 import { ambientDrone } from '../utils/ambientAudio';
@@ -42,6 +44,7 @@ export default function EchoModal({ frequency, onSubmit, onSkip }) {
       }}
     >
       <motion.div
+        className="echo-modal-card"
         initial={{ scale: 0.9, opacity: 0, y: 10 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         transition={{ type: 'spring', stiffness: 300, damping: 25 }}
@@ -263,3 +266,11 @@ export default function EchoModal({ frequency, onSubmit, onSkip }) {
   );
 }
 
+EchoModal.propTypes = {
+  /** The frequency the echo belongs to */
+  frequency: FrequencyShape.isRequired,
+  /** Callback when user submits an echo text */
+  onSubmit: PropTypes.func.isRequired,
+  /** Callback when user skips the echo */
+  onSkip: PropTypes.func.isRequired,
+};

@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import { FrequencyShape, VisitInfoShape } from '../types/propTypes';
 
 /**
  * Displays the current frequency label, description, and live count.
@@ -207,4 +208,11 @@ export default function FrequencyReadout({ frequency, visitInfo }) {
     </div>
   );
 }
+
+FrequencyReadout.propTypes = {
+  /** Current broadcast frequency */
+  frequency: FrequencyShape.isRequired,
+  /** Visit history for this frequency */
+  visitInfo: VisitInfoShape,
+};
 

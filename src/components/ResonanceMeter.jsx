@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import PropTypes from 'prop-types';
 import { Info } from 'lucide-react';
 
 /**
@@ -179,3 +180,11 @@ export default function ResonanceMeter({ level, colorAccent, surgeTrigger }) {
   );
 }
 
+ResonanceMeter.propTypes = {
+  /** Resonance energy level (0 to 1) */
+  level: PropTypes.number.isRequired,
+  /** Accent color for the meter */
+  colorAccent: PropTypes.string.isRequired,
+  /** Counter that increments on each surge */
+  surgeTrigger: PropTypes.number,
+};

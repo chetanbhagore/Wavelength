@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
+import { GUIDANCE_DISMISS_MS, STORAGE_KEYS } from '../constants/index.js';
 import { motion, AnimatePresence } from 'framer-motion';
 import AmbientWaveformBackground from '../components/AmbientWaveformBackground';
 import FloatingWhispers from '../components/FloatingWhispers';
@@ -33,7 +35,7 @@ export default function TunerScreen({
 
   const [showGuidance, setShowGuidance] = useState(() => {
     try {
-      return !sessionStorage.getItem('wavelength_tuner_guidance_seen');
+      return !sessionStorage.getItem(STORAGE_KEYS.TUNER_GUIDANCE_SEEN);
     } catch {
       return true;
     }
@@ -43,7 +45,7 @@ export default function TunerScreen({
     setShowGuidance((prev) => {
       if (!prev) return false;
       try {
-        sessionStorage.setItem('wavelength_tuner_guidance_seen', 'true');
+        sessionStorage.setItem(STORAGE_KEYS.TUNER_GUIDANCE_SEEN, 'true');
       } catch {
         // ignore storage error
       }
@@ -51,30 +53,33 @@ export default function TunerScreen({
     });
   }, []);
 
-  // Auto-dismiss after 9 seconds if not interacted
+  // Auto-dismiss after configured duration if not interacted
   useEffect(() => {
     if (!showGuidance) return;
-    const timer = setTimeout(dismissGuidance, 9000);
+    const timer = setTimeout(dismissGuidance, GUIDANCE_DISMISS_MS);
     return () => clearTimeout(timer);
   }, [showGuidance, dismissGuidance]);
 
   const currentVisitInfo = frequencyHistory[currentFrequency.id] || null;
 
   return (
-    <div style={{
-      flex: 1,
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: 'clamp(10px, 2vh, 18px)',
-      padding: 'clamp(12px, 3vw, 20px) 16px',
-      position: 'relative',
-      zIndex: 1,
-      minHeight: 'calc(100dvh - 64px)',
-      overflowY: 'auto',
-      overflowX: 'hidden',
-    }}>
+    <div
+      className="tuner-screen-container mobile-scroll-container"
+      style={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 'clamp(6px, 1.8vh, 18px)',
+        padding: 'clamp(8px, 2.5vw, 20px) 16px',
+        position: 'relative',
+        zIndex: 1,
+        minHeight: 'calc(100dvh - 64px)',
+        overflowY: 'auto',
+        overflowX: 'hidden',
+      }}
+    >
       {/* 1. Dynamic Mood-Themed Canvas Weather (Rain, Embers, Bokeh, Prisms) */}
       <AmbientWaveformBackground
         colorAccent={currentFrequency.colorAccent}
@@ -228,3 +233,17 @@ export default function TunerScreen({
     </div>
   );
 }
+
+TunerScreen.propTypes = {
+  /** Callback when user clicks "Tune In" with the selected frequency */
+  onTuneIn: PropTypes.func.isRequired,
+  /** ID of the last visited frequency for presence residue display */
+  lastVisitedFrequencyId: PropTypes.string,
+  /** Map of frequency IDs to visit count and timestamp */
+  frequencyHistory: PropTypes.objectOf(
+    PropTypes.shape({
+      count: PropTypes.number,
+      lastVisited: PropTypes.number,
+    })
+  ),
+};

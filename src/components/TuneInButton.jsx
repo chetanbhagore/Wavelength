@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import PropTypes from 'prop-types';
 import { Radio } from 'lucide-react';
 
 /**
@@ -57,3 +58,10 @@ export default function TuneInButton({ onClick, disabled }) {
     </motion.button>
   );
 }
+
+TuneInButton.propTypes = {
+  /** Click handler to initiate tuning */
+  onClick: PropTypes.func.isRequired,
+  /** Whether button is disabled */
+  disabled: PropTypes.bool,
+};
