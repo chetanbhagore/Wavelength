@@ -3,8 +3,8 @@
 > *"not who you follow. who you're in sync with, right now."*  
 > An ephemeral, synchronous social web application built without profiles, follower counts, like tallies, permanent logs, or algorithmic sorting.
 
-[![Vercel Deployment](https://img.shields.io/badge/Live_Deployment-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://wavelength-social.vercel.app)
-[![GitHub Mirror](https://img.shields.io/badge/Mirror-GitHub_Pages-7C5CFF?style=for-the-badge&logo=github)](https://chetanbhagore.github.io/Wavelength/)
+[![Vercel Deployment](https://img.shields.io/badge/Live_Canonical-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://wavelength-social.vercel.app)
+[![Architecture Docs](https://img.shields.io/badge/Documentation-ARCHITECTURE.md-7C5CFF?style=for-the-badge&logo=markdown)](./ARCHITECTURE.md)
 [![Vite](https://img.shields.io/badge/Vite-8.x-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-19.x-61DAFB?logo=react&logoColor=black)](https://react.dev/)
 [![TailwindCSS](https://img.shields.io/badge/Tailwind-v4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
@@ -12,11 +12,11 @@
 
 ---
 
-## 🌐 Live Deployment & Competition Links
+## 🌐 Official Canonical Submission Links
 
-- **Official Vercel URL**: [https://wavelength-social.vercel.app](https://wavelength-social.vercel.app)
-- **GitHub Pages Mirror**: [https://chetanbhagore.github.io/Wavelength/](https://chetanbhagore.github.io/Wavelength/)
-- **GitHub Repository**: [https://github.com/chetanbhagore/Wavelength.git](https://github.com/chetanbhagore/Wavelength.git)
+- **Live Canonical URL**: [https://wavelength-social.vercel.app](https://wavelength-social.vercel.app)
+- **GitHub Repository**: [https://github.com/chetanbhagore/Wavelength](https://github.com/chetanbhagore/Wavelength)
+- **Architecture & System Design**: [`ARCHITECTURE.md`](./ARCHITECTURE.md)
 - **Judge Review Shortcut**: Press **`Shift + D`** anywhere in the app to toggle **90s Demo Mode** (default: ON) vs **12m Standard Mode**. Alternatively, double-click the top-left *Wavelength* logo glyph.
 
 ---
