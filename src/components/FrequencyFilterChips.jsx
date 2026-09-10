@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import frequencies from '../data/frequencies.json';
 import { ambientDrone } from '../utils/ambientAudio';
 

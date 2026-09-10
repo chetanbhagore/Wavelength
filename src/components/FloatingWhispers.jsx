@@ -1,8 +1,10 @@
 import { useState, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { motion, AnimatePresence } from 'framer-motion';
 import seedEchoes from '../data/seedEchoes.json';
 import frequencies from '../data/frequencies.json';
 import { ambientDrone } from '../utils/ambientAudio';
+import { FrequencyShape } from '../types/propTypes';
 
 // Pre-defined spatial orbital slots: reduced to 2 positions so the dial hero breathes
 const WHISPER_SLOTS = [

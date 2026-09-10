@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { VolumeX } from 'lucide-react';
 import { ambientDrone } from '../utils/ambientAudio';
+import { FrequencyShape } from '../types/propTypes';
 
 /**
  * AmbientAudioToggle — Discreet floating pill to enable analog ether drone.

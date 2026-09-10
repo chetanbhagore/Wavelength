@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Globe, Signal } from 'lucide-react';
 import { ambientDrone } from '../utils/ambientAudio';
+import { FrequencyShape } from '../types/propTypes';
 
 const NODES = [
   { id: 'n1', city: 'Tokyo', mhz: '107.9', count: 9, color: '#33E6C9', angle: 42, dist: 0.65 },

@@ -1,4 +1,6 @@
+import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
+import { ParticipantShape } from '../types/propTypes';
 
 /**
  * Row of pseudonymous participant avatars with organic individuality (Sprint 2 Issues #9 & #19):
